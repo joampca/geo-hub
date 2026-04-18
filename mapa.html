@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEO GAMES - Onde Fica no Mapa?</title>
+    
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/topojson-client@3"></script>
+
+    <style>
+        /* --- RESET E PADRÃO --- */
+        * { box-sizing: border-box; }
+        body, h1, h2, h3, p, ul, li { margin: 0; padding: 0; font-weight: normal; }
+        body { 
+            background-color: #E6E6E6; 
+            font-family: 'Comic Sans MS', Arial, sans-serif; 
+            color: #000; 
+            overflow-x: hidden;
+        }
+
+        /* --- HEADER --- */
+        .site-header { 
+            background-color: #0000FF; color: #FFFFFF; padding: 15px; 
+            border-bottom: 4px solid #FF0000; text-align: center; width: 100%;
+        }
+        .site-header h1 { font-weight: bold; color: #FFFF00; text-shadow: 2px 2px 0px #FF0000; font-size: clamp(24px, 4vw, 36px); margin-top: 5px;}
+        .site-header a { color: #FFF; font-family: 'Courier New', Courier, monospace; font-size: 14px; text-decoration: none; font-weight: bold;}
+        .site-header a:hover { text-decoration: underline; color: #00FF00;}
+
+        /* --- ESTRUTURA GERAL COM ANÚNCIOS --- */
+        .content-wrapper {
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 20px 15px;
+        }
+
+        /* Classes Genéricas para Anúncios (Estilo 90s) */
+        .ad-placeholder {
+            background-color: #FFFFFF; 
+            border: 3px dashed #FF0000; 
+            color: #FF0000; 
+            font-weight: bold; 
+            display: flex; 
+            flex-direction: column; /* Garante que linhas múltiplas fiquem empilhadas e centralizadas */
+            align-items: center; 
+            justify-content: center; 
+            text-align: center; 
+            font-family: Arial, sans-serif;
+            background-image: repeating-linear-gradient(45deg, #f9f9f9 25%, transparent 25%, transparent 75%, #f9f9f9 75%, #f9f9f9), repeating-linear-gradient(45deg, #f9f9f9 25%, #ffffff 25%, #ffffff 75%, #f9f9f9 75%, #f9f9f9);
+            background-position: 0 0, 10px 10px;
+            background-size: 20px 20px;
+        }
+
+        .ad-top-970 {
+            width: 100%;
+            max-width: 970px;
+            height: 250px;
+            margin: 0 auto 20px auto;
+        }
+
+        .main-layout-flex {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+.main-layout-flex { 
+    display: flex; 
+    gap: 20px; 
+    justify-content: center; 
+    align-items: flex-start; 
+    margin-top: 20px; /* <--- Adicione esta linha! */
+}
+
+        /* --- MENU LATERAL --- */
+        .side-menu { 
+            width: 220px; flex-shrink: 0; background-color: #FFFFCC; 
+            border: 3px solid #FF0000; box-shadow: 2px 2px 0px #000;
+        }
+        .menu-header { 
+            background-color: #FF0000; color: #FFFFFF; font-weight: bold; 
+            padding: 8px 10px; text-align: center; font-family: Arial, sans-serif; text-transform: uppercase;
+        }
+        .side-menu ul { list-style: none; padding: 10px; }
+        .side-menu li { padding: 8px 0; border-bottom: 1px dashed #FF0000; }
+        .side-menu li:last-child { border-bottom: none; }
+        .side-menu li a { text-decoration: none; font-weight: bold; color: #000000; display: flex; align-items: center; }
+        .side-menu li a:hover { color: #FF0000; background-color: #FFFFFF; }
+        .menu-icon { font-size: 20px; margin-right: 10px; }
+
+        /* --- ÁREA DO JOGO --- */
+        .game-main-area {
+            flex: 1; max-width: 900px; background-color: #FFF; border: 4px outset #CCC;
+            box-shadow: 3px 3px 0px #000; padding: 20px; text-align: center;
+        }
+
+        /* --- SIDEBAR DE ANÚNCIOS --- */
+        .ads-sidebar { width: 300px; flex-shrink: 0; display: flex; flex-direction: column; gap: 20px; }
+        .ad-side-300-250 { width: 100%; height: 250px; }
+	.ad-side-300-600 { width: 100%; height: 600px; }
+
+
+        /* --- ESTILOS DO JOGO DE MAPA --- */
+        .game-desc { font-size: 18px; margin-bottom: 10px; font-weight: bold; color: #000080; }
+
+        .status-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            background-color: #000; color: #00FF00; padding: 10px 20px; font-weight: bold;
+            font-size: 20px; border: 4px ridge #888; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .right-stats { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; justify-content: center; }
+        .timer-box { background-color: #333; color: #FF0000; padding: 5px 15px; border: 3px inset #555; font-size: 24px; }
+        .skip-box { color: #FFFF00; }
+
+        .btn-action {
+            background-color: #FFCC00; color: #000; border: 4px outset #FFF;
+            font-weight: bold; padding: 15px 30px; font-size: 24px; cursor: pointer; 
+            box-shadow: 2px 2px 0px #000; font-family: 'Comic Sans MS', Arial, sans-serif; margin-bottom: 10px;
+        }
+        .btn-action:active { border: 4px inset #FFF; }
+        .btn-action:disabled { background-color: #CCC; cursor: not-allowed; border-style: solid; box-shadow: none; }
+        .btn-skip { background-color: #C0C0C0; font-size: 18px; padding: 10px 20px; margin-left: 10px; }
+
+        .roulette-box {
+            background-color: #000; border: 6px inset #444; padding: 15px; margin-bottom: 20px;
+            box-shadow: inset 0 0 15px #00FF00; position: relative;
+        }
+        .roulette-title { color: #FFF; font-family: Arial, sans-serif; font-size: 14px; margin-bottom: 5px; }
+        .roulette-text {
+            color: #00FF00; font-family: 'Courier New', Courier, monospace; font-size: clamp(24px, 5vw, 40px);
+            font-weight: bold; text-transform: uppercase; letter-spacing: 2px;
+            text-shadow: 0 0 5px #00FF00; min-height: 45px;
+        }
+
+        /* MAPA VETORIAL - ESTILO RADAR DOS ANOS 90 */
+        .map-wrapper {
+            position: relative; width: 100%; max-width: 800px; margin: 0 auto;
+            background-color: #001100; border: 8px ridge #888;
+            box-shadow: 5px 5px 0px #000; overflow: hidden;
+        }
+        
+        /* Efeito Scanlines (Tela de Tubo) sobre o mapa */
+        .map-wrapper::after {
+            content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(0, 255, 0, 0.03), rgba(0, 255, 0, 0.01));
+            z-index: 10; background-size: 100% 4px, 3px 100%; pointer-events: none;
+        }
+
+        svg { width: 100%; height: auto; display: block; }
+        
+        .country-path { fill: #003300; stroke: #00FF00; stroke-width: 0.5px; transition: fill 0.2s; }
+        .country-unplayable { fill: #001a00; stroke: #004400; pointer-events: none; } /* Países minúsculos inativos */
+        
+        /* Efeitos visuais dinâmicos via JS */
+        .playable-hover:hover { fill: #009900; cursor: crosshair; }
+        .correct-country { fill: #FFFF00 !important; stroke: #FFF; stroke-width: 1.5px; }
+        .wrong-country { fill: #FF0000 !important; }
+        .reveal-country { fill: #FFFF00 !important; animation: blink 1s infinite; }
+
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+
+        .custom-alert {
+            display: none; padding: 20px; margin-top: 20px; border: 4px dashed #000; 
+            font-size: 22px; font-weight: bold; text-align: center;
+        }
+        .alert-success { background-color: #90EE90; border-color: #006400; color: #006400; }
+        .alert-error { background-color: #FFCCCC; border-color: #CC0000; color: #CC0000; }
+
+        #loadingText { color: #00FF00; font-family: 'Courier New', Courier, monospace; font-size: 20px; padding: 50px; background: #000; margin-bottom: 20px; border: 4px inset #FFF;}
+
+        @media (max-width: 1200px) {
+            .main-layout-flex { flex-direction: column; align-items: center; }
+            .side-menu { width: 100%; max-width: 900px; margin-bottom: 10px; }
+            .side-menu ul { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+            .side-menu li { border-bottom: none; border-right: 1px dashed #FF0000; padding-right: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <a href="index.html">◀ VOLTAR PARA O MENU PRINCIPAL</a>
+        <h1>🧭 ONDE FICA NO MAPA?</h1>
+    </header>
+
+            <div class="main-layout-flex">
+            <nav class="side-menu">
+                <div class="menu-header">MENU PRINCIPAL</div>
+		<ul>
+                    <li><a href="index.html"><span class="menu-icon">🌎</span>Início</a></li>
+                    <li><a href="fronteiras.html"><span class="menu-icon">🗺️</span>Fronteiras</a></li>
+                    <li><a href="continentes.html"><span class="menu-icon">🌍</span>Continentes</a></li>
+                    <li><a href="capitais.html"><span class="menu-icon">📍</span>Capitais</a></li>
+                    <li><a href="bandeiras.html"><span class="menu-icon">🚩</span>Bandeiras</a></li>
+                    <li><a href="caca-palavras.html"><span class="menu-icon">🔍</span>Caça-Palavras</a></li>
+                    <li><a href="cruzadas.html"><span class="menu-icon">🔠</span>Cruzadas</a></li>
+                    <li><a href="charadas.html"><span class="menu-icon">❓</span>Charadas</a></li>
+                    <li><a href="forca.html"><span class="menu-icon">☠️</span>Forca</a></li>
+                    <li><a href="embaralhadas.html"><span class="menu-icon">🌪️</span>Embaralhadas</a></li>
+                    <li><a href="erros.html"><span class="menu-icon">❌</span>Jogo dos Erros</a></li>
+                </ul>
+
+            </nav>
+
+            <main class="game-main-area">
+                <p class="game-desc">Localize o alvo geográfico! Somente os 50 maiores países do mundo estão na roleta.</p>
+
+                <div id="loadingText">CONECTANDO AO SATÉLITE... CARREGANDO MAPA...</div>
+
+                <div id="controlsArea" style="display:none;">
+                    <button id="startBtn" class="btn-action" onclick="startGame()">▶ LIGAR RADAR (2 MINUTOS)</button>
+                </div>
+
+                <div id="playArea" style="display:none;">
+                    <div class="status-bar">
+                        <span>PONTOS: <span id="scoreDisplay">0</span></span>
+                        <div class="right-stats">
+                            <span class="skip-box">PULOS: <span id="skipDisplay">0</span></span>
+                            <span>TEMPO: <span id="timerDisplay" class="timer-box">120</span></span>
+                        </div>
+                    </div>
+
+                    <div class="roulette-box">
+                        <div class="roulette-title">ALVO NO RADAR:</div>
+                        <div class="roulette-text" id="targetDisplay">[ AGUARDANDO COMANDO ]</div>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <button id="spinBtn" class="btn-action">🎰 GIRAR PRÓXIMO ALVO</button>
+                        <button id="skipBtn" class="btn-action btn-skip">⏭ PULAR ALVO (0 pts)</button>
+                    </div>
+
+                    <div class="map-wrapper" id="mapContainer"></div>
+
+                    <div id="customAlert" class="custom-alert"></div>
+                </div>
+            </main>
+
+            <aside class="ads-sidebar">
+                <div class="ad-placeholder ad-side-300-250">
+                    ESPAÇO RESERVADO<br>PARA ADS 300 x 250
+                </div>
+                <div class="ad-placeholder ad-side-300-600">
+                    ESPAÇO RESERVADO<br>PARA ADS 300 x 600<br>
+                    <br><small>(Adaptado para a barra lateral)</small>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <script>
+        // DICIONÁRIO DE TRADUÇÃO: Filtra estritamente os 50 maiores países do GeoJSON para serem jogáveis.
+        // O nome em inglês deve bater exatamente com o arquivo topográfico global.
+        const top50Countries = {
+            "Russia": "RÚSSIA", "Canada": "CANADÁ", "United States of America": "ESTADOS UNIDOS", "China": "CHINA", 
+            "Brazil": "BRASIL", "Australia": "AUSTRÁLIA", "India": "ÍNDIA", "Argentina": "ARGENTINA", 
+            "Kazakhstan": "CAZAQUISTÃO", "Algeria": "ARGÉLIA", "Democratic Republic of the Congo": "REP. DEM. DO CONGO", 
+            "Greenland": "GROENLÂNDIA", "Saudi Arabia": "ARÁBIA SAUDITA", "Mexico": "MÉXICO", "Indonesia": "INDONÉSIA", 
+            "Sudan": "SUDÃO", "Libya": "LÍBIA", "Iran": "IRÃ", "Mongolia": "MONGÓLIA", "Peru": "PERU", "Chad": "CHADE", 
+            "Niger": "NÍGER", "Angola": "ANGOLA", "Mali": "MALI", "South Africa": "ÁFRICA DO SUL", "Colombia": "COLÔMBIA", 
+            "Ethiopia": "ETIÓPIA", "Bolivia": "BOLÍVIA", "Mauritania": "MAURITÂNIA", "Egypt": "EGITO", "Tanzania": "TANZÂNIA", 
+            "Nigeria": "NIGÉRIA", "Venezuela": "VENEZUELA", "Pakistan": "PAQUISTÃO", "Namibia": "NAMÍBIA", 
+            "Mozambique": "MOÇAMBIQUE", "Turkey": "TURQUIA", "Chile": "CHILE", "Zambia": "ZÂMBIA", "Myanmar": "MIANMAR", 
+            "Afghanistan": "AFEGANISTÃO", "France": "FRANÇA", "Somalia": "SOMÁLIA", "Ukraine": "UCRÂNIA", 
+            "Madagascar": "MADAGASCAR", "Botswana": "BOTSUANA", "Kenya": "QUÊNIA", "Spain": "ESPANHA", 
+            "Thailand": "TAILÂNDIA", "Sweden": "SUÉCIA"
+        };
+
+        let score = 0;
+        let skipCount = 0;
+        let timeLeft = 120;
+        let timerInterval;
+        let isWaitingForClick = false;
+        let isSpinning = false;
+        
+        let availableTargets = []; // Array com os países que ainda não foram sorteados
+        let currentTargetEnglish = null; // O alvo atual (chave)
+
+        // Variáveis do DOM
+        const targetDisplay = document.getElementById('targetDisplay');
+        const spinBtn = document.getElementById('spinBtn');
+        const skipBtn = document.getElementById('skipBtn');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const skipDisplay = document.getElementById('skipDisplay');
+        const timerDisplay = document.getElementById('timerDisplay');
+        const customAlert = document.getElementById('customAlert');
+        const svgContainer = d3.select("#mapContainer");
+
+        // Configuração do Mapa D3
+        const width = 800;
+        const height = 450;
+        const svg = svgContainer.append("svg")
+            .attr("viewBox", `0 0 ${width} ${height}`)
+            .attr("preserveAspectRatio", "xMidYMid meet");
+
+        const projection = d3.geoMercator().scale(120).translate([width / 2, height / 1.5]);
+        const pathGenerator = d3.geoPath().projection(projection);
+
+        // 1. CARREGAR OS DADOS GEOGRÁFICOS DO SATÉLITE (GeoJSON)
+        d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json").then(function(world) {
+            document.getElementById('loadingText').style.display = 'none';
+            document.getElementById('controlsArea').style.display = 'block';
+
+            const countries = topojson.feature(world, world.objects.countries).features;
+
+            // Desenhar os polígonos no SVG
+            svg.selectAll("path")
+                .data(countries)
+                .enter().append("path")
+                .attr("d", pathGenerator)
+                .attr("class", function(d) {
+                    // Se o país estiver na nossa lista Top 50, ele é jogável.
+                    return top50Countries[d.properties.name] ? "country-path playable-hover" : "country-path country-unplayable";
+                })
+                .attr("id", function(d) {
+                    return "country-" + d.properties.name.replace(/\s+/g, ''); // Cria um ID limpo para selecionar depois
+                })
+                .on("click", handleMapClick);
+
+        }).catch(function(error) {
+            document.getElementById('loadingText').innerText = "ERRO AO CONECTAR COM O SATÉLITE. VERIFIQUE SUA INTERNET.";
+        });
+
+
+        // 2. LÓGICA DO JOGO
+        window.startGame = function() {
+            document.getElementById('controlsArea').style.display = 'none';
+            document.getElementById('playArea').style.display = 'block';
+            
+            score = 0;
+            skipCount = 0;
+            scoreDisplay.innerText = score;
+            skipDisplay.innerText = skipCount;
+            
+            // Popula a lista de alvos com os nomes em inglês
+            availableTargets = Object.keys(top50Countries);
+            
+            startTimer();
+            spinTarget();
+        };
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timeLeft = 120;
+            timerDisplay.innerText = timeLeft;
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerDisplay.innerText = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    handleTimeOut();
+                }
+            }, 1000);
+        }
+
+        function handleTimeOut() {
+            isWaitingForClick = false;
+            spinBtn.disabled = true;
+            skipBtn.disabled = true;
+            showResult(`⏰ TEMPO ESGOTADO! FIM DE JOGO!<br>Você fez ${score} pontos e usou ${skipCount} pulos.`, false, true);
+        }
+
+        function resetMapColors() {
+            d3.selectAll(".country-path").classed("correct-country", false).classed("wrong-country", false).classed("reveal-country", false);
+            customAlert.style.display = 'none';
+        }
+
+        function spinTarget() {
+            if (isSpinning || availableTargets.length === 0) return;
+            
+            isSpinning = true;
+            spinBtn.disabled = true;
+            skipBtn.disabled = true;
+            isWaitingForClick = false;
+            resetMapColors();
+
+            let ticks = 0;
+            const maxTicks = 15; 
+            
+            const spinInterval = setInterval(() => {
+                let randomKey = availableTargets[Math.floor(Math.random() * availableTargets.length)];
+                targetDisplay.innerText = top50Countries[randomKey]; // Mostra em Português
+                ticks++;
+
+                if (ticks >= maxTicks) {
+                    clearInterval(spinInterval);
+                    
+                    // Define o alvo real e remove do array
+                    const targetIndex = Math.floor(Math.random() * availableTargets.length);
+                    currentTargetEnglish = availableTargets.splice(targetIndex, 1)[0];
+                    
+                    targetDisplay.innerText = `>>> ${top50Countries[currentTargetEnglish]} <<<`;
+                    
+                    isSpinning = false;
+                    isWaitingForClick = true;
+                    skipBtn.disabled = false;
+                }
+            }, 80);
+        }
+
+        spinBtn.onclick = spinTarget;
+
+        skipBtn.onclick = () => {
+            if (isSpinning || !isWaitingForClick) return;
+            skipCount++;
+            skipDisplay.innerText = skipCount;
+            spinTarget();
+        };
+
+        // 3. O CLIQUE NO MAPA VETORIAL
+        function handleMapClick(event, d) {
+            if (!isWaitingForClick || !top50Countries[d.properties.name]) return; // Ignora se não for hora de clicar ou se for país pequeno
+
+            isWaitingForClick = false;
+            skipBtn.disabled = true;
+            spinBtn.disabled = false;
+            resetMapColors();
+
+            const clickedEnglishName = d.properties.name;
+            const clickedId = "#country-" + clickedEnglishName.replace(/\s+/g, '');
+            const correctId = "#country-" + currentTargetEnglish.replace(/\s+/g, '');
+
+            if (clickedEnglishName === currentTargetEnglish) {
+                // ACERTOU
+                score += 50;
+                scoreDisplay.innerText = score;
+                d3.select(clickedId).classed("correct-country", true);
+                
+                showResult(`🎯 TIRO CERTEIRO! (+50 Pts)`, true);
+            } else {
+                // ERROU
+                d3.select(clickedId).classed("wrong-country", true);
+                d3.select(correctId).classed("reveal-country", true); // Pisca o correto
+                
+                showResult(`❌ RADAR FALHOU! Você clicou em <strong>${top50Countries[clickedEnglishName]}</strong>.<br>O alvo correto está piscando em amarelo no mapa.`, false);
+            }
+
+            // Checa Vitória Máxima
+            if (availableTargets.length === 0) {
+                clearInterval(timerInterval);
+                spinBtn.disabled = true;
+                setTimeout(() => {
+                    showResult(`🏆 MESTRE DO RADAR! Você rastreou todos os 50 maiores países!<br>Pontuação Final: ${score} | Pulos: ${skipCount}`, true, true);
+                }, 2000);
+            }
+        }
+
+        function showResult(msg, isSuccess, isEndGame = false) {
+            customAlert.innerHTML = msg;
+            customAlert.className = 'custom-alert ' + (isSuccess ? 'alert-success' : 'alert-error');
+            customAlert.style.display = 'block';
+
+            if (isEndGame) {
+                customAlert.innerHTML += `<br><button onclick="window.location.reload()" class="btn-action" style="margin-top:15px; font-size: 18px;">🔄 JOGAR NOVAMENTE</button>`;
+            }
+        }
+
+    </script>
+</body>
+</html>

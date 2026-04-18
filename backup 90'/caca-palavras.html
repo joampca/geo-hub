@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEO GAMES - Caça-Palavras Geográfico</title>
+    <style>
+        /* --- RESET BÁSICO --- */
+        * { box-sizing: border-box; }
+        body, h1, h2, h3, p, ul, li { margin: 0; padding: 0; font-weight: normal; }
+        body { 
+            background-color: #E6E6E6; 
+            font-family: 'Comic Sans MS', Arial, sans-serif; 
+            color: #000; 
+            overflow-x: hidden;
+        }
+
+        /* --- HEADER --- */
+        .site-header { 
+            background-color: #0000FF; color: #FFFFFF; padding: 15px; 
+            border-bottom: 4px solid #FF0000; text-align: center; width: 100%;
+        }
+        .site-header h1 { font-weight: bold; color: #FFFF00; text-shadow: 2px 2px 0px #FF0000; font-size: clamp(24px, 4vw, 36px); margin-top: 5px;}
+        .site-header a { color: #FFF; font-family: 'Courier New', Courier, monospace; font-size: 14px; text-decoration: none; font-weight: bold;}
+        .site-header a:hover { text-decoration: underline; color: #00FF00;}
+
+        /* --- ESTRUTURA GERAL COM ANÚNCIOS --- */
+        .content-wrapper {
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 20px 15px;
+        }
+
+        /* Classes Genéricas para Anúncios (Estilo 90s) */
+        .ad-placeholder {
+            background-color: #FFFFFF; 
+            border: 3px dashed #FF0000; 
+            color: #FF0000; 
+            font-weight: bold; 
+            display: flex; 
+            flex-direction: column; /* Garante que linhas múltiplas fiquem empilhadas e centralizadas */
+            align-items: center; 
+            justify-content: center; 
+            text-align: center; 
+            font-family: Arial, sans-serif;
+            background-image: repeating-linear-gradient(45deg, #f9f9f9 25%, transparent 25%, transparent 75%, #f9f9f9 75%, #f9f9f9), repeating-linear-gradient(45deg, #f9f9f9 25%, #ffffff 25%, #ffffff 75%, #f9f9f9 75%, #f9f9f9);
+            background-position: 0 0, 10px 10px;
+            background-size: 20px 20px;
+        }
+
+        .ad-top-970 {
+            width: 100%;
+            max-width: 970px;
+            height: 250px;
+            margin: 0 auto 20px auto;
+        }
+
+        .main-layout-flex {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+.main-layout-flex { 
+    display: flex; 
+    gap: 20px; 
+    justify-content: center; 
+    align-items: flex-start; 
+    margin-top: 20px; /* <--- Adicione esta linha! */
+}
+
+        /* --- MENU LATERAL (ESQUERDA) --- */
+        .side-menu { 
+            width: 220px; flex-shrink: 0; background-color: #FFFFCC; 
+            border: 3px solid #FF0000; box-shadow: 2px 2px 0px #000;
+        }
+        .menu-header { 
+            background-color: #FF0000; color: #FFFFFF; font-weight: bold; 
+            padding: 8px 10px; text-align: center; font-family: Arial, sans-serif; text-transform: uppercase;
+        }
+        .side-menu ul { list-style: none; padding: 10px; }
+        .side-menu li { padding: 8px 0; border-bottom: 1px dashed #FF0000; }
+        .side-menu li:last-child { border-bottom: none; }
+        .side-menu li a { text-decoration: none; font-weight: bold; color: #000000; display: flex; align-items: center; }
+        .side-menu li a:hover { color: #FF0000; background-color: #FFFFFF; }
+        .menu-icon { font-size: 20px; margin-right: 10px; }
+
+        /* --- ÁREA DO JOGO (CENTRO) --- */
+        .game-main-area {
+            flex: 1; max-width: 900px; background-color: #FFF; border: 4px outset #CCC;
+            box-shadow: 3px 3px 0px #000; padding: 20px; text-align: center;
+        }
+
+        /* --- SIDEBAR DE ANÚNCIOS (DIREITA) --- */
+        .ads-sidebar {
+            width: 300px; flex-shrink: 0; display: flex; flex-direction: column; gap: 20px;
+        }
+        .ad-side-300-250 { width: 100%; height: 250px; }
+	.ad-side-300-600 { width: 100%; height: 600px; }
+
+        /* --- ESTILOS INTERNOS DO JOGO CAÇA PALAVRAS --- */
+        .game-desc { font-size: 18px; margin-bottom: 10px; }
+        .instructions { font-size: 14px; font-weight: bold; color: #0000FF; margin-bottom: 20px; background-color: #FFFF00; padding: 5px; border: 2px dashed #FF0000; display: inline-block;}
+        
+        .btn-start {
+            background-color: #FFCC00; color: #000; border: 4px outset #FFF;
+            font-weight: bold; padding: 15px 30px; font-size: 24px; cursor: pointer;
+            box-shadow: 2px 2px 0px #000; margin-bottom: 20px; font-family: 'Comic Sans MS', Arial, sans-serif;
+        }
+        .btn-start:active { border: 4px inset #FFF; }
+
+        .play-area { display: none; }
+        
+        /* STATUS BAR ATUALIZADA (Cronômetro progressivo) */
+        .status-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            background-color: #008000; color: #FFF; padding: 10px 20px; font-weight: bold;
+            font-size: 20px; border: 2px solid #000; margin-bottom: 20px;
+        }
+
+        .game-flex-container {
+            display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 20px;
+        }
+
+        /* A GRADE DE LETRAS */
+        .grid-container {
+            background-color: #FFF; border: 4px inset #CCC; padding: 10px;
+            display: inline-block; user-select: none;
+        }
+        .grid-row { display: flex; }
+        .grid-cell {
+            width: clamp(25px, 4vw, 35px); height: clamp(25px, 4vw, 35px);
+            display: flex; align-items: center; justify-content: center;
+            font-family: Arial, sans-serif; font-weight: bold; font-size: clamp(14px, 2vw, 18px);
+            border: 1px solid #EEE; cursor: pointer;
+            transition: all 0.1s;
+        }
+        .grid-cell:hover { background-color: #FFFFCC; border-color: #000; }
+        .grid-cell.selected { background-color: #FFCC00; color: #000; border-color: #000; box-shadow: inset 1px 1px 3px rgba(0,0,0,0.5);}
+        .grid-cell.found { background-color: #4169E1; color: #FFF; border-color: #00008B; }
+
+        /* LISTA DE PALAVRAS A ENCONTRAR */
+        .words-to-find {
+            background-color: #E6E6FA; border: 3px solid #000; padding: 15px;
+            min-width: 200px; text-align: left;
+        }
+        .words-to-find h3 { font-size: 18px; margin-bottom: 10px; color: #800080; border-bottom: 2px dashed #000; padding-bottom: 5px;}
+        .word-item {
+            font-family: Arial, sans-serif; font-size: 16px; margin-bottom: 5px; font-weight: bold;
+        }
+        .word-item.found-word {
+            text-decoration: line-through; color: #999;
+        }
+
+        .victory-msg {
+            display: none; color: #000; border: 3px dashed #FF0000; padding: 20px; font-size: 24px; font-weight: bold; margin-top: 20px; background-color: #FFFF00;
+        }
+
+        /* --- RESPONSIVIDADE --- */
+        @media (max-width: 1200px) {
+            .main-layout-flex { flex-direction: column; align-items: center; }
+            .side-menu { width: 100%; max-width: 900px; margin-bottom: 10px; }
+            .side-menu ul { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+            .side-menu li { border-bottom: none; border-right: 1px dashed #FF0000; padding-right: 10px; }
+            .side-menu li:last-child { border-right: none; }
+            .ads-sidebar { width: 100%; flex-direction: row; flex-wrap: wrap; justify-content: center; }
+            .ad-side-300-250 { width: 300px; }
+            .ad-top-970 { height: auto; padding: 50px 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <a href="index.html">◀ VOLTAR PARA O MENU PRINCIPAL</a>
+        <h1>CAÇA-PALAVRAS GEOGRÁFICO!</h1>
+    </header>
+
+
+        <div class="main-layout-flex">
+            <nav class="side-menu">
+                <div class="menu-header">MENU PRINCIPAL</div>
+		<ul>
+                    <li><a href="index.html"><span class="menu-icon">🌎</span>Início</a></li>
+                    <li><a href="fronteiras.html"><span class="menu-icon">🗺️</span>Fronteiras</a></li>
+                    <li><a href="continentes.html"><span class="menu-icon">🌍</span>Continentes</a></li>
+                    <li><a href="capitais.html"><span class="menu-icon">📍</span>Capitais</a></li>
+                    <li><a href="bandeiras.html"><span class="menu-icon">🚩</span>Bandeiras</a></li>
+                    <li><a href="caca-palavras.html"><span class="menu-icon">🔍</span>Caça-Palavras</a></li>
+                    <li><a href="cruzadas.html"><span class="menu-icon">🔠</span>Cruzadas</a></li>
+                    <li><a href="charadas.html"><span class="menu-icon">❓</span>Charadas</a></li>
+                    <li><a href="forca.html"><span class="menu-icon">☠️</span>Forca</a></li>
+                    <li><a href="embaralhadas.html"><span class="menu-icon">🌪️</span>Embaralhadas</a></li>
+                    <li><a href="erros.html"><span class="menu-icon">❌</span>Jogo dos Erros</a></li>
+                </ul>
+
+            </nav>
+            
+            <main class="game-main-area">
+                <p class="game-desc">Encontre as palavras escondidas na grade o mais rápido que puder!</p>
+                <div class="instructions">🖱️ COMO JOGAR: Clique na PRIMEIRA letra da palavra e depois clique na ÚLTIMA letra!</div>
+
+                <br><button id="startBtn" class="btn-start">▶ GERAR NOVO JOGO</button>
+
+                <div id="playArea" class="play-area">
+                    <div class="status-bar">
+                        <span>Palavras: <span id="wordsCountDisplay">0</span> / 6</span>
+                        <span id="timer">00:00</span>
+                    </div>
+
+                    <div class="game-flex-container">
+                        <div class="grid-container" id="gridContainer"></div>
+                        
+                        <div class="words-to-find">
+                            <h3>PROCURAR POR:</h3>
+                            <div id="wordList"></div>
+                        </div>
+                    </div>
+
+                    <div id="victoryMsg" class="victory-msg">
+                        🎉 PARABÉNS! VOCÊ VENCEU! 🎉<br>
+                        <span style="font-size: 20px; color: #0000FF;">Seu tempo foi: <span id="finalTime" style="font-weight: bold; text-decoration: underline;">00:00</span></span><br>
+                        <button onclick="generateGame()" class="btn-start" style="margin-top: 15px; font-size: 16px;">JOGAR NOVAMENTE</button>
+                    </div>
+                </div>
+            </main>
+
+<aside class="ads-sidebar">
+    <div class="ad-placeholder ad-side-300-250">
+        ESPAÇO RESERVADO<br>PARA ADS 300 x 250
+    </div>
+    <div class="ad-placeholder ad-side-300-600">
+        ESPAÇO RESERVADO<br>PARA ADS 300 x 600<br>
+        <br><small>(Adaptado para a barra lateral)</small>
+    </div>
+</aside>
+        </div>
+    </div>
+
+    <script>
+        // BANCO DE DADOS DEFINITIVO: Geografia Global (Países, Capitais, Rios, Cordilheiras, Desertos, Oceanos)
+        const geoWords = [
+            // América
+            "BRASIL", "AMAZONAS", "ARGENTINA", "URUGUAI", "PARAGUAI", "CHILE", "ANDES", "PERU", 
+            "COLOMBIA", "VENEZUELA", "EQUADOR", "BOLIVIA", "GUIANA", "SURINAME", "CANADA", "MEXICO", 
+            "CUBA", "BAHAMAS", "HAWAI", "PATAGONIA", "ATACAMA", "APALACHES", "CARIBE", "BOGOTA",
+            "CARACAS", "LIMA", "SANTIAGO", "HAVANA", "OTTAWA", "WASHINGTON",
+            // Europa
+            "EUROPA", "ALPES", "FRANCA", "ALEMANHA", "ESPANHA", "PORTUGAL", "ITALIA", "RUSSIA", 
+            "SENA", "TAMISA", "DANUBIO", "VOLGA", "URAL", "CAUCASO", "MEDITERRANEO", "BALTICO",
+            "PARIS", "LONDRES", "ATENAS", "ROMA", "BERLIM", "MADRI", "LISBOA", "MOSCOU",
+            // Ásia & Oceania
+            "ASIA", "OCEANIA", "JAPAO", "CHINA", "INDIA", "AUSTRALIA", "INDONESIA", "VIETNA", 
+            "THAILANDIA", "HIMALAIA", "TIBETE", "EVEREST", "GOBI", "TIGRE", "EUFRATES", "GANGES",
+            "TOQUIO", "PEQUIM", "SEUL", "SYDNEY",
+            // África & Extremos
+            "AFRICA", "EGITO", "MARROCOS", "NIGERIA", "QUENIA", "ZIMBABUE", "ANGOLA", "SENEGAL",
+            "MADAGASCAR", "NILO", "SAARA", "KALAHARI", "ANTARTIDA", "GROENLANDIA",
+            // Oceanos
+            "ATLANTICO", "PACIFICO", "INDICO", "ARTICO"
+        ];
+
+        const gridSize = 12; // Tamanho da grade 12x12
+        let gridData = [];
+        let wordsToFind = [];
+        let wordsFound = 0;
+        let firstClickCell = null;
+        
+        let timeElapsed = 0; // Cronômetro progressivo
+        let timerInterval;
+
+        const startBtn = document.getElementById('startBtn');
+        const playArea = document.getElementById('playArea');
+        const gridContainer = document.getElementById('gridContainer');
+        const wordListDiv = document.getElementById('wordList');
+        const victoryMsg = document.getElementById('victoryMsg');
+        const timerDisplay = document.getElementById('timer');
+        const finalTimeDisplay = document.getElementById('finalTime');
+        const wordsCountDisplay = document.getElementById('wordsCountDisplay');
+
+        function updateTimer() {
+            const minutes = Math.floor(timeElapsed / 60);
+            const seconds = timeElapsed % 60;
+            timerDisplay.innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // FUNÇÃO PRINCIPAL: Gera a grade randomicamente
+        function generateGame() {
+            // Esconde botão inicial e mensagem de vitória, mostra área do jogo
+            startBtn.style.display = 'none';
+            playArea.style.display = 'block';
+            victoryMsg.style.display = 'none';
+
+            // Zera o Relógio Progressivo
+            clearInterval(timerInterval);
+            timeElapsed = 0;
+            updateTimer();
+            timerInterval = setInterval(() => {
+                timeElapsed++;
+                updateTimer();
+            }, 1000);
+
+            // Sorteia 6 palavras aleatórias
+            let shuffledWords = [...geoWords].sort(() => Math.random() - 0.5);
+            wordsToFind = shuffledWords.slice(0, 6);
+            wordsFound = 0;
+            wordsCountDisplay.innerText = wordsFound;
+            firstClickCell = null;
+
+            // Cria a grade vazia
+            gridData = Array(gridSize).fill(null).map(() => Array(gridSize).fill(''));
+
+            // Tenta colocar cada palavra na grade
+            wordsToFind.forEach(word => {
+                let placed = false;
+                let attempts = 0;
+                while (!placed && attempts < 200) {
+                    // Direções: 0=Horizontal(Dir), 1=Horizontal(Esq), 2=Vertical(Baixo), 3=Vertical(Cima), 4=Diagonal(Baixo-Dir), 5=Diagonal(Cima-Esq)
+                    const dir = Math.floor(Math.random() * 6); 
+                    let row = Math.floor(Math.random() * gridSize);
+                    let col = Math.floor(Math.random() * gridSize);
+                    let rStep = 0, cStep = 0;
+
+                    if (dir === 0) cStep = 1; 
+                    else if (dir === 1) cStep = -1;
+                    else if (dir === 2) rStep = 1; 
+                    else if (dir === 3) rStep = -1;
+                    else if (dir === 4) { rStep = 1; cStep = 1; }
+                    else { rStep = -1; cStep = -1; }
+
+                    // Checa se cabe na grade
+                    let canPlace = true;
+                    if (row + (rStep * word.length) < -1 || row + (rStep * word.length) > gridSize) canPlace = false;
+                    if (col + (cStep * word.length) < -1 || col + (cStep * word.length) > gridSize) canPlace = false;
+
+                    // Checa se as letras conflitam com palavras já colocadas
+                    if (canPlace) {
+                        for (let i = 0; i < word.length; i++) {
+                            let currR = row + (i * rStep);
+                            let currC = col + (i * cStep);
+                            if (currR < 0 || currR >= gridSize || currC < 0 || currC >= gridSize || 
+                               (gridData[currR][currC] !== '' && gridData[currR][currC] !== word[i])) {
+                                canPlace = false; break;
+                            }
+                        }
+                    }
+
+                    // Coloca a palavra
+                    if (canPlace) {
+                        for (let i = 0; i < word.length; i++) {
+                            gridData[row + (i * rStep)][col + (i * cStep)] = word[i];
+                        }
+                        placed = true;
+                    }
+                    attempts++;
+                }
+            });
+
+            // Preenche os espaços vazios com letras aleatórias
+            const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            for (let r = 0; r < gridSize; r++) {
+                for (let c = 0; c < gridSize; c++) {
+                    if (gridData[r][c] === '') {
+                        gridData[r][c] = alphabet[Math.floor(Math.random() * alphabet.length)];
+                    }
+                }
+            }
+
+            // Renderiza a grade no HTML
+            gridContainer.innerHTML = '';
+            for (let r = 0; r < gridSize; r++) {
+                let rowDiv = document.createElement('div');
+                rowDiv.className = 'grid-row';
+                for (let c = 0; c < gridSize; c++) {
+                    let cellDiv = document.createElement('div');
+                    cellDiv.className = 'grid-cell';
+                    cellDiv.innerText = gridData[r][c];
+                    cellDiv.dataset.r = r;
+                    cellDiv.dataset.c = c;
+                    
+                    cellDiv.addEventListener('click', () => handleCellClick(cellDiv));
+                    rowDiv.appendChild(cellDiv);
+                }
+                gridContainer.appendChild(rowDiv);
+            }
+
+            // Renderiza a lista de palavras
+            wordListDiv.innerHTML = '';
+            wordsToFind.forEach(word => {
+                let div = document.createElement('div');
+                div.className = 'word-item';
+                div.id = 'word-' + word;
+                div.innerText = word;
+                wordListDiv.appendChild(div);
+            });
+        }
+
+        // LÓGICA DE INTERAÇÃO
+        function handleCellClick(cell) {
+            if (cell.classList.contains('found')) return;
+
+            if (!firstClickCell) {
+                // Primeiro clique
+                firstClickCell = cell;
+                cell.classList.add('selected');
+            } else {
+                // Segundo clique
+                let r1 = parseInt(firstClickCell.dataset.r);
+                let c1 = parseInt(firstClickCell.dataset.c);
+                let r2 = parseInt(cell.dataset.r);
+                let c2 = parseInt(cell.dataset.c);
+
+                let rDiff = Math.abs(r1 - r2);
+                let cDiff = Math.abs(c1 - c2);
+
+                if (r1 === r2 || c1 === c2 || rDiff === cDiff) {
+                    let wordFormed = "";
+                    let cellsInLine = [];
+                    
+                    let steps = Math.max(rDiff, cDiff);
+                    let rStep = r1 === r2 ? 0 : (r2 > r1 ? 1 : -1);
+                    let cStep = c1 === c2 ? 0 : (c2 > c1 ? 1 : -1);
+
+                    for (let i = 0; i <= steps; i++) {
+                        let currentR = r1 + (i * rStep);
+                        let currentC = c1 + (i * cStep);
+                        let currentCell = document.querySelector(`.grid-cell[data-r='${currentR}'][data-c='${currentC}']`);
+                        wordFormed += currentCell.innerText;
+                        cellsInLine.push(currentCell);
+                    }
+
+                    let wordReversed = wordFormed.split('').reverse().join('');
+                    let matchedWord = null;
+                    if (wordsToFind.includes(wordFormed)) matchedWord = wordFormed;
+                    else if (wordsToFind.includes(wordReversed)) matchedWord = wordReversed;
+
+                    if (matchedWord && !document.getElementById('word-' + matchedWord).classList.contains('found-word')) {
+                        cellsInLine.forEach(c => {
+                            c.classList.remove('selected');
+                            c.classList.add('found');
+                        });
+                        document.getElementById('word-' + matchedWord).classList.add('found-word');
+                        
+                        wordsFound++;
+                        wordsCountDisplay.innerText = wordsFound;
+                        
+                        if (wordsFound === wordsToFind.length) {
+                            clearInterval(timerInterval);
+                            finalTimeDisplay.innerText = timerDisplay.innerText;
+                            victoryMsg.style.display = 'block';
+                        }
+                    } else {
+                        firstClickCell.classList.remove('selected');
+                    }
+                } else {
+                    firstClickCell.classList.remove('selected');
+                }
+                
+                firstClickCell = null;
+            }
+        }
+
+        // Inicia o jogo ao clicar no botão inicial
+        startBtn.addEventListener('click', generateGame);
+    </script>
+</body>
+</html>
