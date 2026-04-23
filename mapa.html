@@ -17,6 +17,9 @@
             font-family: 'Comic Sans MS', Arial, sans-serif; 
             color: #000; 
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         /* --- HEADER --- */
@@ -33,30 +36,8 @@
             max-width: 1500px;
             margin: 0 auto;
             padding: 20px 15px;
-        }
-
-        /* Classes Genéricas para Anúncios (Estilo 90s) */
-        .ad-placeholder {
-            background-color: #FFFFFF; 
-            border: 3px dashed #FF0000; 
-            color: #FF0000; 
-            font-weight: bold; 
-            display: flex; 
-            flex-direction: column; /* Garante que linhas múltiplas fiquem empilhadas e centralizadas */
-            align-items: center; 
-            justify-content: center; 
-            text-align: center; 
-            font-family: Arial, sans-serif;
-            background-image: repeating-linear-gradient(45deg, #f9f9f9 25%, transparent 25%, transparent 75%, #f9f9f9 75%, #f9f9f9), repeating-linear-gradient(45deg, #f9f9f9 25%, #ffffff 25%, #ffffff 75%, #f9f9f9 75%, #f9f9f9);
-            background-position: 0 0, 10px 10px;
-            background-size: 20px 20px;
-        }
-
-        .ad-top-970 {
+            flex: 1;
             width: 100%;
-            max-width: 970px;
-            height: 250px;
-            margin: 0 auto 20px auto;
         }
 
         .main-layout-flex {
@@ -98,9 +79,14 @@
 
         /* --- SIDEBAR DE ANÚNCIOS --- */
         .ads-sidebar { width: 300px; flex-shrink: 0; display: flex; flex-direction: column; gap: 20px; }
-        .ad-side-300-250 { width: 100%; height: 250px; }
-	.ad-side-300-600 { width: 100%; height: 600px; }
 
+        /* --- ESTRUTURA DE ANÚNCIOS --- */
+        .ad-placeholder { background: transparent; border: none; color: transparent; overflow: hidden; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; }
+        .ad-mobile-only { display: none; } 
+        .ad-desktop-only { display: flex; flex-direction: column; }
+        .ad-336x280-flex { width: 336px; height: 280px; max-width: 100%; }
+        .ad-300x600 { width: 300px; height: 600px; margin-bottom: 20px; }
+        .ad-300x250 { width: 300px; height: 250px; margin-bottom: 20px; }
 
         /* --- ESTILOS DO JOGO DE MAPA --- */
         .game-desc { font-size: 18px; margin-bottom: 10px; font-weight: bold; color: #000080; }
@@ -156,9 +142,14 @@
         
         /* Efeitos visuais dinâmicos via JS */
         .playable-hover:hover { fill: #009900; cursor: crosshair; }
-        .correct-country { fill: #FFFF00 !important; stroke: #FFF; stroke-width: 1.5px; }
-        .wrong-country { fill: #FF0000 !important; }
-        .reveal-country { fill: #FFFF00 !important; animation: blink 1s infinite; }
+        
+        /* Classes Permanentes no Mapa (Histórico) */
+        .found-correct { fill: #00FF00 !important; stroke: #FFF; stroke-width: 1px; pointer-events: none; } /* Verde para acertos */
+        .found-wrong { fill: #FF0000 !important; stroke: #FFF; stroke-width: 1px; pointer-events: none; } /* Vermelho para erros */
+        
+        /* Classes Temporárias */
+        .wrong-click { fill: #FF8800 !important; } /* Laranja para onde clicou errado */
+        .reveal-country { animation: blink 1s infinite; } /* Pisca o alvo */
 
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
 
@@ -171,11 +162,29 @@
 
         #loadingText { color: #00FF00; font-family: 'Courier New', Courier, monospace; font-size: 20px; padding: 50px; background: #000; margin-bottom: 20px; border: 4px inset #FFF;}
 
+        /* --- FOOTER E MARQUEE 100% --- */
+        .site-footer { 
+            background-color: #0000FF; 
+            border-top: 4px solid #FF0000; 
+            padding: 10px; 
+            width: 100%;
+            margin-top: auto;
+	
+        }
+        .marquee-90s { 
+            font-family: 'Courier New', Courier, monospace; 
+            font-weight: bold; 
+            font-size: 18px; 
+            color: #FFFFFF; /* Dica: Se quiser o texto amarelo, mude para #FFFF00 */
+        }
+
         @media (max-width: 1200px) {
             .main-layout-flex { flex-direction: column; align-items: center; }
             .side-menu { width: 100%; max-width: 900px; margin-bottom: 10px; }
             .side-menu ul { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
             .side-menu li { border-bottom: none; border-right: 1px dashed #FF0000; padding-right: 10px; }
+            .ad-mobile-only { display: flex !important; }
+            .ad-desktop-only { display: none !important; }
         }
     </style>
 </head>
@@ -190,20 +199,22 @@
             <nav class="side-menu">
                 <div class="menu-header">MENU PRINCIPAL</div>
 		<ul>
-                    <li><a href="index.html"><span class="menu-icon">🌎</span>Início</a></li>
+                    <li><a href="index.html"><span class="menu-icon">🏠</span>Início</a></li>
                     <li><a href="fronteiras.html"><span class="menu-icon">🗺️</span>Fronteiras</a></li>
                     <li><a href="continentes.html"><span class="menu-icon">🌍</span>Continentes</a></li>
                     <li><a href="capitais.html"><span class="menu-icon">📍</span>Capitais</a></li>
                     <li><a href="bandeiras.html"><span class="menu-icon">🚩</span>Bandeiras</a></li>
                     <li><a href="caca-palavras.html"><span class="menu-icon">🔍</span>Caça-Palavras</a></li>
-                    <li><a href="cruzadas.html"><span class="menu-icon">🔠</span>Cruzadas</a></li>
-                    <li><a href="charadas.html"><span class="menu-icon">❓</span>Charadas</a></li>
+                    <li><a href="mapa.html"><span class="menu-icon">📌</span>Onde fica?</a></li>
+                    <li><a href="charadas.html"><span class="menu-icon">🤔</span>Charadas</a></li>
                     <li><a href="forca.html"><span class="menu-icon">☠️</span>Forca</a></li>
                     <li><a href="embaralhadas.html"><span class="menu-icon">🌪️</span>Embaralhadas</a></li>
                     <li><a href="erros.html"><span class="menu-icon">❌</span>Jogo dos Erros</a></li>
                 </ul>
 
             </nav>
+
+            <div class="ad-placeholder ad-mobile-only ad-336x280-flex">PUBLICIDADE</div>
 
             <main class="game-main-area">
                 <p class="game-desc">Localize o alvo geográfico! Somente os 50 maiores países do mundo estão na roleta.</p>
@@ -239,15 +250,11 @@
                 </div>
             </main>
 
-            <aside class="ads-sidebar">
-                <div class="ad-placeholder ad-side-300-250">
-                    ESPAÇO RESERVADO<br>PARA ADS 300 x 250
-                </div>
-                <div class="ad-placeholder ad-side-300-600">
-                    ESPAÇO RESERVADO<br>PARA ADS 300 x 600<br>
-                    <br><small>(Adaptado para a barra lateral)</small>
-                </div>
+            <aside class="ads-sidebar ad-desktop-only">
+                <div class="ad-placeholder ad-300x250">PUBLICIDADE</div>
+                <div class="ad-placeholder ad-300x600">PUBLICIDADE</div>
             </aside>
+            
         </div>
     </div>
 
@@ -365,7 +372,11 @@
         }
 
         function resetMapColors() {
-            d3.selectAll(".country-path").classed("correct-country", false).classed("wrong-country", false).classed("reveal-country", false);
+            // Limpa APENAS as cores temporárias (o clique errado e a animação de piscar).
+            // As classes 'found-correct' e 'found-wrong' ficam no mapa para sempre!
+            d3.selectAll(".country-path")
+              .classed("wrong-click", false)
+              .classed("reveal-country", false);
             customAlert.style.display = 'none';
         }
 
@@ -413,7 +424,8 @@
 
         // 3. O CLIQUE NO MAPA VETORIAL
         function handleMapClick(event, d) {
-            if (!isWaitingForClick || !top50Countries[d.properties.name]) return; // Ignora se não for hora de clicar ou se for país pequeno
+            // Se não for hora de clicar ou não for país do Top 50, ignora.
+            if (!isWaitingForClick || !top50Countries[d.properties.name]) return; 
 
             isWaitingForClick = false;
             skipBtn.disabled = true;
@@ -425,18 +437,27 @@
             const correctId = "#country-" + currentTargetEnglish.replace(/\s+/g, '');
 
             if (clickedEnglishName === currentTargetEnglish) {
-                // ACERTOU
+                // REGRA 1: ACERTOU (Destaca de verde permanente e tira o hover)
                 score += 50;
                 scoreDisplay.innerText = score;
-                d3.select(clickedId).classed("correct-country", true);
+                
+                d3.select(correctId)
+                  .classed("found-correct", true)
+                  .classed("playable-hover", false); 
                 
                 showResult(`🎯 TIRO CERTEIRO! (+50 Pts)`, true);
             } else {
-                // ERROU
-                d3.select(clickedId).classed("wrong-country", true);
-                d3.select(correctId).classed("reveal-country", true); // Pisca o correto
+                // REGRA 3: ERROU 
+                // Marca temporariamente onde ele clicou errado de laranja
+                d3.select(clickedId).classed("wrong-click", true); 
                 
-                showResult(`❌ RADAR FALHOU! Você clicou em <strong>${top50Countries[clickedEnglishName]}</strong>.<br>O alvo correto está piscando em amarelo no mapa.`, false);
+                // Marca o alvo real de vermelho permanente, tira o hover e faz piscar
+                d3.select(correctId)
+                  .classed("found-wrong", true)
+                  .classed("reveal-country", true)
+                  .classed("playable-hover", false); 
+                
+                showResult(`❌ RADAR FALHOU! Você clicou em <strong>${top50Countries[clickedEnglishName]}</strong>.<br>O alvo correto está piscando no mapa.`, false);
             }
 
             // Checa Vitória Máxima
@@ -444,7 +465,7 @@
                 clearInterval(timerInterval);
                 spinBtn.disabled = true;
                 setTimeout(() => {
-                    showResult(`🏆 MESTRE DO RADAR! Você rastreou todos os 50 maiores países!<br>Pontuação Final: ${score} | Pulos: ${skipCount}`, true, true);
+                    showResult(`🏆 FIM DE JOGO! O radar finalizou a varredura.<br>Pontuação Final: ${score} | Pulos: ${skipCount}`, true, true);
                 }, 2000);
             }
         }
@@ -460,5 +481,10 @@
         }
 
     </script>
+
+    <footer class="site-footer">
+        <marquee behavior="scroll" direction="left" class="marquee-90s">OBRIGADO POR VISITAR O GEO GAMES! EXPLORE NOSSOS MINIGAMES E DIVIRTA-SE!</marquee>
+    </footer>
+
 </body>
 </html>

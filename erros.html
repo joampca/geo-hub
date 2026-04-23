@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +9,7 @@
         /* --- RESET E PADRÃO --- */
         * { box-sizing: border-box; }
         body, h1, h2, h3, p, ul, li { margin: 0; padding: 0; font-weight: normal; }
-        body { background-color: #E6E6E6; font-family: 'Comic Sans MS', Arial, sans-serif; color: #000; overflow-x: hidden; }
+        body { background-color: #E6E6E6; font-family: 'Comic Sans MS', Arial, sans-serif; color: #000; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; }
 
         /* --- HEADER --- */
         .site-header { background-color: #0000FF; color: #FFFFFF; padding: 15px; border-bottom: 4px solid #FF0000; text-align: center; width: 100%; }
@@ -21,46 +22,25 @@
             max-width: 1500px;
             margin: 0 auto;
             padding: 20px 15px;
-        }
-
-        /* Classes Genéricas para Anúncios (Estilo 90s) */
-        .ad-placeholder {
-            background-color: #FFFFFF; 
-            border: 3px dashed #FF0000; 
-            color: #FF0000; 
-            font-weight: bold; 
-            display: flex; 
-            flex-direction: column; /* Garante que linhas múltiplas fiquem empilhadas e centralizadas */
-            align-items: center; 
-            justify-content: center; 
-            text-align: center; 
-            font-family: Arial, sans-serif;
-            background-image: repeating-linear-gradient(45deg, #f9f9f9 25%, transparent 25%, transparent 75%, #f9f9f9 75%, #f9f9f9), repeating-linear-gradient(45deg, #f9f9f9 25%, #ffffff 25%, #ffffff 75%, #f9f9f9 75%, #f9f9f9);
-            background-position: 0 0, 10px 10px;
-            background-size: 20px 20px;
-        }
-
-        .ad-top-970 {
+            flex: 1;
             width: 100%;
-            max-width: 970px;
-            height: 250px;
-            margin: 0 auto 20px auto;
         }
 
-        .main-layout-flex {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            align-items: flex-start;
+        .main-layout-flex { 
+            display: flex; 
+            gap: 20px; 
+            justify-content: center; 
+            align-items: flex-start; 
+            margin-top: 20px; 
         }
 
-.main-layout-flex { 
-    display: flex; 
-    gap: 20px; 
-    justify-content: center; 
-    align-items: flex-start; 
-    margin-top: 20px; /* <--- Adicione esta linha! */
-}
+        /* --- ESTRUTURA DE ANÚNCIOS --- */
+        .ad-placeholder { background: transparent; border: none; color: transparent; overflow: hidden; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; }
+        .ad-mobile-only { display: none; } 
+        .ad-desktop-only { display: flex; flex-direction: column; }
+        .ad-336x280-flex { width: 336px; height: 280px; max-width: 100%; }
+        .ad-300x600 { width: 300px; height: 600px; margin-bottom: 20px; }
+        .ad-300x250 { width: 300px; height: 250px; margin-bottom: 20px; }
 
         /* --- MENU LATERAL (ESQUERDA) --- */
         .side-menu { width: 220px; flex-shrink: 0; background-color: #FFFFCC; border: 3px solid #FF0000; box-shadow: 2px 2px 0px #000; }
@@ -77,8 +57,6 @@
 
         /* --- SIDEBAR DE ANÚNCIOS (DIREITA) --- */
         .ads-sidebar { width: 300px; flex-shrink: 0; display: flex; flex-direction: column; gap: 20px; }
-        .ad-side-300-250 { width: 100%; height: 250px; }
-	.ad-side-300-600 { width: 100%; height: 600px; }
 
 
         /* --- ESTILOS DO JOGO DE BANDEIRAS --- */
@@ -107,6 +85,22 @@
         .alert-error { background-color: #FFCCCC; border-color: #CC0000; color: #CC0000; }
         .alert-victory { background-color: #FFD700; border-color: #B8860B; color: #000; box-shadow: inset 0 0 20px #FFF; }
 
+        /* --- FOOTER E MARQUEE 100% --- */
+        .site-footer { 
+            background-color: #0000FF; 
+            border-top: 4px solid #FF0000; 
+            padding: 10px; 
+            width: 100%;
+            margin-top: auto;
+	
+        }
+        .marquee-90s { 
+            font-family: 'Courier New', Courier, monospace; 
+            font-weight: bold; 
+            font-size: 18px; 
+            color: #FFFFFF; /* Dica: Se quiser o texto amarelo, mude para #FFFF00 */
+        }
+
         /* --- RESPONSIVIDADE --- */
         @media (max-width: 1200px) {
             .main-layout-flex { flex-direction: column; align-items: center; }
@@ -114,6 +108,8 @@
             .side-menu ul { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
             .side-menu li { border-bottom: none; border-right: 1px dashed #FF0000; padding-right: 10px; }
             .ads-sidebar { width: 100%; flex-direction: row; flex-wrap: wrap; justify-content: center; }
+            .ad-mobile-only { display: flex !important; }
+            .ad-desktop-only { display: none !important; }
         }
         @media (max-width: 768px) {
             .vs-container { flex-direction: column; gap: 20px; }
@@ -134,19 +130,21 @@
             <nav class="side-menu">
                 <div class="menu-header">MENU PRINCIPAL</div>
                 <ul>
-                    <li><a href="index.html"><span class="menu-icon">🌎</span>Início</a></li>
+                    <li><a href="index.html"><span class="menu-icon">🏠</span>Início</a></li>
                     <li><a href="fronteiras.html"><span class="menu-icon">🗺️</span>Fronteiras</a></li>
                     <li><a href="continentes.html"><span class="menu-icon">🌍</span>Continentes</a></li>
                     <li><a href="capitais.html"><span class="menu-icon">📍</span>Capitais</a></li>
                     <li><a href="bandeiras.html"><span class="menu-icon">🚩</span>Bandeiras</a></li>
                     <li><a href="caca-palavras.html"><span class="menu-icon">🔍</span>Caça-Palavras</a></li>
-                    <li><a href="cruzadas.html"><span class="menu-icon">🔠</span>Cruzadas</a></li>
-                    <li><a href="charadas.html"><span class="menu-icon">❓</span>Charadas</a></li>
+                    <li><a href="mapa.html"><span class="menu-icon">📌</span>Onde fica?</a></li>
+                    <li><a href="charadas.html"><span class="menu-icon">🤔</span>Charadas</a></li>
                     <li><a href="forca.html"><span class="menu-icon">☠️</span>Forca</a></li>
                     <li><a href="embaralhadas.html"><span class="menu-icon">🌪️</span>Embaralhadas</a></li>
                     <li><a href="erros.html"><span class="menu-icon">❌</span>Jogo dos Erros</a></li>
                 </ul>
             </nav>
+
+            <div class="ad-placeholder ad-mobile-only ad-336x280-flex">PUBLICIDADE</div>
 
             <main class="game-main-area">
                 <p class="game-desc">Atenção aos detalhes! Se a sua pontuação ou o tempo zerar, é GAME OVER.</p>
@@ -176,21 +174,18 @@
                 </div>
             </main>
 
-<aside class="ads-sidebar">
-                <div class="ad-placeholder ad-side-300-250">
-                    ESPAÇO RESERVADO<br>PARA ADS 300 x 250
-                </div>
-                <div class="ad-placeholder ad-side-300-600">
-                    ESPAÇO RESERVADO<br>PARA ADS 300 x 600<br>
-                    <br><small>(Adaptado para a barra lateral)</small>
-                </div>
+            <aside class="ads-sidebar ad-desktop-only">
+                <div class="ad-placeholder ad-300x250">PUBLICIDADE</div>
+                <div class="ad-placeholder ad-300x600">PUBLICIDADE</div>
             </aside>
+
         </div>
     </div>
 
     <script>
-        // MEGA BANCO DE DADOS: 30 Bandeiras Feitas em Código CSS
+        // MEGA BANCO DE DADOS: 50 Bandeiras Feitas em Código CSS
         const flagDB = [
+            // --- AS 30 ORIGINAIS ---
             { country: "BRASIL", trueHtml: `<div style="background:#009c3b; width:100%; height:100%; position:relative;"><div style="width: 80%; height: 80%; background: #ffdf00; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); position: absolute; top: 10%; left: 10%; display:flex; align-items:center; justify-content:center;"><div style="width:50%; height:50%; background:#002776; border-radius:50%;"></div></div></div>`, fakeHtml: `<div style="background:#009c3b; width:100%; height:100%; position:relative;"><div style="width: 80%; height: 80%; background: #FF8C00; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); position: absolute; top: 10%; left: 10%; display:flex; align-items:center; justify-content:center;"><div style="width:50%; height:50%; background:#002776; border-radius:50%;"></div></div></div>`, errorMsg: "O losango do Brasil é amarelo, e não laranja!" },
             { country: "JAPÃO", trueHtml: `<div style="background: #FFF; width:100%; height:100%; position:relative;"><div style="width:50%; padding-bottom:50%; background:#BC002D; border-radius:50%; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);"></div></div>`, fakeHtml: `<div style="background: #FFF; width:100%; height:100%; position:relative;"><div style="width:50%; padding-bottom:50%; background:#BC002D; clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);"></div></div>`, errorMsg: "O Japão tem um círculo perfeito (o Sol), não uma estrela!" },
             { country: "FRANÇA", trueHtml: `<div style="background: linear-gradient(90deg, #002395 33.3%, #ffffff 33.3%, #ffffff 66.6%, #ed2939 66.6%); width:100%; height:100%;"></div>`, fakeHtml: `<div style="background: linear-gradient(180deg, #002395 33.3%, #ffffff 33.3%, #ffffff 66.6%, #ed2939 66.6%); width:100%; height:100%;"></div>`, errorMsg: "As listras da França são verticais, não horizontais!" },
@@ -220,7 +215,7 @@
             { country: "BAHAMAS", trueHtml: `<div style="background: linear-gradient(180deg, #00778B 33.3%, #FFC72C 33.3%, #FFC72C 66.6%, #00778B 66.6%); width:100%; height:100%; position:relative;"><div style="background: #000; width:50%; height:100%; clip-path: polygon(0 0, 100% 50%, 0 100%); position:absolute; left:0; top:0;"></div></div>`, fakeHtml: `<div style="background: linear-gradient(180deg, #0000FF 33.3%, #FFC72C 33.3%, #FFC72C 66.6%, #0000FF 66.6%); width:100%; height:100%; position:relative;"><div style="background: #000; width:50%; height:100%; clip-path: polygon(0 0, 100% 50%, 0 100%); position:absolute; left:0; top:0;"></div></div>`, errorMsg: "O azul das Bahamas é azul-água (turquesa), não azul escuro!" },
             { country: "INGLATERRA", trueHtml: `<div style="background: #FFF; width:100%; height:100%; position:relative;"><div style="position:absolute; background:#CE1124; width:15%; height:100%; left:42.5%;"></div><div style="position:absolute; background:#CE1124; width:100%; height:15%; top:42.5%;"></div></div>`, fakeHtml: `<div style="background: #FFF; width:100%; height:100%; position:relative;"><div style="position:absolute; background:#0000FF; width:15%; height:100%; left:42.5%;"></div><div style="position:absolute; background:#0000FF; width:100%; height:15%; top:42.5%;"></div></div>`, errorMsg: "A Cruz de São Jorge é Vermelha!" },
             { country: "MÔNACO", trueHtml: `<div style="background: linear-gradient(180deg, #CE1126 50%, #FFF 50%); width:100%; height:100%;"></div>`, fakeHtml: `<div style="background: linear-gradient(180deg, #FFF 50%, #CE1126 50%); width:100%; height:100%;"></div>`, errorMsg: "Mônaco tem o vermelho em cima (inverso da Polônia)!" },
-            { country: "LITUÂNIA", trueHtml: `<div style="background: linear-gradient(180deg, #FDB913 33.3%, #006A44 33.3%, #006A44 66.6%, #C1272D 66.6%); width:100%; height:100%;"></div>`, fakeHtml: `<div style="background: linear-gradient(180deg, #C1272D 33.3%, #006A44 33.3%, #006A44 66.6%, #FDB913 66.6%); width:100%; height:100%;"></div>`, errorMsg: "A Lituânia é Amarelo, Verde e Vermelho (você viu a ordem invertida)!" }
+            { country: "LITUÂNIA", trueHtml: `<div style="background: linear-gradient(180deg, #FDB913 33.3%, #006A44 33.3%, #006A44 66.6%, #C1272D 66.6%); width:100%; height:100%;"></div>`, fakeHtml: `<div style="background: linear-gradient(180deg, #C1272D 33.3%, #006A44 33.3%, #006A44 66.6%, #FDB913 66.6%); width:100%; height:100%;"></div>`, errorMsg: "A Lituânia é Amarelo, Verde e Vermelho (você viu a ordem invertida)!" },
         ];
 
         let shuffledFlags = [];
@@ -374,5 +369,10 @@
             loadLevel();
         }
     </script>
+
+    <footer class="site-footer">
+        <marquee behavior="scroll" direction="left" class="marquee-90s">OBRIGADO POR VISITAR O GEO GAMES! EXPLORE NOSSOS MINIGAMES E DIVIRTA-SE!</marquee>
+    </footer>
+
 </body>
 </html>

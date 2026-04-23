@@ -13,6 +13,9 @@
             font-family: 'Comic Sans MS', Arial, sans-serif; 
             color: #000; 
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         /* --- HEADER --- */
@@ -33,30 +36,8 @@
             max-width: 1500px;
             margin: 0 auto;
             padding: 20px 15px;
-        }
-
-        /* Classes Genéricas para Anúncios (Estilo 90s) */
-        .ad-placeholder {
-            background-color: #FFFFFF; 
-            border: 3px dashed #FF0000; 
-            color: #FF0000; 
-            font-weight: bold; 
-            display: flex; 
-            flex-direction: column; /* Garante que linhas múltiplas fiquem empilhadas e centralizadas */
-            align-items: center; 
-            justify-content: center; 
-            text-align: center; 
-            font-family: Arial, sans-serif;
-            background-image: repeating-linear-gradient(45deg, #f9f9f9 25%, transparent 25%, transparent 75%, #f9f9f9 75%, #f9f9f9), repeating-linear-gradient(45deg, #f9f9f9 25%, #ffffff 25%, #ffffff 75%, #f9f9f9 75%, #f9f9f9);
-            background-position: 0 0, 10px 10px;
-            background-size: 20px 20px;
-        }
-
-        .ad-top-970 {
+            flex: 1;
             width: 100%;
-            max-width: 970px;
-            height: 250px;
-            margin: 0 auto 20px auto;
         }
 
         .main-layout-flex {
@@ -109,8 +90,14 @@
             flex-direction: column;
             gap: 20px;
         }
-        .ad-side-300-250 { width: 100%; height: 250px; }
-        .ad-side-300-600 { width: 100%; height: 600px; }
+
+        /* --- ESTRUTURA DE ANÚNCIOS --- */
+        .ad-placeholder { background: transparent; border: none; color: transparent; overflow: hidden; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; }
+        .ad-mobile-only { display: none; } 
+        .ad-desktop-only { display: flex; flex-direction: column; }
+        .ad-336x280-flex { width: 336px; height: 280px; max-width: 100%; }
+        .ad-300x600 { width: 300px; height: 600px; margin-bottom: 20px; }
+        .ad-300x250 { width: 300px; height: 250px; margin-bottom: 20px; }
 
         /* --- ESTILOS INTERNOS DO JOGO --- */
         .game-desc { font-size: 18px; margin-bottom: 20px; }
@@ -158,6 +145,20 @@
         .victory-msg { background-color: #FFFF00; }
         .game-over-msg { background-color: #FFB6C1; }
 
+        /* --- FOOTER E MARQUEE 100% --- */
+        .site-footer { 
+            background-color: #0000FF; 
+            border-top: 4px solid #FF0000; 
+            padding: 10px; 
+            width: 100%;
+        }
+        .marquee-90s { 
+            font-family: 'Courier New', Courier, monospace; 
+            font-weight: bold; 
+            font-size: 18px; 
+            color: #FFFFFF; /* Dica: Se quiser o texto amarelo, mude para #FFFF00 */
+        }
+
         /* --- RESPONSIVIDADE --- */
         @media (max-width: 1200px) {
             .main-layout-flex { flex-direction: column; align-items: center; }
@@ -166,8 +167,8 @@
             .side-menu li { border-bottom: none; border-right: 1px dashed #FF0000; padding-right: 10px; }
             .side-menu li:last-child { border-right: none; }
             .ads-sidebar { width: 100%; flex-direction: row; flex-wrap: wrap; justify-content: center; }
-            .ad-side-300-250 { width: 300px; }
-            .ad-top-970 { height: auto; padding: 50px 10px; }
+            .ad-mobile-only { display: flex !important; }
+            .ad-desktop-only { display: none !important; }
         }
     </style>
 </head>
@@ -184,19 +185,21 @@
             <nav class="side-menu">
                 <div class="menu-header">MENU PRINCIPAL</div>
                 <ul>
-                    <li><a href="index.html"><span class="menu-icon">🌎</span>Início</a></li>
+                    <li><a href="index.html"><span class="menu-icon">🏠</span>Início</a></li>
                     <li><a href="fronteiras.html"><span class="menu-icon">🗺️</span>Fronteiras</a></li>
                     <li><a href="continentes.html"><span class="menu-icon">🌍</span>Continentes</a></li>
                     <li><a href="capitais.html"><span class="menu-icon">📍</span>Capitais</a></li>
                     <li><a href="bandeiras.html"><span class="menu-icon">🚩</span>Bandeiras</a></li>
                     <li><a href="caca-palavras.html"><span class="menu-icon">🔍</span>Caça-Palavras</a></li>
-                    <li><a href="cruzadas.html"><span class="menu-icon">🔠</span>Cruzadas</a></li>
-                    <li><a href="charadas.html"><span class="menu-icon">❓</span>Charadas</a></li>
-                    <li><a href="forca.html"><span class="menu-icon">💀</span>Forca</a></li>
+                    <li><a href="mapa.html"><span class="menu-icon">📌</span>Onde fica?</a></li>
+                    <li><a href="charadas.html"><span class="menu-icon">🤔</span>Charadas</a></li>
+                    <li><a href="forca.html"><span class="menu-icon">☠️</span>Forca</a></li>
                     <li><a href="embaralhadas.html"><span class="menu-icon">🌪️</span>Embaralhadas</a></li>
                     <li><a href="erros.html"><span class="menu-icon">❌</span>Jogo dos Erros</a></li>
                 </ul>
             </nav>
+
+            <div class="ad-placeholder ad-mobile-only ad-336x280-flex">PUBLICIDADE</div>
 
             <main class="game-main-area">
                 <p class="game-desc">Você consegue listar todos os países que fazem fronteira terrestre com o país sorteado em 2 minutos?</p>
@@ -208,7 +211,7 @@
                         <span>Acertos: <span id="scoreDisplay">0</span> / <span id="totalDisplay">0</span></span>
                         <span id="timer">02:00</span>
                     </div>
-                    <input type="text" id="userInput" class="input-box" placeholder="Digite um país e aperte Enter..." autocomplete="off">
+                    <input type="text" id="userInput" class="input-box" placeholder="Digite um país..." autocomplete="off">
                     <div id="answersGrid" class="answers-grid"></div>
 
                     <div id="victoryMsg" class="victory-msg">
@@ -224,14 +227,9 @@
                 </div>
             </main>
 
-            <aside class="ads-sidebar">
-                <div class="ad-placeholder ad-side-300-250">
-                    ESPAÇO RESERVADO<br>PARA ADS 300 x 250
-                </div>
-                <div class="ad-placeholder ad-side-300-600">
-                    ESPAÇO RESERVADO<br>PARA ADS 300 x 600<br>
-                    <br><small>(Adaptado para a barra lateral)</small>
-                </div>
+            <aside class="ads-sidebar ad-desktop-only">
+                <div class="ad-placeholder ad-300x250">PUBLICIDADE</div>
+                <div class="ad-placeholder ad-300x600">PUBLICIDADE</div>
             </aside>
 
         </div>
@@ -271,6 +269,22 @@
             "Vietnã": ["Camboja", "China", "Laos"],
             "Arábia Saudita": ["Iraque", "Jordânia", "Kuwait", "Omã", "Catar", "Emirados Árabes Unidos", "Iêmen"],
             "Israel": ["Egito", "Faixa de Gaza", "Jordânia", "Líbano", "Síria", "Cisjordânia"],
+            "Chade": ["Líbia", "Sudão", "República Centro-Africana", "Camarões", "Nigéria", "Níger"],
+            "Congo": ["Gabão", "Camarões", "República Centro-Africana", "República Democrática do Congo", "Angola"],
+            "Tunísia": ["Argélia", "Líbia"],
+            "Burkina Faso": ["Mali", "Níger", "Benim", "Togo", "Gana", "Costa do Marfim"],
+            "Quênia": ["Etiópia", "Somália", "Tanzânia", "Uganda", "Sudão do Sul"],
+            "Somália": ["Djibuti", "Etiópia", "Quênia"],
+            "Angola": ["Namíbia", "República Democrática do Congo", "Zâmbia", "República do Congo"],
+            "Togo": ["Gana", "Benim", "Burkina Faso"],
+            "Serra Leoa": ["Guiné", "Libéria"],
+            "Albânia": ["Montenegro", "Kosovo", "Macedônia do Norte", "Grécia"],
+            "Armênia": ["Turquia", "Geórgia", "Azerbaijão", "Irã"],
+            "El Salvador": ["Guatemala", "Honduras"],
+            "Ruanda": ["Uganda", "Tanzânia", "Burundi", "República Democrática do Congo"],
+            "Burundi": ["Ruanda", "Tanzânia", "República Democrática do Congo"],
+            "Sérvia": ["Hungria", "Romênia", "Bulgária", "Macedônia do Norte", "Kosovo", "Montenegro", "Bósnia e Herzegovina", "Croácia"],
+            "Mongólia": ["China", "Rússia"],
             "Grécia": ["Albânia", "Bulgária", "Turquia", "Macedônia do Norte"]
         };
 
@@ -377,5 +391,10 @@
             }
         });
     </script>
+
+    <footer class="site-footer">
+        <marquee behavior="scroll" direction="left" class="marquee-90s">OBRIGADO POR VISITAR O GEO GAMES! EXPLORE NOSSOS MINIGAMES E DIVIRTA-SE!</marquee>
+    </footer>
+
 </body>
 </html>

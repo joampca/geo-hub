@@ -13,6 +13,9 @@
             font-family: 'Comic Sans MS', Arial, sans-serif; 
             color: #000; 
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         /* --- HEADER --- */
@@ -23,37 +26,6 @@
         .site-header h1 { font-weight: bold; color: #FFFF00; text-shadow: 2px 2px 0px #FF0000; font-size: clamp(24px, 4vw, 36px); margin-top: 5px;}
         .site-header a { color: #FFF; font-family: 'Courier New', Courier, monospace; font-size: 14px; text-decoration: none; font-weight: bold;}
         .site-header a:hover { text-decoration: underline; color: #00FF00;}
-
-/* --- ESTRUTURA GERAL COM ANÚNCIOS --- */
-        .content-wrapper {
-            max-width: 1500px;
-            margin: 0 auto;
-            padding: 20px 15px;
-        }
-
-        /* Classes Genéricas para Anúncios (Estilo 90s) */
-        .ad-placeholder {
-            background-color: #FFFFFF; 
-            border: 3px dashed #FF0000; 
-            color: #FF0000; 
-            font-weight: bold; 
-            display: flex; 
-            flex-direction: column; /* Garante que linhas múltiplas fiquem empilhadas e centralizadas */
-            align-items: center; 
-            justify-content: center; 
-            text-align: center; 
-            font-family: Arial, sans-serif;
-            background-image: repeating-linear-gradient(45deg, #f9f9f9 25%, transparent 25%, transparent 75%, #f9f9f9 75%, #f9f9f9), repeating-linear-gradient(45deg, #f9f9f9 25%, #ffffff 25%, #ffffff 75%, #f9f9f9 75%, #f9f9f9);
-            background-position: 0 0, 10px 10px;
-            background-size: 20px 20px;
-        }
-
-        .ad-top-970 {
-            width: 100%;
-            max-width: 970px;
-            height: 250px;
-            margin: 0 auto 20px auto;
-        }
 
         .main-layout-flex {
             display: flex;
@@ -94,9 +66,14 @@
 
         /* --- SIDEBAR DE ANÚNCIOS (DIREITA) --- */
         .ads-sidebar { width: 300px; flex-shrink: 0; display: flex; flex-direction: column; gap: 20px; }
-        .ad-side-300-250 { width: 100%; height: 250px; }
-	.ad-side-300-600 { width: 100%; height: 600px; }
 
+        /* --- ESTRUTURA DE ANÚNCIOS --- */
+        .ad-placeholder { background: transparent; border: none; color: transparent; overflow: hidden; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; }
+        .ad-mobile-only { display: none; } 
+        .ad-desktop-only { display: flex; flex-direction: column; }
+        .ad-336x280-flex { width: 336px; height: 280px; max-width: 100%; }
+        .ad-300x600 { width: 300px; height: 600px; margin-bottom: 20px; }
+        .ad-300x250 { width: 300px; height: 250px; margin-bottom: 20px; }
 
         /* --- ESTILOS DA FORCA --- */
         .game-desc { font-size: 18px; margin-bottom: 10px; }
@@ -155,6 +132,22 @@
         .alert-success { background-color: #90EE90; border-color: #006400; color: #006400; }
         .alert-error { background-color: #FFCCCC; border-color: #CC0000; color: #CC0000; }
 
+        /* --- FOOTER E MARQUEE 100% --- */
+        .site-footer { 
+            background-color: #0000FF; 
+            border-top: 4px solid #FF0000; 
+            padding: 10px; 
+            width: 100%;
+            margin-top: auto;
+	
+        }
+        .marquee-90s { 
+            font-family: 'Courier New', Courier, monospace; 
+            font-weight: bold; 
+            font-size: 18px; 
+            color: #FFFFFF; /* Dica: Se quiser o texto amarelo, mude para #FFFF00 */
+        }
+
         /* --- RESPONSIVIDADE --- */
         @media (max-width: 1200px) {
             .main-layout-flex { flex-direction: column; align-items: center; }
@@ -163,8 +156,8 @@
             .side-menu li { border-bottom: none; border-right: 1px dashed #FF0000; padding-right: 10px; }
             .side-menu li:last-child { border-right: none; }
             .ads-sidebar { width: 100%; flex-direction: row; flex-wrap: wrap; justify-content: center; }
-            .ad-side-300-250 { width: 300px; }
-            .ad-top-970 { height: auto; padding: 50px 10px; }
+            .ad-mobile-only { display: flex !important; }
+            .ad-desktop-only { display: none !important; }
         }
         @media (max-width: 500px) {
             .key-btn { width: 35px; height: 35px; font-size: 16px; }
@@ -184,20 +177,22 @@
             <nav class="side-menu">
                 <div class="menu-header">MENU PRINCIPAL</div>
 		<ul>
-                    <li><a href="index.html"><span class="menu-icon">🌎</span>Início</a></li>
+                    <li><a href="index.html"><span class="menu-icon">🏠</span>Início</a></li>
                     <li><a href="fronteiras.html"><span class="menu-icon">🗺️</span>Fronteiras</a></li>
                     <li><a href="continentes.html"><span class="menu-icon">🌍</span>Continentes</a></li>
                     <li><a href="capitais.html"><span class="menu-icon">📍</span>Capitais</a></li>
                     <li><a href="bandeiras.html"><span class="menu-icon">🚩</span>Bandeiras</a></li>
                     <li><a href="caca-palavras.html"><span class="menu-icon">🔍</span>Caça-Palavras</a></li>
-                    <li><a href="cruzadas.html"><span class="menu-icon">🔠</span>Cruzadas</a></li>
-                    <li><a href="charadas.html"><span class="menu-icon">❓</span>Charadas</a></li>
+                    <li><a href="mapa.html"><span class="menu-icon">📌</span>Onde fica?</a></li>
+                    <li><a href="charadas.html"><span class="menu-icon">🤔</span>Charadas</a></li>
                     <li><a href="forca.html"><span class="menu-icon">☠️</span>Forca</a></li>
                     <li><a href="embaralhadas.html"><span class="menu-icon">🌪️</span>Embaralhadas</a></li>
                     <li><a href="erros.html"><span class="menu-icon">❌</span>Jogo dos Erros</a></li>
                 </ul>
 
             </nav>
+
+            <div class="ad-placeholder ad-mobile-only ad-336x280-flex">PUBLICIDADE</div>
 
             <main class="game-main-area">
                 <p class="game-desc">Salve o boneco palito antes que suas 6 vidas acabem!</p>
@@ -233,32 +228,79 @@
                 </div>
             </main>
 
-<aside class="ads-sidebar">
-                <div class="ad-placeholder ad-side-300-250">
-                    ESPAÇO RESERVADO<br>PARA ADS 300 x 250
-                </div>
-                <div class="ad-placeholder ad-side-300-600">
-                    ESPAÇO RESERVADO<br>PARA ADS 300 x 600<br>
-                    <br><small>(Adaptado para a barra lateral)</small>
-                </div>
+            <aside class="ads-sidebar ad-desktop-only">
+                <div class="ad-placeholder ad-300x250">PUBLICIDADE</div>
+                <div class="ad-placeholder ad-300x600">PUBLICIDADE</div>
             </aside>
+
         </div>
     </div>
 
     <script>
+        // BANCO DE DADOS DA FORCA - Palavras Únicas (Sem espaços/hifens e sem acentos)
         const database = [
+            // --- BRASIL E AMÉRICAS ---
             { w: "AMAPA", h: "Estado brasileiro cortado pela Linha do Equador" },
-            { w: "RUSSIA", h: "Maior país do mundo (ótimo lugar para treinar novos idiomas)" },
+            { w: "MACAPA", h: "Capital brasileira banhada pelo Rio Amazonas" },
+            { w: "PANTANAL", h: "Maior planície alagada do mundo, localizada no Brasil" },
+            { w: "AMAZONAS", h: "O pulmão verde da Terra e o rio mais volumoso" },
             { w: "PARANA", h: "Estado brasileiro localizado na Região Sul" },
-            { w: "ISLANDIA", h: "Terra do gelo e dos vulcões" },
-            { w: "MADAGASCAR", h: "Grande ilha localizada na costa da África" },
+            { w: "CERRADO", h: "Bioma brasileiro conhecido como a savana mais rica do mundo" },
+            { w: "ATACAMA", h: "O deserto mais seco do mundo, localizado no Chile" },
+            { w: "ANDES", h: "A maior cordilheira continental do planeta" },
+            { w: "PATAGONIA", h: "Região de clima frio no extremo sul da América do Sul" },
+            { w: "ALASCA", h: "Maior estado dos EUA, famoso por suas geleiras" },
+            { w: "HAVAI", h: "Arquipélago vulcânico no Pacífico, estado dos EUA" },
+            { w: "YUCATAN", h: "Península no México famosa pelas ruínas maias" },
+            { w: "JAMAICA", h: "Ilha caribenha famosa pelo reggae e por Bob Marley" },
+            
+            // --- EUROPA E RÚSSIA ---
+            { w: "RUSSIA", h: "Maior país do mundo em extensão territorial" },
+            { w: "MOSCOU", h: "Capital mundialmente famosa pela Praça Vermelha" },
+            { w: "SIBERIA", h: "Vasta e gelada região asiática do território russo" },
+            { w: "BAIKAL", h: "O lago de água doce mais antigo e profundo do mundo" },
+            { w: "ISLANDIA", h: "Terra do gelo e dos vulcões no Atlântico Norte" },
+            { w: "NORUEGA", h: "País europeu famoso por seus fiordes profundos e auroras boreais" },
+            { w: "VATICANO", h: "O menor estado independente do mundo" },
+            { w: "LONDRES", h: "Capital europeia cortada pelo Rio Tâmisa" },
+            { w: "ALPES", h: "Cadeia de montanhas mais famosa da Europa" },
+            { w: "CAUCASO", h: "Cordilheira que divide a Europa da Ásia, entre o Mar Negro e o Cáspio" },
+            { w: "GRECIA", h: "Berço da civilização ocidental e dos Jogos Olímpicos" },
+            { w: "FIORDE", h: "Vales rochosos invadidos pelo mar, muito comuns na Escandinávia" },
+
+            // --- ÁSIA E OCEANIA ---
             { w: "CANBERRA", h: "A verdadeira capital da Austrália" },
             { w: "TIBETE", h: "Região autônoma conhecida como 'O Teto do Mundo'" },
-            { w: "AMAZONAS", h: "O pulmão verde da Terra e o maior rio" },
-            { w: "VATICANO", h: "Menor estado independente do mundo" },
-            { w: "HIMALAIA", h: "Cordilheira que abriga o Monte Everest" },
-            { w: "MOSCOU", h: "Capital famosa pela Praça Vermelha" },
-            { w: "PANTANAL", h: "Maior planície alagada do mundo, no Brasil" }
+            { w: "HIMALAIA", h: "Cordilheira colossal que abriga o Monte Everest" },
+            { w: "JAPAO", h: "País arquipélago conhecido como a 'Terra do Sol Nascente'" },
+            { w: "GOBI", h: "Vasto deserto rochoso na China e na Mongólia" },
+            { w: "MALDIVAS", h: "Arquipélago paradisíaco e ameaçado no Oceano Índico" },
+            { w: "TAIWAN", h: "Ilha asiática famosa por sua alta tecnologia em microchips" },
+            { w: "BALI", h: "Ilha extremamente turística e cultural da Indonésia" },
+            { w: "SINGAPURA", h: "Pequena e riquíssima cidade-estado insular asiática" },
+            { w: "MEKONG", h: "Um dos rios mais longos e importantes do Sudeste Asiático" },
+
+            // --- ÁFRICA E ORIENTE MÉDIO ---
+            { w: "MADAGASCAR", h: "Grande ilha biodiversa localizada na costa leste da África" },
+            { w: "SAARA", h: "O maior deserto quente do mundo" },
+            { w: "NILO", h: "Famoso rio africano que foi vital para os faraós do Egito" },
+            { w: "KALAHARI", h: "Grande deserto no sul da África, lar dos suricatos" },
+            { w: "RUANDA", h: "País africano conhecido como a 'Terra das Mil Colinas'" },
+            { w: "SENEGAL", h: "País na costa oeste africana, sua capital é Dakar" },
+            { w: "ETIOPIA", h: "País africano que orgulha-se de nunca ter sido colonizado" },
+            { w: "ZAMBEZE", h: "Rio africano onde ficam as Cataratas de Vitória" },
+            { w: "PETRA", h: "Antiga cidade esculpida em rocha rosa, na Jordânia" },
+
+            // --- FENÔMENOS, BIOMAS E EXTREMOS ---
+            { w: "TSUNAMI", h: "Onda gigante geralmente causada por um terremoto submarino" },
+            { w: "VULCAO", h: "Montanha ou ruptura na crosta terrestre que expele magma" },
+            { w: "TUNDRA", h: "Bioma muito frio, sem árvores, característico do Círculo Polar Ártico" },
+            { w: "SAVANA", h: "Bioma de planície com árvores esparsas, famoso pelos safáris africos" },
+            { w: "ICEBERG", h: "Gigantesco bloco de gelo que se desprende de uma geleira e flutua no oceano" },
+            { w: "GEISER", h: "Nascente termal que entra em erupção, lançando jatos de água quente" },
+            { w: "EQUADOR", h: "Linha imaginária que divide o planeta no meio" },
+            { w: "GREENWICH", h: "O meridiano principal que divide o leste do oeste" },
+            { w: "OASIS", h: "Uma área isolada de vegetação em um deserto, geralmente em torno de uma nascente" }
         ];
 
         // Os 7 estágios do desenho ASCII (0 erros até 6 erros)
@@ -454,5 +496,10 @@
         };
 
     </script>
+
+    <footer class="site-footer">
+        <marquee behavior="scroll" direction="left" class="marquee-90s">OBRIGADO POR VISITAR O GEO GAMES! EXPLORE NOSSOS MINIGAMES E DIVIRTA-SE!</marquee>
+    </footer>
+
 </body>
 </html>

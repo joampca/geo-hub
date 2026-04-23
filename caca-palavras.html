@@ -13,6 +13,9 @@
             font-family: 'Comic Sans MS', Arial, sans-serif; 
             color: #000; 
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         /* --- HEADER --- */
@@ -29,30 +32,8 @@
             max-width: 1500px;
             margin: 0 auto;
             padding: 20px 15px;
-        }
-
-        /* Classes Genéricas para Anúncios (Estilo 90s) */
-        .ad-placeholder {
-            background-color: #FFFFFF; 
-            border: 3px dashed #FF0000; 
-            color: #FF0000; 
-            font-weight: bold; 
-            display: flex; 
-            flex-direction: column; /* Garante que linhas múltiplas fiquem empilhadas e centralizadas */
-            align-items: center; 
-            justify-content: center; 
-            text-align: center; 
-            font-family: Arial, sans-serif;
-            background-image: repeating-linear-gradient(45deg, #f9f9f9 25%, transparent 25%, transparent 75%, #f9f9f9 75%, #f9f9f9), repeating-linear-gradient(45deg, #f9f9f9 25%, #ffffff 25%, #ffffff 75%, #f9f9f9 75%, #f9f9f9);
-            background-position: 0 0, 10px 10px;
-            background-size: 20px 20px;
-        }
-
-        .ad-top-970 {
+            flex: 1;
             width: 100%;
-            max-width: 970px;
-            height: 250px;
-            margin: 0 auto 20px auto;
         }
 
         .main-layout-flex {
@@ -96,8 +77,14 @@
         .ads-sidebar {
             width: 300px; flex-shrink: 0; display: flex; flex-direction: column; gap: 20px;
         }
-        .ad-side-300-250 { width: 100%; height: 250px; }
-	.ad-side-300-600 { width: 100%; height: 600px; }
+
+        /* --- ESTRUTURA DE ANÚNCIOS --- */
+        .ad-placeholder { background: transparent; border: none; color: transparent; overflow: hidden; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; }
+        .ad-mobile-only { display: none; } 
+        .ad-desktop-only { display: flex; flex-direction: column; }
+        .ad-336x280-flex { width: 336px; height: 280px; max-width: 100%; }
+        .ad-300x600 { width: 300px; height: 600px; margin-bottom: 20px; }
+        .ad-300x250 { width: 300px; height: 250px; margin-bottom: 20px; }
 
         /* --- ESTILOS INTERNOS DO JOGO CAÇA PALAVRAS --- */
         .game-desc { font-size: 18px; margin-bottom: 10px; }
@@ -157,6 +144,22 @@
             display: none; color: #000; border: 3px dashed #FF0000; padding: 20px; font-size: 24px; font-weight: bold; margin-top: 20px; background-color: #FFFF00;
         }
 
+        /* --- FOOTER E MARQUEE 100% --- */
+        .site-footer { 
+            background-color: #0000FF; 
+            border-top: 4px solid #FF0000; 
+            padding: 10px; 
+            width: 100%;
+            margin-top: auto;
+	
+        }
+        .marquee-90s { 
+            font-family: 'Courier New', Courier, monospace; 
+            font-weight: bold; 
+            font-size: 18px; 
+            color: #FFFFFF; /* Dica: Se quiser o texto amarelo, mude para #FFFF00 */
+        }
+
         /* --- RESPONSIVIDADE --- */
         @media (max-width: 1200px) {
             .main-layout-flex { flex-direction: column; align-items: center; }
@@ -165,8 +168,8 @@
             .side-menu li { border-bottom: none; border-right: 1px dashed #FF0000; padding-right: 10px; }
             .side-menu li:last-child { border-right: none; }
             .ads-sidebar { width: 100%; flex-direction: row; flex-wrap: wrap; justify-content: center; }
-            .ad-side-300-250 { width: 300px; }
-            .ad-top-970 { height: auto; padding: 50px 10px; }
+            .ad-mobile-only { display: flex !important; }
+            .ad-desktop-only { display: none !important; }
         }
     </style>
 </head>
@@ -182,20 +185,22 @@
             <nav class="side-menu">
                 <div class="menu-header">MENU PRINCIPAL</div>
 		<ul>
-                    <li><a href="index.html"><span class="menu-icon">🌎</span>Início</a></li>
+                    <li><a href="index.html"><span class="menu-icon">🏠</span>Início</a></li>
                     <li><a href="fronteiras.html"><span class="menu-icon">🗺️</span>Fronteiras</a></li>
                     <li><a href="continentes.html"><span class="menu-icon">🌍</span>Continentes</a></li>
                     <li><a href="capitais.html"><span class="menu-icon">📍</span>Capitais</a></li>
                     <li><a href="bandeiras.html"><span class="menu-icon">🚩</span>Bandeiras</a></li>
                     <li><a href="caca-palavras.html"><span class="menu-icon">🔍</span>Caça-Palavras</a></li>
-                    <li><a href="cruzadas.html"><span class="menu-icon">🔠</span>Cruzadas</a></li>
-                    <li><a href="charadas.html"><span class="menu-icon">❓</span>Charadas</a></li>
+                    <li><a href="mapa.html"><span class="menu-icon">📌</span>Onde fica?</a></li>
+                    <li><a href="charadas.html"><span class="menu-icon">🤔</span>Charadas</a></li>
                     <li><a href="forca.html"><span class="menu-icon">☠️</span>Forca</a></li>
                     <li><a href="embaralhadas.html"><span class="menu-icon">🌪️</span>Embaralhadas</a></li>
                     <li><a href="erros.html"><span class="menu-icon">❌</span>Jogo dos Erros</a></li>
                 </ul>
 
             </nav>
+
+            <div class="ad-placeholder ad-mobile-only ad-336x280-flex">PUBLICIDADE</div>
             
             <main class="game-main-area">
                 <p class="game-desc">Encontre as palavras escondidas na grade o mais rápido que puder!</p>
@@ -226,39 +231,56 @@
                 </div>
             </main>
 
-<aside class="ads-sidebar">
-    <div class="ad-placeholder ad-side-300-250">
-        ESPAÇO RESERVADO<br>PARA ADS 300 x 250
-    </div>
-    <div class="ad-placeholder ad-side-300-600">
-        ESPAÇO RESERVADO<br>PARA ADS 300 x 600<br>
-        <br><small>(Adaptado para a barra lateral)</small>
-    </div>
-</aside>
+            <aside class="ads-sidebar ad-desktop-only">
+                <div class="ad-placeholder ad-300x250">PUBLICIDADE</div>
+                <div class="ad-placeholder ad-300x600">PUBLICIDADE</div>
+            </aside>
+
         </div>
     </div>
 
     <script>
-        // BANCO DE DADOS DEFINITIVO: Geografia Global (Países, Capitais, Rios, Cordilheiras, Desertos, Oceanos)
+        // BANCO DE DADOS (Máximo 12 letras por palavra, sem espaços)
         const geoWords = [
-            // América
+            // América do Sul e Central
             "BRASIL", "AMAZONAS", "ARGENTINA", "URUGUAI", "PARAGUAI", "CHILE", "ANDES", "PERU", 
-            "COLOMBIA", "VENEZUELA", "EQUADOR", "BOLIVIA", "GUIANA", "SURINAME", "CANADA", "MEXICO", 
-            "CUBA", "BAHAMAS", "HAWAI", "PATAGONIA", "ATACAMA", "APALACHES", "CARIBE", "BOGOTA",
-            "CARACAS", "LIMA", "SANTIAGO", "HAVANA", "OTTAWA", "WASHINGTON",
-            // Europa
-            "EUROPA", "ALPES", "FRANCA", "ALEMANHA", "ESPANHA", "PORTUGAL", "ITALIA", "RUSSIA", 
-            "SENA", "TAMISA", "DANUBIO", "VOLGA", "URAL", "CAUCASO", "MEDITERRANEO", "BALTICO",
-            "PARIS", "LONDRES", "ATENAS", "ROMA", "BERLIM", "MADRI", "LISBOA", "MOSCOU",
-            // Ásia & Oceania
-            "ASIA", "OCEANIA", "JAPAO", "CHINA", "INDIA", "AUSTRALIA", "INDONESIA", "VIETNA", 
-            "THAILANDIA", "HIMALAIA", "TIBETE", "EVEREST", "GOBI", "TIGRE", "EUFRATES", "GANGES",
-            "TOQUIO", "PEQUIM", "SEUL", "SYDNEY",
-            // África & Extremos
+            "COLOMBIA", "VENEZUELA", "EQUADOR", "BOLIVIA", "GUIANA", "SURINAME", "PATAGONIA", 
+            "ATACAMA", "BOGOTA", "CARACAS", "LIMA", "SANTIAGO", "PAMPAS", "CERRADO", "MANAUS", 
+            "RECIFE", "PANAMA", "HONDURAS", "NICARAGUA", "GUATEMALA", "JAMAICA", "BAHAMAS", "HAITI",
+            
+            // América do Norte
+            "CANADA", "MEXICO", "CUBA", "HAWAI", "APALACHES", "CARIBE", "HAVANA", "OTTAWA", 
+            "WASHINGTON", "FLORIDA", "TEXAS", "ALASCA", "ONTARIO", "QUEBEC", "COLORADO", "NEVADA",
+
+            // Europa Ocidental e Nórdica
+            "EUROPA", "ALPES", "FRANCA", "ALEMANHA", "ESPANHA", "PORTUGAL", "ITALIA", "SUIÇA", 
+            "AUSTRIA", "BELGICA", "HOLANDA", "VATICANO", "SUECIA", "NORUEGA", "FINLANDIA", "ISLANDIA",
+            "DINAMARCA", "SENA", "TAMISA", "DANUBIO", "PARIS", "LONDRES", "ROMA", "BERLIM", 
+            "MADRI", "LISBOA", "VIENA", "MUNIQUE", "NAPOLES", "VENEZA",
+            
+            // Europa Oriental e Balcãs
+            "RUSSIA", "VOLGA", "URAL", "CAUCASO", "MOSCOU", "POLONIA", "UCRANIA", "CROACIA", 
+            "SERVIA", "BULGARIA", "ROMENIA", "HUNGRIA", "GRECIA", "ATENAS", "PRAGA", "VARSOVIA",
+
+            // Ásia e Oriente Médio
+            "ASIA", "JAPAO", "CHINA", "INDIA", "INDONESIA", "VIETNA", "TAILANDIA", "HIMALAIA", 
+            "TIBETE", "EVEREST", "GOBI", "TIGRE", "EUFRATES", "GANGES", "TOQUIO", "PEQUIM", "SEUL", 
+            "TAIWAN", "FILIPINAS", "MALASIA", "SINGAPURA", "NEPAL", "BUTAO", "IRAQUE", "ISRAEL", 
+            "JORDANIA", "LIBANO", "IEMEN", "SIRIA",
+            
+            // África
             "AFRICA", "EGITO", "MARROCOS", "NIGERIA", "QUENIA", "ZIMBABUE", "ANGOLA", "SENEGAL",
-            "MADAGASCAR", "NILO", "SAARA", "KALAHARI", "ANTARTIDA", "GROENLANDIA",
-            // Oceanos
-            "ATLANTICO", "PACIFICO", "INDICO", "ARTICO"
+            "MADAGASCAR", "NILO", "SAARA", "KALAHARI", "SOMALIA", "SUDAO", "CHADE", "NIGER", 
+            "MALI", "TUNISIA", "LIBIA", "ARGELIA", "GANA", "TOGO", "BENIN", "CAMAROES", "CONGO", 
+            "UGANDA", "RUANDA", "BURUNDI", "ZAMBIA", "NAMIBIA", "BOTSUANA", "LESOTO",
+            
+            // Oceania e Extremos
+            "OCEANIA", "AUSTRALIA", "SYDNEY", "FIJI", "SAMOA", "TONGA", "NOVAZELANDIA", "TASMANIA",
+            "ANTARTIDA", "GROENLANDIA", "ICEBERG", "TUNDRA",
+            
+            // Corpos d'água (Oceanos, Mares e Golfos)
+            "ATLANTICO", "PACIFICO", "INDICO", "ARTICO", "MEDITERRANEO", "BALTICO", "CARIBE", 
+            "VERMELHO", "NEGRO", "CASPIO"
         ];
 
         const gridSize = 12; // Tamanho da grade 12x12
@@ -464,5 +486,10 @@
         // Inicia o jogo ao clicar no botão inicial
         startBtn.addEventListener('click', generateGame);
     </script>
+
+    <footer class="site-footer">
+        <marquee behavior="scroll" direction="left" class="marquee-90s">OBRIGADO POR VISITAR O GEO GAMES! EXPLORE NOSSOS MINIGAMES E DIVIRTA-SE!</marquee>
+    </footer>
+
 </body>
 </html>

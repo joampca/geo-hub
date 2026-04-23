@@ -1,53 +1,58 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Jogo das Fronteiras - Geo 90s</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body class="game-page">
-
-<div class="site-container">
-    <main class="main-content" style="width: 100%;">
-        
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="game-page">
+    <div class="site-container">
+      <main class="main-content" style="width: 100%">
         <header class="header-logo">
-            <a href="index.html">
-                <h1>🌍 GEO GAMES 🌐</h1>
-                <p>◀ VOLTAR PARA A PÁGINA INICIAL</p>
-            </a>
+          <a href="index.html">
+            <h1>🌍 GEO GAMES 🌐</h1>
+
+            <p>◀ VOLTAR PARA A PÁGINA INICIAL</p>
+          </a>
         </header>
 
         <section class="game-play-area">
-            <marquee behavior="scroll" direction="left" class="marquee-90s">
-                BEM-VINDO AO DESAFIO DE GEOGRAFIA! VOCÊ CONHECE O MAPA?
-            </marquee>
+          <marquee behavior="scroll" direction="left" class="marquee-90s">
+            BEM-VINDO AO DESAFIO DE GEOGRAFIA! VOCÊ CONHECE O MAPA?
+          </marquee>
 
-            <div class="game-container">
-                <h2>País Sorteado: <span>BRASIL</span> 🇧🇷</h2>
-                <p>Existem <strong>10</strong> países que fazem fronteira terrestre com o Brasil. Digite-os abaixo!</p>
-                
-                <div class="input-area">
-                    <input type="text" id="countryInput" placeholder="Digite um país..." autocomplete="off">
-                    <button id="submitBtn" class="btn-90s">ENVIAR</button>
-                </div>
+          <div class="game-container">
+            <h2>País Sorteado: <span>BRASIL</span> 🇧🇷</h2>
+            <p>
+              Existem <strong>10</strong> países que fazem fronteira terrestre
+              com o Brasil. Digite-os abaixo!
+            </p>
 
-                <div class="score-board">
-                    Acertos: <span id="score">0</span> / 10
-                </div>
-
-                <ul id="answersList" class="answers-list">
-                    </ul>
-
-                <div id="victoryMessage" class="victory-msg" style="display: none;">
-                    🎉 PARABÉNS! VOCÊ COMPLETOU O DESAFIO! 🎉
-                </div>
+            <div class="input-area">
+              <input
+                type="text"
+                id="countryInput"
+                placeholder="Digite um país..."
+                autocomplete="off"
+              />
+              <button id="submitBtn" class="btn-90s">ENVIAR</button>
             </div>
+
+            <div class="score-board">
+              Acertos: <span id="score">0</span> / 10
+            </div>
+
+            <ul id="answersList" class="answers-list"></ul>
+
+            <div id="victoryMessage" class="victory-msg" style="display: none">
+              🎉 PARABÉNS! VOCÊ COMPLETOU O DESAFIO! 🎉
+            </div>
+          </div>
         </section>
+      </main>
+    </div>
 
-    </main>
-</div>
-
-<script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
