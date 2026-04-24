@@ -4,6 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GEO GAMES - Forca Geográfica</title>
+
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N2ZZJ1F6T1"></script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1158047772982385"
+     crossorigin="anonymous"></script>
+
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-N2ZZJ1F6T1');
+</script>
+
     <style>
         /* --- RESET E PADRÃO --- */
         * { box-sizing: border-box; }
@@ -163,6 +178,18 @@
             .key-btn { width: 35px; height: 35px; font-size: 16px; }
             .ascii-monitor { font-size: 16px; }
         }
+
+        /* --- CURSOR RETRÔ ANOS 90 --- */
+      body, a, button {
+        /* Seta pixelada branca com borda preta (maior que o normal) */
+        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Cpath d='M2,2 L2,26 L8,20 L13,31 L18,29 L13,18 L22,18 Z' fill='white' stroke='black' stroke-width='2'/%3E%3C/svg%3E"), auto !important;
+      }
+
+      /* Quando a classe 'clicando' for ativada pelo JavaScript, tudo vira um globo! */
+      body.clicando, body.clicando * {
+        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' style='font-size:26px'%3E%3Ctext y='26'%3E%F0%9F%8C%90%3C/text%3E%3C/svg%3E"), pointer !important;
+      }
+
     </style>
 </head>
 <body>
@@ -237,6 +264,23 @@
     </div>
 
     <script>
+
+        // --- EFEITO DO MOUSE (GLOBO) COM ATRASO ---
+      let temporizadorGlobo;
+      
+      document.addEventListener('mousedown', () => {
+        // Adiciona o globo
+        document.body.classList.add('clicando');
+        
+        // Limpa o cronômetro se o usuário der vários cliques muito rápidos
+        clearTimeout(temporizadorGlobo);
+        
+        // Define quanto tempo o globo vai ficar na tela (em milissegundos)
+        temporizadorGlobo = setTimeout(() => {
+          document.body.classList.remove('clicando');
+        }, 300); // 300 milissegundos (0.3 segundos). Se quiser mais tempo, mude para 500!
+      });
+
         // BANCO DE DADOS DA FORCA - Palavras Únicas (Sem espaços/hifens e sem acentos)
         const database = [
             // --- BRASIL E AMÉRICAS ---
@@ -498,7 +542,7 @@
     </script>
 
     <footer class="site-footer">
-        <marquee behavior="scroll" direction="left" class="marquee-90s">OBRIGADO POR VISITAR O GEO GAMES! EXPLORE NOSSOS MINIGAMES E DIVIRTA-SE!</marquee>
+        <marquee behavior="scroll" direction="left" class="marquee-90s">CURIOSIDADE: A PALAVRA "GEOGRAFIA" VEM DO GREGO ANTIGO, ONDE "GEO" SIGNIFICA TERRA E "GRAPHIA" SIGNIFICA DESCRIÇÃO. LITERALMENTE, A DESCRIÇÃO DA TERRA! 🗺️ --- CONTINUE EXPLORANDO O GEO GAMES!</marquee>
     </footer>
 
 </body>
