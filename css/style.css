@@ -1483,3 +1483,40 @@ body.clicando * {
     margin: 10px 0;
   }
 }
+
+/* Ajustes para Celular (Responsividade) */
+@media (max-width: 768px) {
+  /* Faz o menu e o jogo ficarem um em cima do outro, não lado a lado */
+  .main-layout-flex {
+    flex-direction: column;
+  }
+
+  /* Ajusta o menu lateral para ocupar a largura toda ou ser escondido */
+  .side-menu {
+    width: 100%;
+    margin-bottom: 20px;
+    position: static; /* Garante que ele não flutue sobre o conteúdo */
+  }
+
+  /* Faz a área do jogo ocupar 100% da largura da tela */
+  .game-main-area {
+    width: 100%;
+    padding: 10px;
+  }
+
+  /* Ajusta o tamanho das fontes e botões que podem estar gigantes */
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .btn-start,
+  .btn-action {
+    width: 100%; /* Botões cheios são melhores para o polegar no mobile */
+    font-size: 1.1rem;
+  }
+
+  /* Esconde as propagandas de desktop no mobile para não poluir */
+  .ad-desktop-only {
+    display: none !important;
+  }
+}
