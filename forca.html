@@ -1,549 +1,166 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GEO GAMES - Forca Geográfica</title>
 
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-N2ZZJ1F6T1"></script>
-
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1158047772982385"
-     crossorigin="anonymous"></script>
-
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-N2ZZJ1F6T1');
-</script>
-
-    <style>
-        /* --- RESET E PADRÃO --- */
-        * { box-sizing: border-box; }
-        body, h1, h2, h3, p, ul, li { margin: 0; padding: 0; font-weight: normal; }
-        body { 
-            background-color: #E6E6E6; 
-            font-family: 'Comic Sans MS', Arial, sans-serif; 
-            color: #000; 
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        /* --- HEADER --- */
-        .site-header { 
-            background-color: #0000FF; color: #FFFFFF; padding: 15px; 
-            border-bottom: 4px solid #FF0000; text-align: center; width: 100%;
-        }
-        .site-header h1 { font-weight: bold; color: #FFFF00; text-shadow: 2px 2px 0px #FF0000; font-size: clamp(24px, 4vw, 36px); margin-top: 5px;}
-        .site-header a { color: #FFF; font-family: 'Courier New', Courier, monospace; font-size: 14px; text-decoration: none; font-weight: bold;}
-        .site-header a:hover { text-decoration: underline; color: #00FF00;}
-
-        .main-layout-flex {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            align-items: flex-start;
-        }
-
-.main-layout-flex { 
-    display: flex; 
-    gap: 20px; 
-    justify-content: center; 
-    align-items: flex-start; 
-    margin-top: 20px; /* <--- Adicione esta linha! */
-}
-
-        /* --- MENU LATERAL (ESQUERDA) --- */
-        .side-menu { 
-            width: 220px; flex-shrink: 0; background-color: #FFFFCC; 
-            border: 3px solid #FF0000; box-shadow: 2px 2px 0px #000;
-        }
-        .menu-header { 
-            background-color: #FF0000; color: #FFFFFF; font-weight: bold; 
-            padding: 8px 10px; text-align: center; font-family: Arial, sans-serif; text-transform: uppercase;
-        }
-        .side-menu ul { list-style: none; padding: 10px; }
-        .side-menu li { padding: 8px 0; border-bottom: 1px dashed #FF0000; }
-        .side-menu li:last-child { border-bottom: none; }
-        .side-menu li a { text-decoration: none; font-weight: bold; color: #000000; display: flex; align-items: center; }
-        .side-menu li a:hover { color: #FF0000; background-color: #FFFFFF; }
-        .menu-icon { font-size: 20px; margin-right: 10px; }
-
-        /* --- ÁREA DO JOGO (CENTRO) --- */
-        .game-main-area {
-            flex: 1; max-width: 900px; background-color: #FFF; border: 4px outset #CCC;
-            box-shadow: 3px 3px 0px #000; padding: 20px; text-align: center;
-        }
-
-        /* --- SIDEBAR DE ANÚNCIOS (DIREITA) --- */
-        .ads-sidebar { width: 300px; flex-shrink: 0; display: flex; flex-direction: column; gap: 20px; }
-
-        /* --- ESTRUTURA DE ANÚNCIOS --- */
-        .ad-placeholder { background: transparent; border: none; color: transparent; overflow: hidden; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; }
-        .ad-mobile-only { display: none; } 
-        .ad-desktop-only { display: flex; flex-direction: column; }
-        .ad-336x280-flex { width: 336px; height: 280px; max-width: 100%; }
-        .ad-300x600 { width: 300px; height: 600px; margin-bottom: 20px; }
-        .ad-300x250 { width: 300px; height: 250px; margin-bottom: 20px; }
-
-        /* --- ESTILOS DA FORCA --- */
-        .game-desc { font-size: 18px; margin-bottom: 10px; }
-
-        .status-bar {
-            display: flex; justify-content: space-between; align-items: center;
-            background-color: #008000; color: #FFF; padding: 10px 20px; font-weight: bold;
-            font-size: 20px; border: 2px solid #000; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;
-        }
-
-        .btn-action {
-            background-color: #FFCC00; color: #000; border: 4px outset #FFF;
-            font-weight: bold; padding: 15px 30px; font-size: 24px; cursor: pointer; 
-            box-shadow: 2px 2px 0px #000; font-family: 'Comic Sans MS', Arial, sans-serif; margin-bottom: 20px;
-        }
-        .btn-action:active { border: 4px inset #FFF; }
-
-        /* O MONITOR ASCII */
-        .ascii-monitor {
-            background-color: #000; color: #00FF00; font-family: 'Courier New', Courier, monospace;
-            padding: 20px; border: 6px ridge #888; border-radius: 10px; width: fit-content;
-            margin: 0 auto 20px auto; text-align: left; font-size: 22px; line-height: 1.2;
-            box-shadow: inset 0px 0px 15px rgba(0,255,0,0.2);
-        }
-
-        .word-category {
-            background-color: #FFFF00; border: 2px dashed #FF0000; padding: 5px 15px;
-            font-weight: bold; font-size: 18px; display: inline-block; margin-bottom: 15px; color: #000;
-        }
-
-        /* DISPLAY DA PALAVRA */
-        .word-display {
-            font-family: 'Courier New', Courier, monospace; font-size: clamp(24px, 5vw, 40px);
-            font-weight: bold; letter-spacing: 10px; margin-bottom: 20px; color: #000;
-            background-color: #F0F0F0; border: 3px solid #000; padding: 15px;
-        }
-
-        /* TECLADO VIRTUAL RETRÔ */
-        .keyboard {
-            display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 10px;
-        }
-        .key-btn {
-            background-color: #E0E0E0; border: 3px outset #FFF; font-size: 20px; font-weight: bold;
-            width: 45px; height: 45px; cursor: pointer; font-family: 'Arial', sans-serif;
-            color: #000; display: flex; align-items: center; justify-content: center;
-        }
-        .key-btn:active { border: 3px inset #FFF; background-color: #CCC; }
-        .key-btn.correct { background-color: #90EE90; color: #006400; border-color: #006400; pointer-events: none; }
-        .key-btn.wrong { background-color: #FFCCCC; color: #CC0000; border-color: #CC0000; pointer-events: none; text-decoration: line-through; }
-
-        /* ALERTAS CUSTOMIZADOS RETRÔ */
-        .custom-alert {
-            display: none; padding: 20px; margin-top: 20px; border: 4px dashed #000; 
-            font-size: 22px; font-weight: bold; text-align: center;
-        }
-        .alert-success { background-color: #90EE90; border-color: #006400; color: #006400; }
-        .alert-error { background-color: #FFCCCC; border-color: #CC0000; color: #CC0000; }
-
-        /* --- FOOTER E MARQUEE 100% --- */
-        .site-footer { 
-            background-color: #0000FF; 
-            border-top: 4px solid #FF0000; 
-            padding: 10px; 
-            width: 100%;
-            margin-top: auto;
-	
-        }
-        .marquee-90s { 
-            font-family: 'Courier New', Courier, monospace; 
-            font-weight: bold; 
-            font-size: 18px; 
-            color: #FFFFFF; /* Dica: Se quiser o texto amarelo, mude para #FFFF00 */
-        }
-
-        /* --- RESPONSIVIDADE --- */
-        @media (max-width: 1200px) {
-            .main-layout-flex { flex-direction: column; align-items: center; }
-            .side-menu { width: 100%; max-width: 900px; margin-bottom: 10px; }
-            .side-menu ul { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-            .side-menu li { border-bottom: none; border-right: 1px dashed #FF0000; padding-right: 10px; }
-            .side-menu li:last-child { border-right: none; }
-            .ads-sidebar { width: 100%; flex-direction: row; flex-wrap: wrap; justify-content: center; }
-            .ad-mobile-only { display: flex !important; }
-            .ad-desktop-only { display: none !important; }
-        }
-        @media (max-width: 500px) {
-            .key-btn { width: 35px; height: 35px; font-size: 16px; }
-            .ascii-monitor { font-size: 16px; }
-        }
-
-        /* --- CURSOR RETRÔ ANOS 90 --- */
-      body, a, button {
-        /* Seta pixelada branca com borda preta (maior que o normal) */
-        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Cpath d='M2,2 L2,26 L8,20 L13,31 L18,29 L13,18 L22,18 Z' fill='white' stroke='black' stroke-width='2'/%3E%3C/svg%3E"), auto !important;
-      }
-
-      /* Quando a classe 'clicando' for ativada pelo JavaScript, tudo vira um globo! */
-      body.clicando, body.clicando * {
-        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' style='font-size:26px'%3E%3Ctext y='26'%3E%F0%9F%8C%90%3C/text%3E%3C/svg%3E"), pointer !important;
-      }
-
-    </style>
-</head>
-<body>
-
-    <header class="site-header">
-        <a href="index.html">◀ VOLTAR PARA O MENU PRINCIPAL</a>
-        <h1>A FORCA DO VIAJANTE!</h1>
-    </header>
-
-
-        <div class="main-layout-flex">
-            <nav class="side-menu">
-                <div class="menu-header">MENU PRINCIPAL</div>
-		<ul>
-                    <li><a href="index.html"><span class="menu-icon">🏠</span>Início</a></li>
-                    <li><a href="fronteiras.html"><span class="menu-icon">🗺️</span>Fronteiras</a></li>
-                    <li><a href="continentes.html"><span class="menu-icon">🌍</span>Continentes</a></li>
-                    <li><a href="capitais.html"><span class="menu-icon">📍</span>Capitais</a></li>
-                    <li><a href="bandeiras.html"><span class="menu-icon">🚩</span>Bandeiras</a></li>
-                    <li><a href="caca-palavras.html"><span class="menu-icon">🔍</span>Caça-Palavras</a></li>
-                    <li><a href="mapa.html"><span class="menu-icon">📌</span>Onde fica?</a></li>
-                    <li><a href="charadas.html"><span class="menu-icon">🤔</span>Charadas</a></li>
-                    <li><a href="forca.html"><span class="menu-icon">☠️</span>Forca</a></li>
-                    <li><a href="embaralhadas.html"><span class="menu-icon">🌪️</span>Embaralhadas</a></li>
-                    <li><a href="erros.html"><span class="menu-icon">❌</span>Jogo dos Erros</a></li>
-                </ul>
-
-            </nav>
-
-            <div class="ad-placeholder ad-mobile-only ad-336x280-flex">PUBLICIDADE</div>
-
-            <main class="game-main-area">
-                <p class="game-desc">Salve o boneco palito antes que suas 6 vidas acabem!</p>
-
-                <button id="startBtn" class="btn-action">▶ JOGAR FORCA</button>
-
-                <div id="playArea" style="display:none;">
-                    <div class="status-bar">
-                        <span>Pontos: <span id="score">0</span></span>
-                        <span style="color: #FFFF00;">Erros: <span id="mistakes">0</span> / 6</span>
-                    </div>
-
-                    <div id="hintDisplay" class="word-category">DICA: Carregando...</div>
-
-                    <div class="ascii-monitor">
-<pre id="asciiArt">
-  +---+
-  |   |
-      |
-      |
-      |
-      |
-=========
-</pre>
-                    </div>
-
-                    <div id="wordDisplay" class="word-display">_ _ _ _ _</div>
-
-                    <div id="customAlert" class="custom-alert"></div>
-
-                    <div class="keyboard" id="keyboardArea">
-                        </div>
-                </div>
-            </main>
-
-            <aside class="ads-sidebar ad-desktop-only">
-                <div class="ad-placeholder ad-300x250">PUBLICIDADE</div>
-                <div class="ad-placeholder ad-300x600">PUBLICIDADE</div>
-            </aside>
-
-        </div>
-    </div>
-
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-N2ZZJ1F6T1"
+    ></script>
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1158047772982385"
+      crossorigin="anonymous"
+    ></script>
     <script>
-
-        // --- EFEITO DO MOUSE (GLOBO) COM ATRASO ---
-      let temporizadorGlobo;
-      
-      document.addEventListener('mousedown', () => {
-        // Adiciona o globo
-        document.body.classList.add('clicando');
-        
-        // Limpa o cronômetro se o usuário der vários cliques muito rápidos
-        clearTimeout(temporizadorGlobo);
-        
-        // Define quanto tempo o globo vai ficar na tela (em milissegundos)
-        temporizadorGlobo = setTimeout(() => {
-          document.body.classList.remove('clicando');
-        }, 300); // 300 milissegundos (0.3 segundos). Se quiser mais tempo, mude para 500!
-      });
-
-        // BANCO DE DADOS DA FORCA - Palavras Únicas (Sem espaços/hifens e sem acentos)
-        const database = [
-            // --- BRASIL E AMÉRICAS ---
-            { w: "AMAPA", h: "Estado brasileiro cortado pela Linha do Equador" },
-            { w: "MACAPA", h: "Capital brasileira banhada pelo Rio Amazonas" },
-            { w: "PANTANAL", h: "Maior planície alagada do mundo, localizada no Brasil" },
-            { w: "AMAZONAS", h: "O pulmão verde da Terra e o rio mais volumoso" },
-            { w: "PARANA", h: "Estado brasileiro localizado na Região Sul" },
-            { w: "CERRADO", h: "Bioma brasileiro conhecido como a savana mais rica do mundo" },
-            { w: "ATACAMA", h: "O deserto mais seco do mundo, localizado no Chile" },
-            { w: "ANDES", h: "A maior cordilheira continental do planeta" },
-            { w: "PATAGONIA", h: "Região de clima frio no extremo sul da América do Sul" },
-            { w: "ALASCA", h: "Maior estado dos EUA, famoso por suas geleiras" },
-            { w: "HAVAI", h: "Arquipélago vulcânico no Pacífico, estado dos EUA" },
-            { w: "YUCATAN", h: "Península no México famosa pelas ruínas maias" },
-            { w: "JAMAICA", h: "Ilha caribenha famosa pelo reggae e por Bob Marley" },
-            
-            // --- EUROPA E RÚSSIA ---
-            { w: "RUSSIA", h: "Maior país do mundo em extensão territorial" },
-            { w: "MOSCOU", h: "Capital mundialmente famosa pela Praça Vermelha" },
-            { w: "SIBERIA", h: "Vasta e gelada região asiática do território russo" },
-            { w: "BAIKAL", h: "O lago de água doce mais antigo e profundo do mundo" },
-            { w: "ISLANDIA", h: "Terra do gelo e dos vulcões no Atlântico Norte" },
-            { w: "NORUEGA", h: "País europeu famoso por seus fiordes profundos e auroras boreais" },
-            { w: "VATICANO", h: "O menor estado independente do mundo" },
-            { w: "LONDRES", h: "Capital europeia cortada pelo Rio Tâmisa" },
-            { w: "ALPES", h: "Cadeia de montanhas mais famosa da Europa" },
-            { w: "CAUCASO", h: "Cordilheira que divide a Europa da Ásia, entre o Mar Negro e o Cáspio" },
-            { w: "GRECIA", h: "Berço da civilização ocidental e dos Jogos Olímpicos" },
-            { w: "FIORDE", h: "Vales rochosos invadidos pelo mar, muito comuns na Escandinávia" },
-
-            // --- ÁSIA E OCEANIA ---
-            { w: "CANBERRA", h: "A verdadeira capital da Austrália" },
-            { w: "TIBETE", h: "Região autônoma conhecida como 'O Teto do Mundo'" },
-            { w: "HIMALAIA", h: "Cordilheira colossal que abriga o Monte Everest" },
-            { w: "JAPAO", h: "País arquipélago conhecido como a 'Terra do Sol Nascente'" },
-            { w: "GOBI", h: "Vasto deserto rochoso na China e na Mongólia" },
-            { w: "MALDIVAS", h: "Arquipélago paradisíaco e ameaçado no Oceano Índico" },
-            { w: "TAIWAN", h: "Ilha asiática famosa por sua alta tecnologia em microchips" },
-            { w: "BALI", h: "Ilha extremamente turística e cultural da Indonésia" },
-            { w: "SINGAPURA", h: "Pequena e riquíssima cidade-estado insular asiática" },
-            { w: "MEKONG", h: "Um dos rios mais longos e importantes do Sudeste Asiático" },
-
-            // --- ÁFRICA E ORIENTE MÉDIO ---
-            { w: "MADAGASCAR", h: "Grande ilha biodiversa localizada na costa leste da África" },
-            { w: "SAARA", h: "O maior deserto quente do mundo" },
-            { w: "NILO", h: "Famoso rio africano que foi vital para os faraós do Egito" },
-            { w: "KALAHARI", h: "Grande deserto no sul da África, lar dos suricatos" },
-            { w: "RUANDA", h: "País africano conhecido como a 'Terra das Mil Colinas'" },
-            { w: "SENEGAL", h: "País na costa oeste africana, sua capital é Dakar" },
-            { w: "ETIOPIA", h: "País africano que orgulha-se de nunca ter sido colonizado" },
-            { w: "ZAMBEZE", h: "Rio africano onde ficam as Cataratas de Vitória" },
-            { w: "PETRA", h: "Antiga cidade esculpida em rocha rosa, na Jordânia" },
-
-            // --- FENÔMENOS, BIOMAS E EXTREMOS ---
-            { w: "TSUNAMI", h: "Onda gigante geralmente causada por um terremoto submarino" },
-            { w: "VULCAO", h: "Montanha ou ruptura na crosta terrestre que expele magma" },
-            { w: "TUNDRA", h: "Bioma muito frio, sem árvores, característico do Círculo Polar Ártico" },
-            { w: "SAVANA", h: "Bioma de planície com árvores esparsas, famoso pelos safáris africos" },
-            { w: "ICEBERG", h: "Gigantesco bloco de gelo que se desprende de uma geleira e flutua no oceano" },
-            { w: "GEISER", h: "Nascente termal que entra em erupção, lançando jatos de água quente" },
-            { w: "EQUADOR", h: "Linha imaginária que divide o planeta no meio" },
-            { w: "GREENWICH", h: "O meridiano principal que divide o leste do oeste" },
-            { w: "OASIS", h: "Uma área isolada de vegetação em um deserto, geralmente em torno de uma nascente" }
-        ];
-
-        // Os 7 estágios do desenho ASCII (0 erros até 6 erros)
-        const asciiStages = [
-`  +---+
-  |   |
-      |
-      |
-      |
-      |
-=========`,
-`  +---+
-  |   |
-  O   |
-      |
-      |
-      |
-=========`,
-`  +---+
-  |   |
-  O   |
-  |   |
-      |
-      |
-=========`,
-`  +---+
-  |   |
-  O   |
- /|   |
-      |
-      |
-=========`,
-`  +---+
-  |   |
-  O   |
- /|\\  |
-      |
-      |
-=========`,
-`  +---+
-  |   |
-  O   |
- /|\\  |
- /    |
-      |
-=========`,
-`  +---+
-  |   |
-  O   |
- /|\\  |
- / \\  |
-      |
-=========`
-        ];
-
-        let chosenWord = "";
-        let guessedLetters = [];
-        let mistakes = 0;
-        const maxMistakes = 6;
-        let score = 0;
-        let gameOver = false;
-
-        const startBtn = document.getElementById('startBtn');
-        const playArea = document.getElementById('playArea');
-        const wordDisplay = document.getElementById('wordDisplay');
-        const asciiArt = document.getElementById('asciiArt');
-        const mistakesDisplay = document.getElementById('mistakes');
-        const scoreDisplay = document.getElementById('score');
-        const keyboardArea = document.getElementById('keyboardArea');
-        const customAlert = document.getElementById('customAlert');
-        const hintDisplay = document.getElementById('hintDisplay');
-
-        // Cria o teclado virtual (A a Z)
-        function generateKeyboard() {
-            keyboardArea.innerHTML = '';
-            const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            for (let i = 0; i < alphabet.length; i++) {
-                let btn = document.createElement('button');
-                btn.className = 'key-btn';
-                btn.innerText = alphabet[i];
-                btn.id = 'key-' + alphabet[i];
-                btn.onclick = () => handleGuess(alphabet[i]);
-                keyboardArea.appendChild(btn);
-            }
-        }
-
-        // Remove acentos para facilitar a validação
-        function normalizeString(str) {
-            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
-        }
-
-        function initGame() {
-            // Sorteia uma palavra
-            const randomObj = database[Math.floor(Math.random() * database.length)];
-            chosenWord = normalizeString(randomObj.w);
-            hintDisplay.innerText = "DICA: " + randomObj.h;
-
-            guessedLetters = [];
-            mistakes = 0;
-            gameOver = false;
-            
-            mistakesDisplay.innerText = mistakes;
-            asciiArt.innerText = asciiStages[0];
-            customAlert.style.display = 'none';
-            keyboardArea.style.display = 'flex';
-            
-            generateKeyboard();
-            updateWordDisplay();
-        }
-
-        function updateWordDisplay() {
-            let displayStr = "";
-            let won = true;
-
-            for (let i = 0; i < chosenWord.length; i++) {
-                let char = chosenWord[i];
-                if (char === " " || char === "-") {
-                    displayStr += char + " ";
-                } else if (guessedLetters.includes(char)) {
-                    displayStr += char + " ";
-                } else {
-                    displayStr += "_ ";
-                    won = false;
-                }
-            }
-
-            wordDisplay.innerText = displayStr.trim();
-
-            if (won && !gameOver) {
-                gameOver = true;
-                score += 100;
-                scoreDisplay.innerText = score;
-                showResult(`🎉 VOCÊ ESCAPOU DA FORCA! (+100 Pts)`, true);
-            }
-        }
-
-        function handleGuess(letter) {
-            if (gameOver) return;
-            if (guessedLetters.includes(letter)) return;
-
-            guessedLetters.push(letter);
-            let btn = document.getElementById('key-' + letter);
-
-            if (chosenWord.includes(letter)) {
-                // Acertou a letra
-                btn.classList.add('correct');
-                updateWordDisplay();
-            } else {
-                // Errou a letra
-                btn.classList.add('wrong');
-                mistakes++;
-                mistakesDisplay.innerText = mistakes;
-                asciiArt.innerText = asciiStages[mistakes];
-
-                if (mistakes >= maxMistakes) {
-                    gameOver = true;
-                    // Mostra a palavra inteira ao perder
-                    wordDisplay.innerText = chosenWord.split('').join(' ');
-                    wordDisplay.style.color = "#CC0000"; // Fica vermelho pra destacar o erro
-                    showResult(`💀 ENFORCADO! A palavra era: ${chosenWord}`, false);
-                }
-            }
-        }
-
-        function showResult(msg, isWin) {
-            keyboardArea.style.display = 'none'; // Esconde o teclado para forçar o clique no botão de continuar
-            customAlert.innerHTML = msg;
-            customAlert.className = 'custom-alert ' + (isWin ? 'alert-success' : 'alert-error');
-            customAlert.style.display = 'block';
-            
-            // Botão de jogar novamente
-            customAlert.innerHTML += `<br><button onclick="initGameWrapper()" class="btn-action" style="margin-top:20px; font-size: 18px; padding: 10px 20px;">JOGAR PRÓXIMA ▶</button>`;
-        }
-
-        window.initGameWrapper = function() {
-            wordDisplay.style.color = "#000"; // Reseta a cor caso tenha perdido a anterior
-            initGame();
-        };
-
-        // Permite digitar pelo teclado físico do PC
-        document.addEventListener('keydown', (e) => {
-            if (gameOver || playArea.style.display === 'none') return;
-            let key = e.key.toUpperCase();
-            if (/^[A-Z]$/.test(key)) {
-                handleGuess(key);
-            }
-        });
-
-        startBtn.onclick = () => {
-            startBtn.style.display = 'none';
-            playArea.style.display = 'block';
-            initGame();
-        };
-
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-N2ZZJ1F6T1");
     </script>
 
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a href="index.html">◀ VOLTAR PARA O MENU PRINCIPAL</a>
+      <h1>A FORCA DO VIAJANTE!</h1>
+    </header>
+
+    <div class="content-wrapper">
+      <div class="main-layout-flex">
+        <nav class="side-menu">
+          <div class="menu-header">MENU PRINCIPAL</div>
+          <ul>
+            <li>
+              <a href="index.html"><span class="menu-icon">🏠</span>Início</a>
+            </li>
+            <li>
+              <a href="fronteiras.html"
+                ><span class="menu-icon">🗺️</span>Fronteiras</a
+              >
+            </li>
+            <li>
+              <a href="continentes.html"
+                ><span class="menu-icon">🌍</span>Continentes</a
+              >
+            </li>
+            <li>
+              <a href="capitais.html"
+                ><span class="menu-icon">📍</span>Capitais</a
+              >
+            </li>
+            <li>
+              <a href="bandeiras.html"
+                ><span class="menu-icon">🚩</span>Bandeiras</a
+              >
+            </li>
+            <li>
+              <a href="caca-palavras.html"
+                ><span class="menu-icon">🔍</span>Caça-Palavras</a
+              >
+            </li>
+            <li>
+              <a href="mapa.html"
+                ><span class="menu-icon">📌</span>Onde fica?</a
+              >
+            </li>
+            <li>
+              <a href="charadas.html"
+                ><span class="menu-icon">🤔</span>Charadas</a
+              >
+            </li>
+            <li>
+              <a href="forca.html"><span class="menu-icon">☠️</span>Forca</a>
+            </li>
+            <li>
+              <a href="embaralhadas.html"
+                ><span class="menu-icon">🌪️</span>Embaralhadas</a
+              >
+            </li>
+            <li>
+              <a href="erros.html"
+                ><span class="menu-icon">❌</span>Jogo dos Erros</a
+              >
+            </li>
+          </ul>
+        </nav>
+
+        <main class="game-main-area">
+          <p class="game-desc">
+            Salve o boneco palito antes que suas 6 vidas acabem!
+          </p>
+
+          <button id="startBtn" class="btn-action">▶ JOGAR FORCA</button>
+
+          <div id="playArea" style="display: none">
+            <div class="status-bar">
+              <span>Pontos: <span id="score">0</span></span>
+              <span style="color: #ffff00"
+                >Erros: <span id="mistakes">0</span> / 6</span
+              >
+            </div>
+
+            <div id="hintDisplay" class="word-category">
+              DICA: Carregando...
+            </div>
+
+            <div class="ascii-monitor">
+              <pre id="asciiArt"></pre>
+            </div>
+
+            <div id="wordDisplay" class="word-display">_ _ _ _ _</div>
+
+            <div id="customAlert" class="custom-alert"></div>
+
+            <div class="keyboard" id="keyboardArea"></div>
+          </div>
+        </main>
+
+        <aside class="ads-sidebar ad-desktop-only">
+          <div class="ad-placeholder ad-300x250">
+            <ins
+              class="adsbygoogle"
+              style="display: block"
+              data-ad-client="ca-pub-1158047772982385"
+              data-ad-slot="4700847273"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            ></ins>
+            <script>
+              (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+          </div>
+          <div class="ad-placeholder ad-300x600">
+            <ins
+              class="adsbygoogle"
+              style="display: block"
+              data-ad-client="ca-pub-1158047772982385"
+              data-ad-slot="6704938945"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            ></ins>
+            <script>
+              (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+          </div>
+        </aside>
+      </div>
+    </div>
+
     <footer class="site-footer">
-        <marquee behavior="scroll" direction="left" class="marquee-90s">CURIOSIDADE: A PALAVRA "GEOGRAFIA" VEM DO GREGO ANTIGO, ONDE "GEO" SIGNIFICA TERRA E "GRAPHIA" SIGNIFICA DESCRIÇÃO. LITERALMENTE, A DESCRIÇÃO DA TERRA! 🗺️ --- CONTINUE EXPLORANDO O GEO GAMES!</marquee>
+      <marquee behavior="scroll" direction="left" class="marquee-90s"
+        >CURIOSIDADE: A PALAVRA "GEOGRAFIA" VEM DO GREGO ANTIGO, ONDE "GEO"
+        SIGNIFICA TERRA E "GRAPHIA" SIGNIFICA DESCRIÇÃO. --- CONTINUE EXPLORANDO
+        O GEO GAMES!</marquee
+      >
     </footer>
 
-</body>
+    <script src="js/main.js"></script>
+    <script src="js/forca.js"></script>
+  </body>
 </html>
