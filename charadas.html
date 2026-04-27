@@ -1,486 +1,182 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GEO GAMES - Charadas Geográficas</title>
 
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-N2ZZJ1F6T1"></script>
-
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1158047772982385"
-     crossorigin="anonymous"></script>
-
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-N2ZZJ1F6T1');
-</script>
-
-    <style>
-        /* --- RESET BÁSICO --- */
-        * { box-sizing: border-box; }
-        body, h1, h2, h3, p, ul, li { margin: 0; padding: 0; font-weight: normal; }
-        body { 
-            background-color: #E6E6E6; 
-            font-family: 'Comic Sans MS', Arial, sans-serif; 
-            color: #000; 
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        /* --- HEADER --- */
-        .site-header { 
-            background-color: #0000FF; color: #FFFFFF; padding: 15px; 
-            border-bottom: 4px solid #FF0000; text-align: center; width: 100%;
-        }
-        .site-header h1 { font-weight: bold; color: #FFFF00; text-shadow: 2px 2px 0px #FF0000; font-size: clamp(24px, 4vw, 36px); margin-top: 5px;}
-        .site-header a { color: #FFF; font-family: 'Courier New', Courier, monospace; font-size: 14px; text-decoration: none; font-weight: bold;}
-        .site-header a:hover { text-decoration: underline; color: #00FF00;}
-
-        .main-layout-flex { 
-            display: flex; gap: 20px; justify-content: center; align-items: flex-start; margin-top: 20px;
-        }
-
-        /* --- MENU LATERAL (ESQUERDA) --- */
-        .side-menu { 
-            width: 220px; flex-shrink: 0; background-color: #FFFFCC; 
-            border: 3px solid #FF0000; box-shadow: 2px 2px 0px #000;
-        }
-        .menu-header { 
-            background-color: #FF0000; color: #FFFFFF; font-weight: bold; 
-            padding: 8px 10px; text-align: center; font-family: Arial, sans-serif; text-transform: uppercase;
-        }
-        .side-menu ul { list-style: none; padding: 10px; }
-        .side-menu li { padding: 8px 0; border-bottom: 1px dashed #FF0000; }
-        .side-menu li:last-child { border-bottom: none; }
-        .side-menu li a { text-decoration: none; font-weight: bold; color: #000000; display: flex; align-items: center; }
-        .side-menu li a:hover { color: #FF0000; background-color: #FFFFFF; }
-        .menu-icon { font-size: 20px; margin-right: 10px; }
-
-        /* --- ÁREA DO JOGO (CENTRO) --- */
-        .game-main-area {
-            flex: 1; max-width: 900px; background-color: #FFF; border: 4px outset #CCC;
-            box-shadow: 3px 3px 0px #000; padding: 20px; text-align: center;
-        }
-
-        /* --- SIDEBAR DE ANÚNCIOS (DIREITA) --- */
-        .ads-sidebar { width: 300px; flex-shrink: 0; display: flex; flex-direction: column; gap: 20px; }
-
-        /* --- ESTRUTURA DE ANÚNCIOS --- */
-        .ad-placeholder { background: transparent; border: none; color: transparent; overflow: hidden; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; }
-        .ad-mobile-only { display: none; } 
-        .ad-desktop-only { display: flex; flex-direction: column; }
-        .ad-336x280-flex { width: 336px; height: 280px; max-width: 100%; }
-        .ad-300x600 { width: 300px; height: 600px; margin-bottom: 20px; }
-        .ad-300x250 { width: 300px; height: 250px; margin-bottom: 20px; }
-
-        /* --- ESTILOS ESPECÍFICOS: CHARADAS --- */
-        .game-desc { font-size: 18px; margin-bottom: 15px; }
-
-        .status-bar {
-            display: flex; justify-content: space-between; align-items: center;
-            background-color: #008000; color: #FFF; padding: 10px 20px; font-weight: bold;
-            font-size: 20px; border: 2px solid #000; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;
-        }
-        
-        .round-prize { background-color: #FFD700; color: #000; padding: 2px 8px; border-radius: 5px; border: 2px solid #000; }
-
-        .riddle-card {
-            background-color: #F9F9F9; border: 3px dashed #000; padding: 30px 20px;
-            margin: 20px 0; min-height: 150px; display: flex; flex-direction: column; justify-content: center;
-            box-shadow: inset 2px 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .riddle-text { font-size: 24px; font-weight: bold; line-height: 1.4; color: #333; margin-bottom: 20px; }
-
-        /* Dicas */
-        .hints-container { display: flex; flex-direction: column; gap: 10px; align-items: center; }
-        .hint-text { 
-            font-size: 16px; color: #0000FF; font-style: italic; font-weight: bold;
-            display: none; background: #E6E6FA; padding: 10px 15px; border: 2px solid #800080; width: 90%;
-        }
-
-        /* Inputs e Botões */
-        .input-area { margin-top: 20px; }
-        .input-group { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 15px; }
-        
-        .input-box { 
-            padding: 15px; font-size: 20px; border: 3px inset #CCC; width: 100%; max-width: 500px;
-            text-transform: uppercase; text-align: center; font-weight: bold; font-family: 'Courier New', Courier, monospace;
-        }
-
-        .btn-action, .btn-skip {
-            color: #000; border: 4px outset #FFF; font-weight: bold; 
-            padding: 15px 20px; font-size: 18px; cursor: pointer; 
-            box-shadow: 2px 2px 0px #000; font-family: 'Comic Sans MS', Arial, sans-serif;
-            transition: all 0.1s;
-        }
-        .btn-action:active, .btn-skip:active { border: 4px inset #FFF; transform: translateY(2px); }
-        
-        .btn-action { background-color: #FFCC00; }
-        .btn-skip { background-color: #FF8800; }
-        .btn-skip:hover { background-color: #FFAA00; }
-        
-        .btn-hint { background-color: #C0C0C0; font-size: 16px; margin-bottom: 15px; padding: 10px 15px;}
-
-        /* Alertas */
-        .custom-alert {
-            display: none; padding: 20px; margin-top: 20px; border: 4px dashed #000; 
-            font-size: 22px; font-weight: bold; text-align: center;
-        }
-        .alert-success { background-color: #90EE90; border-color: #006400; color: #006400; }
-        .alert-error { background-color: #FFCCCC; border-color: #CC0000; color: #CC0000; }
-        .answer-highlight { display:inline-block; margin-top:10px; color:#000; font-size:24px; background:#FFFF00; padding: 5px 15px; border-radius: 5px; border: 2px solid #000; }
-
-        /* --- FOOTER E MARQUEE 100% --- */
-        .site-footer { 
-            background-color: #0000FF; 
-            border-top: 4px solid #FF0000; 
-            padding: 10px; 
-            width: 100%;
-            margin-top: auto;
-	
-        }
-        .marquee-90s { 
-            font-family: 'Courier New', Courier, monospace; 
-            font-weight: bold; 
-            font-size: 18px; 
-            color: #FFFFFF; /* Dica: Se quiser o texto amarelo, mude para #FFFF00 */
-        }
-
-        /* --- RESPONSIVIDADE --- */
-        @media (max-width: 1200px) {
-            .main-layout-flex { flex-direction: column; align-items: center; }
-            .side-menu { width: 100%; max-width: 900px; margin-bottom: 10px; }
-            .side-menu ul { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-            .side-menu li { border-bottom: none; border-right: 1px dashed #FF0000; padding-right: 10px; }
-            .side-menu li:last-child { border-right: none; }
-            .ads-sidebar { width: 100%; flex-direction: row; flex-wrap: wrap; justify-content: center; }
-            .ad-mobile-only { display: flex !important; }
-            .ad-desktop-only { display: none !important; }
-        }
-
-        @media (max-width: 600px) {
-            .status-bar { font-size: 16px; flex-direction: column; text-align: center; }
-            .riddle-text { font-size: 20px; }
-            .btn-action, .btn-skip, .btn-hint { width: 100%; margin-left: 0; }
-        }
-
-        /* --- CURSOR RETRÔ ANOS 90 --- */
-      body, a, button {
-        /* Seta pixelada branca com borda preta (maior que o normal) */
-        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Cpath d='M2,2 L2,26 L8,20 L13,31 L18,29 L13,18 L22,18 Z' fill='white' stroke='black' stroke-width='2'/%3E%3C/svg%3E"), auto !important;
-      }
-
-      /* Quando a classe 'clicando' for ativada pelo JavaScript, tudo vira um globo! */
-      body.clicando, body.clicando * {
-        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' style='font-size:26px'%3E%3Ctext y='26'%3E%F0%9F%8C%90%3C/text%3E%3C/svg%3E"), pointer !important;
-      }
-
-    </style>
-</head>
-<body>
-
-    <header class="site-header">
-        <h1>GEO GAMES</h1>
-        <a href="index.html">VOLTAR PARA O MENU PRINCIPAL</a>
-    </header>
-
-        <div class="main-layout-flex">
-            
-            <aside class="side-menu">
-                <div class="menu-header">OUTROS JOGOS</div>
-                <ul>
-                    <li><a href="index.html"><span class="menu-icon">🏠</span>Início</a></li>
-                    <li><a href="fronteiras.html"><span class="menu-icon">🗺️</span>Fronteiras</a></li>
-                    <li><a href="continentes.html"><span class="menu-icon">🌍</span>Continentes</a></li>
-                    <li><a href="capitais.html"><span class="menu-icon">📍</span>Capitais</a></li>
-                    <li><a href="bandeiras.html"><span class="menu-icon">🚩</span>Bandeiras</a></li>
-                    <li><a href="caca-palavras.html"><span class="menu-icon">🔍</span>Caça-Palavras</a></li>
-                    <li><a href="mapa.html"><span class="menu-icon">📌</span>Onde fica?</a></li>
-                    <li><a href="charadas.html"><span class="menu-icon">🤔</span>Charadas</a></li>
-                    <li><a href="forca.html"><span class="menu-icon">☠️</span>Forca</a></li>
-                    <li><a href="embaralhadas.html"><span class="menu-icon">🌪️</span>Embaralhadas</a></li>
-                    <li><a href="erros.html"><span class="menu-icon">❌</span>Jogo dos Erros</a></li>
-                </ul>
-            </aside>
-
-            <div class="ad-placeholder ad-mobile-only ad-336x280-flex">PUBLICIDADE</div>
-
-            <main class="game-main-area">
-                <p class="game-desc">Adivinhe o local, país, monumento ou fenômeno geográfico baseado nas pistas!</p>
-
-                <div class="status-bar">
-                    <div>NÍVEL: <span id="level">1</span>/10</div>
-                    <div>PONTOS: <span id="score">0</span></div>
-                    <div class="round-prize">Valendo: <span id="prizePoints">100</span> pts</div>
-                </div>
-
-                <div class="riddle-card" id="riddleCard">
-                    <div class="riddle-text" id="riddleText">Carregando charada...</div>
-                    <div class="hints-container">
-                        <div class="hint-text" id="hint1"></div>
-                        <div class="hint-text" id="hint2"></div>
-                        <div class="hint-text" id="hint3"></div>
-                    </div>
-                </div>
-
-                <button class="btn-action btn-hint" id="hintBtn" onclick="showHint()">💡 PEDIR DICA (-20 pts)</button>
-
-                <div class="input-area" id="inputArea" style="display: none;">
-                    <div class="input-group">
-                        <input type="text" id="userInput" class="input-box" placeholder="Digite sua resposta..." autocomplete="off">
-                    </div>
-                    <div class="input-group">
-                        <button class="btn-action" onclick="checkAnswer()">ENVIAR RESPOSTA</button>
-                        <button class="btn-skip" onclick="skipRiddle()">PULAR ⏭️</button>
-                    </div>
-                </div>
-
-                <div id="customAlert" class="custom-alert"></div>
-            </main>
-
-            <aside class="ads-sidebar ad-desktop-only">
-                <div class="ad-placeholder ad-300x250">PUBLICIDADE</div>
-                <div class="ad-placeholder ad-300x600">PUBLICIDADE</div>
-            </aside>
-            
-        </div>
-    </div>
-
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-N2ZZJ1F6T1"
+    ></script>
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1158047772982385"
+      crossorigin="anonymous"
+    ></script>
     <script>
-
-        // --- EFEITO DO MOUSE (GLOBO) COM ATRASO ---
-      let temporizadorGlobo;
-      
-      document.addEventListener('mousedown', () => {
-        // Adiciona o globo
-        document.body.classList.add('clicando');
-        
-        // Limpa o cronômetro se o usuário der vários cliques muito rápidos
-        clearTimeout(temporizadorGlobo);
-        
-        // Define quanto tempo o globo vai ficar na tela (em milissegundos)
-        temporizadorGlobo = setTimeout(() => {
-          document.body.classList.remove('clicando');
-        }, 300); // 300 milissegundos (0.3 segundos). Se quiser mais tempo, mude para 500!
-      });
-
-        // BANCO DE DADOS ÉPICO - 85 Charadas (Geografia, Geopolítica, História e Natureza)
-        const database = [
-            { q: "Tenho cidades, mas não tenho casas. Tenho montanhas, mas não tenho árvores. Tenho água, mas não tenho peixes. O que eu sou?", a: ["MAPA", "MAPAS"], h: ["Mostro o mundo inteiro em um pedaço de papel.", "Geralmente tenho uma Rosa dos Ventos impressa.", "Piratas usavam para encontrar tesouros."] },
-            { q: "Divido o mundo em duas metades, mas você não pode me tocar. Passo bem no meio de um estado brasileiro na região Norte.", a: ["EQUADOR", "LINHA DO EQUADOR"], h: ["Sou uma linha imaginária.", "Meu nome batiza um país andino vizinho à Colômbia.", "Corto exatamente a cidade de Macapá."] },
-            { q: "Sou o meridiano mais famoso do mundo, dividindo a Terra nos hemisférios Ocidental e Oriental.", a: ["GREENWICH", "MERIDIANO DE GREENWICH"], h: ["Sirvo como referência para os fusos horários globais (GMT).", "Passo por um observatório famoso em Londres.", "Meu nome é o mesmo do distrito londrino onde fui definido."] },
-            { q: "Sou a fronteira geológica mais profunda e inexplorada da Terra, um verdadeiro abismo negro no fundo do mar.", a: ["FOSSA DAS MARIANAS", "FOSSA DAS MARIANA"], h: ["Fico no Oceano Pacífico.", "Sou mais profunda do que a altura do Monte Everest.", "A pressão nas minhas águas esmagaria um submarino comum."] },
-            { q: "Não sou um país nem um governo, mas um espetáculo visual magnético que ocorre nas regiões polares do norte.", a: ["AURORA BOREAL", "AURORA BOREALIS"], h: ["Sou causada pela interação dos ventos solares com o campo magnético da Terra.", "Pinto o céu de verde, rosa e roxo.", "Muitos turistas viajam para a Noruega ou Islândia só para me ver."] },
-            { q: "Sou o lago mais profundo e antigo do mundo, contendo cerca de um quinto de toda a água doce não congelada da Terra.", a: ["LAGO BAIKAL", "BAIKAL"], h: ["Fico localizado na região da Sibéria.", "Estou no território da Rússia.", "No inverno, minha superfície congela e forma um gelo incrivelmente transparente."] },
-            { q: "Sou um arquipélago no Ártico que abriga o 'Cofre Global de Sementes', guardando a biodiversidade agrícola do mundo para o caso de um apocalipse.", a: ["SVALBARD"], h: ["Pertenço à Noruega.", "Tenho mais ursos polares do que seres humanos.", "Por lei, ninguém pode nascer ou morrer no meu território."] },
-            { q: "Sou a maior cachoeira da África. Os nativos me chamam de 'Mosi-oa-Tunya' (A Fumaça que Troveja).", a: ["CATARATAS DE VITORIA", "VICTORIA FALLS"], h: ["Fico no rio Zambeze.", "Faço fronteira entre a Zâmbia e o Zimbábue.", "Fui 'descoberta' pelo explorador escocês David Livingstone."] },
-            { q: "Fui o centro de um dos impérios mais ricos da Idade Média, famoso pelo imperador Mansa Musa e pela mítica cidade de Timbuktu.", a: ["MALI", "IMPERIO DO MALI"], h: ["Fico na África Ocidental.", "No passado, controlei as rotas transaarianas de ouro e sal.", "Hoje, grande parte do meu território é coberta pelo Deserto do Saara."] },
-            { q: "Sou uma nação no Chifre da África que orgulha-se de nunca ter sido formalmente colonizada por europeus. Acredita-se que eu guarde a Arca da Aliança.", a: ["ETIOPIA"], h: ["Derrotei os italianos na Batalha de Adwa em 1896.", "Sou considerada o berço do café no mundo.", "Minha capital é Adis Abeba."] },
-            { q: "Tenho três capitais oficiais e uma história geopolítica marcada pela superação de um duro regime de segregação racial.", a: ["AFRICA DO SUL"], h: ["O regime que derrotei chamava-se Apartheid.", "Nelson Mandela foi meu presidente mais famoso.", "Fico no extremo sul do continente africano."] },
-            { q: "Fui palco de uma tragédia terrível nos anos 90, mas hoje sou conhecida como a 'Singapura da África' e a 'Terra das Mil Colinas' pelo rápido avanço econômico.", a: ["RUANDA"], h: ["Fico na região dos Grandes Lagos Africanos.", "Minha capital é Kigali, considerada uma das cidades mais limpas da África.", "Abrigamos os raros gorilas-da-montanha."] },
-            { q: "Sou um país da Ásia Central, famoso pelas cidades da antiga Rota da Seda, como Samarcanda. Além disso, sou duplamente encravado.", a: ["UZBEQUISTAO"], h: ["Para chegar ao mar saindo de mim, é preciso cruzar dois outros países.", "Fiz parte da antiga União Soviética.", "Minha capital é Tashkent."] },
-            { q: "Geopoliticamente, sou conhecido como o 'Cemitério de Impérios', devido à minha geografia montanhosa acidentada e histórico de resistir a superpotências.", a: ["AFEGANISTAO"], h: ["Fico na Ásia Central/Sul.", "Britânicos, soviéticos e americanos tentaram me controlar sem sucesso a longo prazo.", "Minha capital é Cabul."] },
-            { q: "Na Idade Média, sob a liderança de Genghis Khan, formei o maior império contíguo de terras da história da humanidade.", a: ["MONGOLIA", "IMPERIO MONGOL"], h: ["Fico 'espremido' entre a Rússia e a China.", "Sou famoso pelas vastas estepes e cultura nômade a cavalo.", "Minha capital é Ulan Bator."] },
-            { q: "Sou uma região conhecida como o 'Teto do Mundo'. Hoje sou administrada pela China, o que gera intensos debates geopolíticos, e sou a sede espiritual do Dalai Lama.", a: ["TIBETE", "TIBET"], h: ["Fico no alto da Cordilheira do Himalaia.", "Minha capital tradicional é Lhasa.", "Fui um reino independente e teocrático no passado."] },
-            { q: "Sou uma cidade-estado asiática altamente desenvolvida, que passou de uma ilha pobre a uma potência financeira global após ser expulsa da Malásia em 1965.", a: ["SINGAPURA", "CINGAPURA"], h: ["Tenho um dos portos mais movimentados do mundo.", "Minhas leis de limpeza são tão rígidas que mascar chiclete é proibido.", "Minha arquitetura mistura selva e prédios futuristas."] },
-            { q: "Sou o país mais isolado do mundo moderno, governado por uma dinastia severa e um regime totalitário sob extremo sigilo.", a: ["COREIA DO NORTE"], h: ["Fico na Ásia Oriental.", "Faço fronteira ao sul com uma nação muito tecnológica (separada pelo paralelo 38).", "Minha capital é a cidade de Pyongyang."] },
-            { q: "Fui o Império Romano do Oriente durante a Idade Média. Minha capital era o centro comercial do mundo e minhas muralhas caíram apenas com a invenção dos canhões.", a: ["IMPERIO BIZANTINO", "BIZANTINO"], h: ["Minha capital era Constantinopla (atual Istambul).", "A Basílica de Santa Sofia (Hagia Sophia) foi minha maior obra.", "Sobrevivi quase mil anos a mais que a metade ocidental de Roma."] },
-            { q: "Fui uma complexa união geopolítica na Europa Central durante a Idade Média e Moderna. O filósofo Voltaire dizia que eu não era 'nem sagrado, nem romano, nem um império'.", a: ["SACRO IMPERIO ROMANO GERMANICO", "SACRO IMPERIO ROMANO", "SACRO IMPERIO"], h: ["Fui governado por imperadores da Casa de Habsburgo por séculos.", "Meu território englobava principalmente o que hoje é a Alemanha e Áustria.", "Fui dissolvido por Napoleão Bonaparte em 1806."] },
-            { q: "Dominei o Oriente Médio, o norte da África e o sudeste da Europa por séculos. Conhecido como o 'Homem doente da Europa' antes da minha queda na 1ª Guerra Mundial.", a: ["IMPERIO OTOMANO", "OTOMANO"], h: ["Fui fundado por tribos turcas.", "Derrubei Constantinopla em 1453.", "Sou o precursor do moderno Estado da Turquia."] },
-            { q: "Sou um país nos Bálcãs que se desintegrou de forma violenta nos anos 90, dando origem a novas nações como Croácia, Sérvia e Bósnia.", a: ["IUGOSLAVIA"], h: ["Fui um país socialista, mas independente da URSS.", "Fui liderado por décadas pelo Marechal Josip Broz Tito.", "Minha capital era Belgrado."] },
-            { q: "Fui a primeira nação da América Latina a declarar independência e a primeira república negra livre do mundo, após uma grande revolução de escravizados.", a: ["HAITI"], h: ["Divido a ilha de Hispaniola com a República Dominicana.", "Derrotei as tropas de Napoleão Bonaparte no início do século XIX.", "Minha capital é Porto Príncipe."] },
-            { q: "Fui uma superpotência comunista que durou de 1922 a 1991, protagonizando a Guerra Fria e a Corrida Espacial.", a: ["UNIAO SOVIETICA", "URSS"], h: ["Enviei o primeiro satélite (Sputnik) e o primeiro homem ao espaço.", "Minha economia era planificada e o poder centrado em Moscou.", "Fui composta por 15 repúblicas, lideradas pela Rússia."] },
-            { q: "Sou uma ilha caribenha que foi o epicentro de uma crise geopolítica quase apocalíptica em 1962, por conta de mísseis nucleares soviéticos escondidos em meu território.", a: ["CUBA"], h: ["Sofro um embargo econômico dos EUA há décadas.", "Fui governada por Fidel Castro.", "Minha capital é Havana."] },
-            { q: "Sou o menor país do mundo, mas exerço enorme influência geopolítica global. Meu sistema de governo é uma monarquia teocrática eletiva.", a: ["VATICANO"], h: ["Sou a sede mundial da Igreja Católica.", "Fico localizado dentro de Roma.", "O Papa é o meu chefe de estado absoluto."] },
-            { q: "Sou o país onde dizem que o sol nasce primeiro.", a: ["JAPAO"], h: ["Fico na Ásia e sou um arquipélago (conjunto de ilhas).", "A cultura dos samurais e animes nasceu aqui.", "Minha bandeira é branca com um grande círculo vermelho no meio."] },
-            { q: "Fico no meio de dois oceanos, mas não sou uma ilha. Tenho um canal artificial gigante que corta meu corpo.", a: ["PANAMA"], h: ["Ligo a América do Norte à América do Sul.", "Meu famoso canal liga o Oceano Pacífico ao Oceano Atlântico.", "Minha capital tem exatamente o mesmo nome do país."] },
-            { q: "Sou o maior país do mundo em território, mas a maior parte de mim é coberta de gelo e florestas de taiga.", a: ["RUSSIA"], h: ["Me espalho por dois continentes: Europa e Ásia.", "Fui o país sede e centro da antiga União Soviética.", "Minha capital é a cidade de Moscou."] },
-            { q: "Tenho o formato exato de uma bota gigante que parece estar chutando uma ilha.", a: ["ITALIA"], h: ["Fico no sul da Europa, no Mar Mediterrâneo.", "Fui o centro do grande Império Romano.", "A ilha que eu 'chuto' se chama Sicília."] },
-            { q: "Sou um país que também é considerado um continente inteiro. Tenho muitos desertos e animais que pulam.", a: ["AUSTRALIA"], h: ["Fico localizado na Oceania.", "A Ópera de Sydney é o meu principal cartão postal.", "Sou a terra natural dos cangurus e coalas."] },
-            { q: "Sou o lugar mais frio, seco e ventoso da Terra. Não pertenço a nenhum país do mundo.", a: ["ANTARTIDA", "ANTARTICA"], h: ["Fico no extremo sul do planeta.", "Há um tratado internacional que proíbe testes militares e mineração em mim.", "Sou o lar natural dos pinguins-imperadores."] },
-            { q: "Sou a maior ilha do mundo, mas meu nome é a maior propaganda enganosa, pois sou quase toda coberta de gelo.", a: ["GROENLANDIA"], h: ["Fico no Oceano Ártico, perto do Canadá.", "Pertenço ao Reino da Dinamarca.", "Meu nome em inglês significa literalmente 'Terra Verde' (Greenland)."] },
-            { q: "Sou uma cordilheira gigante que forma a espinha dorsal de toda a costa oeste de um continente.", a: ["ANDES", "CORDILHEIRA DOS ANDES"], h: ["Cruzo sete países da América do Sul.", "Sou a maior cadeia de montanhas continental do mundo.", "O pico do Aconcágua e a cidade inca de Machu Picchu ficam em mim."] },
-            { q: "Sou o arquipélago vulcânico mais famoso do mundo, isolado no meio do Pacífico e pertenço a uma potência mundial.", a: ["HAVAI", "HAWAII"], h: ["Sou o 50º estado dos Estados Unidos da América.", "A base naval de Pearl Harbor, atacada na 2ª Guerra Mundial, fica aqui.", "Minha capital é a cidade de Honolulu."] },
-            { q: "Sou um país longo e absurdamente estreito, espremido entre montanhas gigantes e um oceano.", a: ["CHILE"], h: ["Fico na costa oeste da América do Sul.", "O deserto mais seco do mundo (Atacama) fica na minha região norte.", "Minha capital é a cidade de Santiago."] },
-            { q: "Sou o estado mais ao sul do Brasil, lar dos pampas e cenário de uma famosa revolução separatista no século XIX.", a: ["RIO GRANDE DO SUL", "RS"], h: ["Faço fronteira com o Uruguai e a Argentina.", "Minha capital é Porto Alegre.", "A cultura gaúcha e o chimarrão são minhas marcas registradas."] },
-            { q: "Fico no extremo norte do Brasil, tenho uma fortaleza militar em formato de estrela e o Rio Amazonas beija minhas margens.", a: ["AMAPA"], h: ["Sou o estado brasileiro onde fica o Marco Zero da linha do equador.", "Faço fronteira com a Guiana Francesa.", "Minha capital é Macapá."] },
-            { q: "Sou o menor estado do Brasil em área territorial, localizado na região Nordeste.", a: ["SERGIPE"], h: ["Fico espremido entre a Bahia e Alagoas.", "Minha capital foi uma das primeiras cidades planejadas do Brasil (Aracaju).", "O Rio São Francisco deságua na minha fronteira norte."] },
-            { q: "Sou a maior floresta tropical do mundo, abrigando a maior biodiversidade do planeta e influenciando o clima global.", a: ["FLORESTA AMAZONICA", "AMAZONIA"], h: ["Me estendo por nove países da América do Sul.", "Ocupo grande parte do território norte do Brasil.", "Sou frequentemente chamada de 'pulmão do mundo'."] },
-            { q: "Sou o arquipélago vulcânico brasileiro com algumas das praias mais bonitas do mundo e limite restrito de visitantes por questões ambientais.", a: ["FERNANDO DE NORONHA", "NORONHA"], h: ["Pertenço geopoliticamente ao estado de Pernambuco.", "Fui usado como presídio militar no passado.", "A Baía do Sancho, eleita várias vezes a melhor praia do mundo, fica em mim."] },
-            { q: "Sou um famoso canal artificial no Egito. Quando um navio bloqueou minha passagem recentemente, o comércio global parou.", a: ["CANAL DE SUEZ", "SUEZ"], h: ["Conecto o Mar Mediterrâneo ao Mar Vermelho.", "Evito que os navios europeus tenham que dar a volta em toda a África para chegar à Ásia.", "Fui nacionalizado em 1956, gerando uma grande crise diplomática."] },
-            { q: "Sou a maior represa hidrelétrica do mundo em geração de energia, superando Itaipu, com um lago que cobriu antigas vilas asiáticas.", a: ["TRES GARGANTAS", "REPRESA DE TRES GARGANTAS"], h: ["Fico localizada no Rio Yangtzé.", "Minha construção foi a maior obra de engenharia da China contemporânea.", "Foi tão massiva que afetou sutilmente a rotação da Terra."] },
-            { q: "Sou uma região mística do oceano Atlântico onde dizem que dezenas de navios e aviões desapareceram sem explicação clara.", a: ["TRIANGULO DAS BERMUDAS", "TRIANGULO"], h: ["Meus vértices ligam o estado da Flórida, a ilha de Porto Rico e o arquipélago das Bermudas.", "Minha fama geopolítica cresceu muito na época da Guerra Fria com sumiços de frotas navais.", "A ciência explica os sumiços por anomalias climáticas e correntes marítimas intensas."] },
-            { q: "Sou o maior país do mundo sem costa marítima (encravado).", a: ["CAZAQUISTAO"], h: ["Fico localizado na Ásia Central.", "Minhas estepes abrigam a base de lançamento espacial russa de Baikonur.", "Minha capital moderna chama-se Astana."] },
-            { q: "Sou um país europeu que possui o formato de um escudo verde no mapa. Reconhecido por abrigar bancos ultrasseguros e manter rigorosa neutralidade.", a: ["SUICA"], h: ["Fico encravado no meio dos Alpes.", "Muitas organizações internacionais (ONU, Cruz Vermelha) têm sede no meu território.", "Não tenho um presidente único, mas um Conselho Federal."] },
-            { q: "Sou um mar localizado entre a Europa e a Ásia Central, e diferentemente dos outros mares, sou totalmente fechado (um lago gigante).", a: ["MAR CASPIO", "CASPIO"], h: ["Faço fronteira com Rússia, Irã, Azerbaijão, Cazaquistão e Turcomenistão.", "Minhas águas são ricas no valioso esturjão (caviar).", "Meu subsolo possui reservas gigantescas de petróleo e gás natural."] },
-            { q: "Sou a cidade que foi dividida por um muro durante a Guerra Fria, separando fisicamente o mundo capitalista do mundo comunista.", a: ["BERLIM"], h: ["Fico na Europa Central.", "O bloco oriental ergueu a barreira para impedir a fuga da população.", "O muro caiu simbolicamente em novembro de 1989."] },
-            { q: "Sou o estreito marítimo que separa o continente europeu do continente africano, crucial para o controle militar do Mar Mediterrâneo.", a: ["ESTREITO DE GIBRALTAR", "GIBRALTAR"], h: ["Ligo o Oceano Atlântico ao Mar Mediterrâneo.", "De um lado fica a Espanha, do outro, o Marrocos.", "No meu ponto mais estreito, tenho apenas 14 km de distância."] },
-            { q: "Sou o estreito que separa a Ásia (extremo leste da Rússia) da América do Norte (oeste do Alasca nos EUA).", a: ["ESTREITO DE BERING", "BERING"], h: ["Acredita-se que os primeiros humanos chegaram à América atravessando o meu gelo na Era Glacial.", "Ligo o Oceano Ártico ao Oceano Pacífico.", "A linha internacional de mudança de data passa exatamente no meio de mim."] }
-        ];
-
-        // LÓGICA DO JOGO
-        let score = 0;
-        let level = 1;
-        const maxLevel = 10;
-        let currentRiddle = null;
-        let availableRiddles = [...database];
-        let hintsUsed = 0;
-        let currentRoundPoints = 100;
-
-        const riddleText = document.getElementById('riddleText');
-        const userInput = document.getElementById('userInput');
-        const hintBtn = document.getElementById('hintBtn');
-        const scoreDisplay = document.getElementById('score');
-        const levelDisplay = document.getElementById('level');
-        const prizeDisplay = document.getElementById('prizePoints');
-        const customAlert = document.getElementById('customAlert');
-        const inputArea = document.getElementById('inputArea');
-
-        function normalize(str) {
-            return str.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase().trim();
-        }
-
-        function initGame() {
-            score = 0;
-            level = 1;
-            scoreDisplay.innerText = score;
-            availableRiddles = [...database];
-            loadNext();
-        }
-
-        function loadNext() {
-            if (level > maxLevel || availableRiddles.length === 0) {
-                endGame();
-                return;
-            }
-
-            customAlert.style.display = 'none';
-            inputArea.style.display = 'block';
-            hintBtn.style.display = 'inline-block';
-            hintBtn.disabled = false;
-            
-            userInput.value = '';
-            userInput.disabled = false;
-            setTimeout(() => { userInput.focus(); }, 100);
-
-            hintsUsed = 0;
-            currentRoundPoints = 100;
-            prizeDisplay.innerText = currentRoundPoints;
-            
-            for (let i = 1; i <= 3; i++) {
-                const h = document.getElementById('hint' + i);
-                h.style.display = 'none';
-                h.innerText = '';
-            }
-
-            const randomIndex = Math.floor(Math.random() * availableRiddles.length);
-            currentRiddle = availableRiddles.splice(randomIndex, 1)[0];
-            
-            riddleText.innerText = currentRiddle.q;
-            levelDisplay.innerText = level;
-        }
-
-        window.showHint = function() {
-            if (hintsUsed >= 3) return;
-            hintsUsed++;
-            currentRoundPoints -= 20;
-            prizeDisplay.innerText = currentRoundPoints;
-
-            const hintElem = document.getElementById('hint' + hintsUsed);
-            hintElem.innerText = "Dica " + hintsUsed + ": " + currentRiddle.h[hintsUsed - 1];
-            hintElem.style.display = 'block';
-
-            if (hintsUsed === 3) hintBtn.disabled = true;
-            userInput.focus();
-        }
-
-        window.checkAnswer = function() {
-            const val = normalize(userInput.value);
-            
-            if (val === '') {
-                showFeedback("⚠️ ESCREVA ALGUMA COISA!", false);
-                return;
-            }
-
-            if (currentRiddle.a.some(ans => normalize(ans) === val)) {
-                score += currentRoundPoints;
-                scoreDisplay.innerText = score;
-                showFeedback(`🎉 CORRETO! VOCÊ GANHOU +${currentRoundPoints} PONTOS!`, true);
-            } else {
-                showFeedback("❌ RESPOSTA ERRADA! TENTE NOVAMENTE.", false);
-                userInput.value = '';
-                userInput.focus();
-            }
-        }
-
-        window.skipRiddle = function() {
-            const correctAnswer = currentRiddle.a[0]; 
-            customAlert.innerHTML = `⏭️ <strong>VOCÊ PULOU!</strong><br><br>A resposta correta era:<br><span class="answer-highlight"><strong>${correctAnswer}</strong></span>`;
-            customAlert.className = 'custom-alert alert-error'; 
-            customAlert.style.display = 'block';
-
-            inputArea.style.display = 'none';
-            hintBtn.style.display = 'none';
-
-            customAlert.innerHTML += `<br><button onclick="loadNextWrapper()" class="btn-action" style="margin-top:20px;">PRÓXIMA CHARADA ▶</button>`;
-        }
-
-        window.loadNextWrapper = function() {
-            level++;
-            loadNext();
-        }
-
-        function showFeedback(msg, isSuccess) {
-            customAlert.innerHTML = msg;
-            customAlert.className = 'custom-alert ' + (isSuccess ? 'alert-success' : 'alert-error');
-            customAlert.style.display = 'block';
-
-            if (isSuccess) {
-                inputArea.style.display = 'none';
-                hintBtn.style.display = 'none';
-                customAlert.innerHTML += `<br><button onclick="loadNextWrapper()" class="btn-action" style="margin-top:15px;">PRÓXIMA CHARADA ▶</button>`;
-            } else {
-                setTimeout(() => { 
-                    if(customAlert.className.includes('alert-error') && inputArea.style.display !== 'none') {
-                        customAlert.style.display = 'none'; 
-                    }
-                }, 2500);
-            }
-        }
-
-        function endGame() {
-            inputArea.style.display = 'none';
-            hintBtn.style.display = 'none';
-            riddleText.innerText = "FIM DE JOGO!";
-            document.querySelector('.hints-container').innerHTML = '';
-            
-            customAlert.innerHTML = `🏆 <strong>PARABÉNS!</strong> Você completou todas as ${maxLevel} rodadas.<br><br>Sua Pontuação Final: <strong>${score}</strong> pts!<br><br><button onclick="initGame()" class="btn-action" style="margin-top:15px;">JOGAR NOVAMENTE 🔄</button>`;
-            customAlert.className = 'custom-alert alert-success';
-            customAlert.style.display = 'block';
-        }
-
-        userInput.addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                checkAnswer();
-            }
-        });
-
-        window.onload = initGame;
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-N2ZZJ1F6T1");
     </script>
 
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a href="index.html">◀ VOLTAR PARA O MENU PRINCIPAL</a>
+      <h1>CHARADAS GEOGRÁFICAS!</h1>
+    </header>
+
+    <div class="content-wrapper">
+      <div class="main-layout-flex">
+        <nav class="side-menu">
+          <div class="menu-header">OUTROS JOGOS</div>
+          <ul>
+            <li>
+              <a href="index.html"><span class="menu-icon">🏠</span>Início</a>
+            </li>
+            <li>
+              <a href="fronteiras.html"
+                ><span class="menu-icon">🗺️</span>Fronteiras</a
+              >
+            </li>
+            <li>
+              <a href="continentes.html"
+                ><span class="menu-icon">🌍</span>Continentes</a
+              >
+            </li>
+            <li>
+              <a href="capitais.html"
+                ><span class="menu-icon">📍</span>Capitais</a
+              >
+            </li>
+            <li>
+              <a href="bandeiras.html"
+                ><span class="menu-icon">🚩</span>Bandeiras</a
+              >
+            </li>
+            <li>
+              <a href="caca-palavras.html"
+                ><span class="menu-icon">🔍</span>Caça-Palavras</a
+              >
+            </li>
+            <li>
+              <a href="mapa.html"
+                ><span class="menu-icon">📌</span>Onde fica?</a
+              >
+            </li>
+            <li>
+              <a href="charadas.html"
+                ><span class="menu-icon">🤔</span>Charadas</a
+              >
+            </li>
+            <li>
+              <a href="forca.html"><span class="menu-icon">☠️</span>Forca</a>
+            </li>
+            <li>
+              <a href="embaralhadas.html"
+                ><span class="menu-icon">🌪️</span>Embaralhadas</a
+              >
+            </li>
+            <li>
+              <a href="erros.html"
+                ><span class="menu-icon">❌</span>Jogo dos Erros</a
+              >
+            </li>
+          </ul>
+        </nav>
+
+        <main class="game-main-area">
+          <p class="game-desc">
+            Adivinhe o local, país ou fenômeno geográfico baseado nas pistas!
+          </p>
+
+          <div class="status-bar">
+            <div>NÍVEL: <span id="level">1</span>/10</div>
+            <div>PONTOS: <span id="score">0</span></div>
+            <div class="round-prize">
+              Valendo: <span id="prizePoints">100</span> pts
+            </div>
+          </div>
+
+          <div class="riddle-card" id="riddleCard">
+            <div class="riddle-text" id="riddleText">Carregando charada...</div>
+            <div class="hints-container">
+              <div class="hint-text" id="hint1"></div>
+              <div class="hint-text" id="hint2"></div>
+              <div class="hint-text" id="hint3"></div>
+            </div>
+          </div>
+
+          <button class="btn-action btn-hint" id="hintBtn" onclick="showHint()">
+            💡 PEDIR DICA (-20 pts)
+          </button>
+
+          <div class="input-area" id="inputArea" style="display: none">
+            <div class="input-group">
+              <input
+                type="text"
+                id="userInput"
+                class="input-box-charada"
+                placeholder="Digite sua resposta..."
+                autocomplete="off"
+              />
+            </div>
+            <div class="input-group">
+              <button class="btn-action" onclick="checkAnswer()">
+                ENVIAR RESPOSTA
+              </button>
+              <button class="btn-skip" onclick="skipRiddle()">PULAR ⏭️</button>
+            </div>
+          </div>
+
+          <div id="customAlert" class="custom-alert"></div>
+        </main>
+
+        <aside class="ads-sidebar ad-desktop-only">
+          <div class="ad-placeholder ad-300x250">
+            <ins
+              class="adsbygoogle"
+              style="display: block"
+              data-ad-client="ca-pub-1158047772982385"
+              data-ad-slot="4700847273"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            ></ins>
+            <script>
+              (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+          </div>
+          <div class="ad-placeholder ad-300x600">
+            <ins
+              class="adsbygoogle"
+              style="display: block"
+              data-ad-client="ca-pub-1158047772982385"
+              data-ad-slot="6704938945"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            ></ins>
+            <script>
+              (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+          </div>
+        </aside>
+      </div>
+    </div>
+
     <footer class="site-footer">
-        <marquee behavior="scroll" direction="left" class="marquee-90s">CURIOSIDADE: O MAR DE SARGAÇO É O ÚNICO MAR DO PLANETA QUE NÃO POSSUI NENHUM LITORAL! ELE FICA NO MEIO DO OCEANO ATLÂNTICO E É DELIMITADO APENAS POR CORRENTES OCEÂNICAS! 🌊 --- CONTINUE EXPLORANDO O GEO GAMES!</marquee>
+      <marquee behavior="scroll" direction="left" class="marquee-90s"
+        >CURIOSIDADE: O MAR DE SARGAÇO É O ÚNICO MAR DO PLANETA QUE NÃO POSSUI
+        NENHUM LITORAL! ELE FICA NO MEIO DO OCEANO ATLÂNTICO... --- CONTINUE
+        EXPLORANDO O GEO GAMES!</marquee
+      >
     </footer>
 
-</body>
+    <script src="js/main.js"></script>
+    <script src="js/charadas.js"></script>
+  </body>
 </html>

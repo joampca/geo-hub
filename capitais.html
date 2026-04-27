@@ -5,370 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GEO GAMES - Capitais por Região</title>
 
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-N2ZZJ1F6T1"></script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-N2ZZJ1F6T1"
+    ></script>
 
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1158047772982385"
-     crossorigin="anonymous"></script>
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1158047772982385"
+      crossorigin="anonymous"
+    ></script>
 
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-  gtag('config', 'G-N2ZZJ1F6T1');
-</script>
+      gtag("config", "G-N2ZZJ1F6T1");
+    </script>
 
-    <style>
-      /* --- RESET BÁSICO --- */
-      * {
-        box-sizing: border-box;
-      }
-      body,
-      h1,
-      h2,
-      h3,
-      p,
-      ul,
-      li {
-        margin: 0;
-        padding: 0;
-        font-weight: normal;
-      }
-      body {
-        background-color: #e6e6e6;
-        font-family: "Comic Sans MS", Arial, sans-serif;
-        color: #000;
-        overflow-x: hidden;
-        display: flex;
-        flex-direction: column;
-
-        min-height: 100vh;
-      }
-
-      /* --- HEADER --- */
-      .site-header {
-        background-color: #0000ff;
-        color: #ffffff;
-        padding: 15px;
-        border-bottom: 4px solid #ff0000;
-        text-align: center;
-        width: 100%;
-      }
-      .site-header h1 {
-        font-weight: bold;
-        color: #ffff00;
-        text-shadow: 2px 2px 0px #ff0000;
-        font-size: clamp(24px, 4vw, 36px);
-        margin-top: 5px;
-      }
-      .site-header a {
-        color: #fff;
-        font-family: "Courier New", Courier, monospace;
-        font-size: 14px;
-        text-decoration: none;
-        font-weight: bold;
-      }
-      .site-header a:hover {
-        text-decoration: underline;
-        color: #00ff00;
-      }
-
-      /* --- ESTRUTURA GERAL COM ANÚNCIOS --- */
-      .content-wrapper {
-        max-width: 1500px;
-        margin: 0 auto;
-        padding: 20px 15px;
-        flex: 1;
-        width: 100%;
-      }
-
-      .main-layout-flex {
-        display: flex;
-        gap: 20px;
-        justify-content: center;
-        align-items: flex-start;
-      }
-
-      /* --- MENU LATERAL (ESQUERDA) --- */
-      .side-menu {
-        width: 220px;
-        flex-shrink: 0;
-        background-color: #ffffcc;
-        border: 3px solid #ff0000;
-        box-shadow: 2px 2px 0px #000;
-      }
-      .menu-header {
-        background-color: #ff0000;
-        color: #ffffff;
-        font-weight: bold;
-        padding: 8px 10px;
-        text-align: center;
-        font-family: Arial, sans-serif;
-        text-transform: uppercase;
-      }
-      .side-menu ul {
-        list-style: none;
-        padding: 10px;
-      }
-      .side-menu li {
-        padding: 8px 0;
-        border-bottom: 1px dashed #ff0000;
-      }
-      .side-menu li:last-child {
-        border-bottom: none;
-      }
-      .side-menu li a {
-        text-decoration: none;
-        font-weight: bold;
-        color: #000000;
-        display: flex;
-        align-items: center;
-      }
-      .side-menu li a:hover {
-        color: #ff0000;
-        background-color: #ffffff;
-      }
-      .menu-icon {
-        font-size: 20px;
-        margin-right: 10px;
-      }
-
-      /* --- ÁREA DO JOGO (CENTRO) --- */
-      .game-main-area {
-        flex: 1;
-        max-width: 900px;
-        background-color: #fff;
-        border: 4px outset #ccc;
-        box-shadow: 3px 3px 0px #000;
-        padding: 20px;
-        text-align: center;
-      }
-
-      /* --- SIDEBAR DE ANÚNCIOS (DIREITA) --- */
-      .ads-sidebar {
-        width: 300px;
-        flex-shrink: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-      }
-
-      /* --- ESTRUTURA DE ANÚNCIOS --- */
-      .ad-placeholder {
-        background: transparent;
-        border: none;
-        color: transparent;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 20px auto;
-      }
-      .ad-mobile-only {
-        display: none;
-      }
-      .ad-desktop-only {
-        display: flex;
-        flex-direction: column;
-      }
-      .ad-336x280-flex {
-        width: 336px;
-        height: 280px;
-        max-width: 100%;
-      }
-      .ad-300x600 {
-        width: 300px;
-        height: 600px;
-        margin-bottom: 20px;
-      }
-      .ad-300x250 {
-        width: 300px;
-        height: 250px;
-        margin-bottom: 20px;
-      }
-
-      /* --- ESTILOS INTERNOS DO JOGO --- */
-      .game-desc {
-        font-size: 18px;
-        margin-bottom: 20px;
-      }
-      .region-display {
-        font-size: clamp(24px, 5vw, 42px);
-        font-weight: bold;
-        color: #800080;
-        margin: 20px 0;
-        padding: 20px;
-        background-color: #e6e6fa;
-        border: 3px inset #ccc;
-        text-transform: uppercase;
-      }
-      .btn-start {
-        background-color: #ffcc00;
-        color: #000;
-        border: 4px outset #fff;
-        font-weight: bold;
-        padding: 15px 30px;
-        font-size: 24px;
-        cursor: pointer;
-        box-shadow: 2px 2px 0px #000;
-        margin-bottom: 20px;
-        font-family: "Comic Sans MS", Arial, sans-serif;
-      }
-      .btn-start:active {
-        border: 4px inset #fff;
-      }
-
-      .play-area {
-        display: none;
-      }
-      .status-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: #ff0000;
-        color: #fff;
-        padding: 10px 20px;
-        font-weight: bold;
-        font-size: 20px;
-        border: 2px solid #000;
-        margin-bottom: 20px;
-      }
-
-      /* NOVO GRID PARA CAPITAIS */
-      .answers-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 15px;
-        margin-top: 20px;
-      }
-      .country-card {
-        background-color: #f0f0f0;
-        border: 3px solid #999;
-        padding: 10px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-      }
-      .country-card.correct {
-        background-color: #008000;
-        border-color: #000;
-        color: #fff;
-        box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.5);
-      }
-      .country-card.missed {
-        background-color: #ff0000;
-        border-color: #000;
-        color: #fff;
-      }
-      .country-name {
-        font-weight: bold;
-        font-size: 16px;
-        margin-bottom: 8px;
-        text-transform: uppercase;
-        text-align: center;
-      }
-      .capital-input {
-        width: 100%;
-        padding: 5px;
-        font-size: 14px;
-        border: 2px inset #ccc;
-        font-family: Arial, sans-serif;
-        text-align: center;
-        text-transform: uppercase;
-      }
-      .capital-input:disabled {
-        background-color: transparent;
-        border: none;
-        font-weight: bold;
-        color: #fff;
-        font-size: 16px;
-      }
-
-      .victory-msg,
-      .game-over-msg {
-        display: none;
-        color: #000;
-        border: 3px dashed #ff0000;
-        padding: 20px;
-        font-size: 24px;
-        font-weight: bold;
-        margin-top: 20px;
-      }
-      .victory-msg {
-        background-color: #ffff00;
-      }
-      .game-over-msg {
-        background-color: #ffb6c1;
-      }
-
-      /* --- FOOTER E MARQUEE 100% --- */
-      .site-footer {
-        background-color: #0000ff;
-        border-top: 4px solid #ff0000;
-        padding: 10px;
-        width: 100%;
-        margin-top: auto;
-      }
-      .marquee-90s {
-        font-family: "Courier New", Courier, monospace;
-        font-weight: bold;
-        font-size: 18px;
-        color: #ffffff;
-      }
-
-      /* --- RESPONSIVIDADE --- */
-      @media (max-width: 1200px) {
-        .main-layout-flex {
-          flex-direction: column;
-          align-items: center;
-        }
-        .side-menu {
-          width: 100%;
-          max-width: 900px;
-          margin-bottom: 10px;
-        }
-        .side-menu ul {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
-          gap: 10px;
-        }
-        .side-menu li {
-          border-bottom: none;
-          border-right: 1px dashed #ff0000;
-          padding-right: 10px;
-        }
-        .side-menu li:last-child {
-          border-right: none;
-        }
-        .ads-sidebar {
-          width: 100%;
-          flex-direction: row;
-          flex-wrap: wrap;
-          justify-content: center;
-        }
-        .ad-mobile-only {
-          display: flex !important;
-        }
-        .ad-desktop-only {
-          display: none !important;
-        }
-      }
-
-      /* --- CURSOR RETRÔ ANOS 90 --- */
-      body, a, button {
-        /* Seta pixelada branca com borda preta (maior que o normal) */
-        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Cpath d='M2,2 L2,26 L8,20 L13,31 L18,29 L13,18 L22,18 Z' fill='white' stroke='black' stroke-width='2'/%3E%3C/svg%3E"), auto !important;
-      }
-
-      /* Quando a classe 'clicando' for ativada pelo JavaScript, tudo vira um globo! */
-      body.clicando, body.clicando * {
-        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' style='font-size:26px'%3E%3Ctext y='26'%3E%F0%9F%8C%90%3C/text%3E%3C/svg%3E"), pointer !important;
-      }
-
-    </style>
+    <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
     <header class="site-header">
@@ -436,7 +94,17 @@
         </nav>
 
         <div class="ad-placeholder ad-mobile-only ad-336x280-flex">
-          PUBLICIDADE
+          <ins
+            class="adsbygoogle"
+            style="display: block"
+            data-ad-client="ca-pub-1158047772982385"
+            data-ad-slot="4700847273"
+            data-ad-format="auto"
+            data-full-width-responsive="true"
+          ></ins>
+          <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+          </script>
         </div>
 
         <main class="game-main-area">
@@ -486,406 +154,45 @@
         </main>
 
         <aside class="ads-sidebar ad-desktop-only">
-          <div class="ad-placeholder ad-300x250">PUBLICIDADE</div>
-          <div class="ad-placeholder ad-300x600">PUBLICIDADE</div>
+          <div class="ad-placeholder ad-300x250">
+            <ins
+              class="adsbygoogle"
+              style="display: block"
+              data-ad-client="ca-pub-1158047772982385"
+              data-ad-slot="4700847273"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            ></ins>
+            <script>
+              (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+          </div>
+          <div class="ad-placeholder ad-300x600">
+            <ins
+              class="adsbygoogle"
+              style="display: block"
+              data-ad-client="ca-pub-1158047772982385"
+              data-ad-slot="6704938945"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            ></ins>
+            <script>
+              (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+          </div>
         </aside>
       </div>
     </div>
 
-    <script>
-
-      // --- EFEITO DO MOUSE (GLOBO) COM ATRASO ---
-      let temporizadorGlobo;
-      
-      document.addEventListener('mousedown', () => {
-        // Adiciona o globo
-        document.body.classList.add('clicando');
-        
-        // Limpa o cronômetro se o usuário der vários cliques muito rápidos
-        clearTimeout(temporizadorGlobo);
-        
-        // Define quanto tempo o globo vai ficar na tela (em milissegundos)
-        temporizadorGlobo = setTimeout(() => {
-          document.body.classList.remove('clicando');
-        }, 300); // 300 milissegundos (0.3 segundos). Se quiser mais tempo, mude para 500!
-      });
-
-      // Banco de Dados com Múltiplas Grafias Aceitas para facilitar o jogo
-      const database = {
-        "América do Sul": [
-          { country: "Argentina", capitals: ["buenos aires"] },
-          { country: "Bolívia", capitals: ["sucre", "la paz"] },
-          { country: "Brasil", capitals: ["brasilia"] },
-          { country: "Chile", capitals: ["santiago"] },
-          { country: "Colômbia", capitals: ["bogota"] },
-          { country: "Equador", capitals: ["quito"] },
-          { country: "Guiana", capitals: ["georgetown"] },
-          { country: "Paraguai", capitals: ["assuncao"] },
-          { country: "Peru", capitals: ["lima"] },
-          { country: "Suriname", capitals: ["paramaribo"] },
-          { country: "Uruguai", capitals: ["montevideu", "montevideo"] },
-          { country: "Venezuela", capitals: ["caracas"] },
-        ],
-        "América do Norte": [
-          { country: "Canadá", capitals: ["ottawa"] },
-          {
-            country: "Estados Unidos",
-            capitals: ["washington", "washington dc", "washington d.c."],
-          },
-          { country: "México", capitals: ["cidade do mexico", "mexico"] },
-        ],
-        Oceania: [
-          { country: "Austrália", capitals: ["camberra", "canberra"] },
-          { country: "Fiji", capitals: ["suva"] },
-          { country: "Nova Zelândia", capitals: ["wellington"] },
-          {
-            country: "Papua Nova Guiné",
-            capitals: ["port moresby", "porto moresby"],
-          },
-          { country: "Samoa", capitals: ["apia"] },
-          { country: "Tonga", capitals: ["nuku'alofa", "nukualofa"] },
-          { country: "Vanuatu", capitals: ["port vila", "porto vila"] },
-          { country: "Ilhas Salomão", capitals: ["honiara"] },
-          { country: "Kiribati", capitals: ["tarawa"] },
-          { country: "Micronésia", capitals: ["palikir"] },
-          { country: "Palau", capitals: ["ngerulmud"] },
-          { country: "Tuvalu", capitals: ["funafuti"] },
-          { country: "Ilhas Marshall", capitals: ["majuro"] },
-          { country: "Nauru", capitals: ["yaren", "yarem"] },
-          { country: "Ilhas Cook", capitals: ["avarua"] },
-          { country: "Niue", capitals: ["alofi"] },
-          { country: "Polinésia Francesa", capitals: ["papeete"] },
-          { country: "Nova Caledônia", capitals: ["nouméa", "noumea"] },
-          { country: "Guam", capitals: ["hagatña", "hagatna"] },
-          { country: "Samoa Americana", capitals: ["pago pago"] },
-        ],
-        Europa: [
-          { country: "Alemanha", capitals: ["berlim"] },
-          { country: "Espanha", capitals: ["madri", "madrid"] },
-          { country: "França", capitals: ["paris"] },
-          { country: "Itália", capitals: ["roma"] },
-          { country: "Portugal", capitals: ["lisboa"] },
-          { country: "Reino Unido", capitals: ["londres"] },
-          { country: "Rússia", capitals: ["moscou"] },
-          { country: "Holanda", capitals: ["amsterda", "amsterdam"] },
-          { country: "Bélgica", capitals: ["bruxelas"] },
-          { country: "Suíça", capitals: ["berna"] },
-          { country: "Áustria", capitals: ["viena"] },
-          { country: "Suécia", capitals: ["estocolmo"] },
-          { country: "Noruega", capitals: ["oslo"] },
-          { country: "Grécia", capitals: ["atenas"] },
-          { country: "Irlanda", capitals: ["dublin"] },
-          { country: "Islândia", capitals: ["reiquiavique"] },
-          { country: "Dinamarca", capitals: ["copenhague", "copenhaga"] },
-          { country: "Finlândia", capitals: ["helsinque", "helsinki"] },
-          { country: "Polônia", capitals: ["varsóvia", "varsovia"] },
-          { country: "República Tcheca", capitals: ["praga"] },
-          { country: "Hungria", capitals: ["budapeste"] },
-          { country: "Ucrânia", capitals: ["kiev", "kyiv"] },
-          { country: "Turquia", capitals: ["ancara", "ankara"] },
-          { country: "Romênia", capitals: ["bucareste"] },
-          { country: "Bulgária", capitals: ["sófia", "sofia"] },
-          { country: "Sérvia", capitals: ["belgrado"] },
-          { country: "Albânia", capitals: ["tirana"] },
-          { country: "Croácia", capitals: ["zagreb"] },
-          { country: "Luxemburgo", capitals: ["luxemburgo"] },
-          { country: "Andorra", capitals: ["andorra-a-velha"] },
-          { country: "Belarus", capitals: ["minsk"] },
-          { country: "Bósnia e Herzegovina", capitals: ["sarajevo"] },
-          { country: "Eslováquia", capitals: ["bratislava"] },
-          { country: "Eslovênia", capitals: ["liubliana", "ljubljana"] },
-          { country: "Estônia", capitals: ["tallinn", "talim"] },
-          { country: "Letônia", capitals: ["riga"] },
-          { country: "Lituânia", capitals: ["vilnius"] },
-          { country: "Macedônia do Norte", capitals: ["skopje"] },
-          { country: "Malta", capitals: ["valletta", "valeta"] },
-          { country: "Moldávia", capitals: ["chisinau"] },
-          { country: "Montenegro", capitals: ["podgorica"] },
-          { country: "San Marino", capitals: ["san marino"] },
-          { country: "Vaticano", capitals: ["vaticano", "cidade do vaticano"] },
-          { country: "Mônaco", capitals: ["mônaco", "monaco"] },
-          { country: "Liechtenstein", capitals: ["vaduz"] },
-          { country: "Kosovo", capitals: ["pristina"] },
-        ],
-        Ásia: [
-          { country: "China", capitals: ["pequim", "beijing"] },
-          { country: "Japão", capitals: ["toquio"] },
-          { country: "Coreia do Sul", capitals: ["seul"] },
-          { country: "Índia", capitals: ["nova delhi", "nova delhi"] },
-          { country: "Indonésia", capitals: ["jacarta"] },
-          { country: "Tailândia", capitals: ["banguecoque", "bangkok"] },
-          { country: "Vietnã", capitals: ["hanoi"] },
-          { country: "Filipinas", capitals: ["manila"] },
-          { country: "Arábia Saudita", capitals: ["riade"] },
-          { country: "Irã", capitals: ["teera"] },
-          { country: "Iraque", capitals: ["bagda"] },
-          { country: "Israel", capitals: ["jerusalem"] },
-          { country: "Turquia", capitals: ["ancara"] },
-          { country: "Coreia do Norte", capitals: ["pyongyang"] },
-          { country: "Paquistão", capitals: ["islamabad"] },
-          {
-            country: "Emirados Árabes Unidos",
-            capitals: ["abu dhabi", "abu dabi"],
-          },
-          { country: "Catar", capitals: ["doha"] },
-          { country: "Singapura", capitals: ["singapura", "singapore"] },
-          { country: "Malásia", capitals: ["kuala lumpur"] },
-          { country: "Cazaquistão", capitals: ["astana"] },
-          { country: "Líbano", capitals: ["beirute"] },
-          { country: "Mongólia", capitals: ["ulan bator", "ulaanbaatar"] },
-          { country: "Camboja", capitals: ["phnom penh", "pnom penh"] },
-          { country: "Nepal", capitals: ["katmandu", "kathmandu"] },
-          { country: "Jordânia", capitals: ["amã", "amman"] },
-          { country: "Armênia", capitals: ["yerevan", "erevan"] },
-          { country: "Bangladesh", capitals: ["daca", "dhaka"] },
-          { country: "Afeganistão", capitals: ["cabul", "kabul"] },
-          { country: "Azerbaijão", capitals: ["baku"] },
-          { country: "Bahrein", capitals: ["manama"] },
-          { country: "Brunei", capitals: ["bandar seri begawan"] },
-          { country: "Butão", capitals: ["thimphu", "timfu"] },
-          { country: "Chipre", capitals: ["nicósia", "nicosia"] },
-          { country: "Geórgia", capitals: ["tbilisi"] },
-          { country: "Iêmen", capitals: ["saná", "sanaa"] },
-          { country: "Kuwait", capitals: ["cidade do kuwait", "kuwait city"] },
-          { country: "Laos", capitals: ["vientiane"] },
-          { country: "Maldivas", capitals: ["malé", "male"] },
-          { country: "Mianmar", capitals: ["naypyidaw", "nepiedó"] },
-          { country: "Omã", capitals: ["mascate", "muscat"] },
-          {
-            country: "Palestina",
-            capitals: ["jerusalém oriental", "ramallah"],
-          },
-          { country: "Quirguistão", capitals: ["bishkek", "bisqueque"] },
-          { country: "Síria", capitals: ["damasco"] },
-          {
-            country: "Sri Lanka",
-            capitals: ["sri jayawardenepura kotte", "colombo"],
-          },
-          { country: "Tadjiquistão", capitals: ["dushanbe", "duchambe"] },
-          { country: "Taiwan", capitals: ["taipé", "taipei"] },
-          { country: "Timor-Leste", capitals: ["díli", "dili"] },
-          { country: "Turcomenistão", capitals: ["ashgabat", "asgabate"] },
-          { country: "Uzbequistão", capitals: ["tashkent", "tasquente"] },
-        ],
-        África: [
-          {
-            country: "África do Sul",
-            capitals: [
-              "pretória",
-              "pretoria",
-              "cidade do cabo",
-              "bloemfontein",
-            ],
-          },
-          { country: "Angola", capitals: ["luanda"] },
-          { country: "Argélia", capitals: ["argel"] },
-          { country: "Benim", capitals: ["porto novo", "porto-novo"] },
-          { country: "Botsuana", capitals: ["gaborone"] },
-          { country: "Burkina Faso", capitals: ["ouagadougou", "uagadugu"] },
-          { country: "Burundi", capitals: ["gitega", "bujumbura"] },
-          { country: "Cabo Verde", capitals: ["praia"] },
-          { country: "Camarões", capitals: ["iaundé", "yaoundé"] },
-          { country: "Chade", capitals: ["n'djamena", "ndjamena"] },
-          { country: "Comores", capitals: ["moroni"] },
-          { country: "Congo", capitals: ["brazzaville", "brazaville"] },
-          {
-            country: "Costa do Marfim",
-            capitals: ["yamoussoukro", "iamussucre", "abidjan"],
-          },
-          { country: "Djibuti", capitals: ["djibuti", "djibouti"] },
-          { country: "Egito", capitals: ["cairo"] },
-          { country: "Eritreia", capitals: ["asmara"] },
-          { country: "Essuatíni", capitals: ["mbabane", "lobamba"] },
-          { country: "Etiópia", capitals: ["adis abeba", "addis ababa"] },
-          { country: "Gabão", capitals: ["libreville"] },
-          { country: "Gâmbia", capitals: ["banjul"] },
-          { country: "Gana", capitals: ["acra", "accra"] },
-          { country: "Guiné", capitals: ["conacri", "conakry"] },
-          { country: "Guiné-Bissau", capitals: ["bissau"] },
-          { country: "Guiné Equatorial", capitals: ["malabo"] },
-          { country: "Lesoto", capitals: ["maseru"] },
-          { country: "Libéria", capitals: ["monróvia", "monrovia"] },
-          { country: "Líbia", capitals: ["trípoli", "tripoli"] },
-          { country: "Madagascar", capitals: ["anananarivo"] },
-          { country: "Malawi", capitals: ["lilongue", "lilongwe"] },
-          { country: "Mali", capitals: ["bamako"] },
-          { country: "Marrocos", capitals: ["rabat"] },
-          { country: "Maurícia", capitals: ["port louis", "porto luís"] },
-          { country: "Mauritânia", capitals: ["nouakchott", "nuakchott"] },
-          { country: "Moçambique", capitals: ["maputo"] },
-          { country: "Namíbia", capitals: ["windhoek"] },
-          { country: "Níger", capitals: ["niamey"] },
-          { country: "Nigéria", capitals: ["abuja"] },
-          { country: "Quênia", capitals: ["nairóbi", "nairobi"] },
-          { country: "República Centro-Africana", capitals: ["bangui"] },
-          {
-            country: "República Democrática do Congo",
-            capitals: ["kinshasa", "quinxassa"],
-          },
-          { country: "Ruanda", capitals: ["kigali"] },
-          {
-            country: "São Tomé e Príncipe",
-            capitals: ["são tomé", "sao tome"],
-          },
-          { country: "Senegal", capitals: ["dakar", "dacair"] },
-          { country: "Seicheles", capitals: ["victoria", "vitória"] },
-          { country: "Serra Leoa", capitals: ["freetown"] },
-          { country: "Somália", capitals: ["mogadíscio", "mogadishu"] },
-          { country: "Sudão", capitals: ["cartum", "khartoum"] },
-          { country: "Sudão do Sul", capitals: ["juba"] },
-          { country: "Tanzânia", capitals: ["dodoma", "dar es salaam"] },
-          { country: "Togo", capitals: ["lomé", "lome"] },
-          { country: "Tunísia", capitals: ["túnis", "tunis"] },
-          { country: "Uganda", capitals: ["campala", "kampala"] },
-          { country: "Zâmbia", capitals: ["lusaka", "lusaca"] },
-          { country: "Zimbábue", capitals: ["harare"] },
-        ],
-      };
-
-      // Configuração de tempo por região (em segundos)
-      const regionTimes = {
-        "América do Sul": 120, // 2 minutos
-        "América do Norte": 60, // 1 minuto
-        Oceania: 300, // 5 minutos
-        Europa: 480, // 8 minutos
-        Ásia: 600, // 10 minutos
-        África: 600, // 10 minutos
-      };
-
-      const startBtn = document.getElementById("startBtn");
-      const playArea = document.getElementById("playArea");
-      const regionNameDisplay = document.getElementById("regionName");
-      const answersGrid = document.getElementById("answersGrid");
-      const scoreDisplay = document.getElementById("scoreDisplay");
-      const totalDisplay = document.getElementById("totalDisplay");
-      const victoryMsg = document.getElementById("victoryMsg");
-      const gameOverMsg = document.getElementById("gameOverMsg");
-      const timerDisplay = document.getElementById("timer");
-
-      let currentRegionList = [];
-      let score = 0;
-      let timeRemaining = 300;
-      let timerInterval;
-
-      function normalizeText(text) {
-        return text
-          .toLowerCase()
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")
-          .trim();
-      }
-
-      function updateTimer() {
-        const minutes = Math.floor(timeRemaining / 60);
-        const seconds = timeRemaining % 60;
-        timerDisplay.innerText = `${minutes
-          .toString()
-          .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-      }
-
-      function endGame(won) {
-        clearInterval(timerInterval);
-        const allInputs = document.querySelectorAll(".capital-input");
-        allInputs.forEach((input) => (input.disabled = true));
-
-        if (won) {
-          victoryMsg.style.display = "block";
-        } else {
-          gameOverMsg.style.display = "block";
-          // Mostra as respostas corretas nas que faltaram
-          allInputs.forEach((input, index) => {
-            if (!input.classList.contains("correct-input")) {
-              input.value = currentRegionList[index].capitals[0]; // Mostra a 1ª opção de resposta
-              input.parentElement.classList.add("missed");
-            }
-          });
-        }
-      }
-
-      startBtn.addEventListener("click", () => {
-        const regionsList = Object.keys(database);
-        const randomRegion =
-          regionsList[Math.floor(Math.random() * regionsList.length)];
-
-        // Embaralha os países dentro da região
-        currentRegionList = database[randomRegion].sort(
-          () => Math.random() - 0.5
-        );
-
-        regionNameDisplay.innerText = randomRegion;
-        totalDisplay.innerText = currentRegionList.length;
-        startBtn.style.display = "none";
-        playArea.style.display = "block";
-
-        answersGrid.innerHTML = "";
-        score = 0;
-        scoreDisplay.innerText = "0";
-
-        currentRegionList.forEach((item, index) => {
-          const card = document.createElement("div");
-          card.className = "country-card";
-          card.id = "card-" + index;
-
-          card.innerHTML = `
-                    <div class="country-name">${item.country}</div>
-                    <input type="text" class="capital-input" id="input-${index}" data-index="${index}" placeholder="Capital?" autocomplete="off">
-                `;
-          answersGrid.appendChild(card);
-        });
-
-        // Foca no primeiro input
-        document.getElementById("input-0").focus();
-
-        // --- AQUI ESTÁ A CORREÇÃO ---
-        timeRemaining = regionTimes[randomRegion] || 300;
-
-        updateTimer();
-        timerInterval = setInterval(() => {
-          timeRemaining--;
-          updateTimer();
-          if (timeRemaining <= 0) endGame(false);
-        }, 1000);
-      });
-
-      // Delegação de eventos para os inputs da grade
-      answersGrid.addEventListener("keyup", (e) => {
-        if (e.target.classList.contains("capital-input")) {
-          const inputElement = e.target;
-          const index = inputElement.getAttribute("data-index");
-          const typedVal = normalizeText(inputElement.value);
-
-          // Pega o array de respostas aceitas (já normalizadas)
-          const validAnswers = currentRegionList[index].capitals.map((c) =>
-            normalizeText(c)
-          );
-
-          if (validAnswers.includes(typedVal)) {
-            // Acertou!
-            inputElement.value = currentRegionList[index].capitals[0]; // Formata bonitinho
-            inputElement.disabled = true;
-            inputElement.classList.add("correct-input");
-            inputElement.parentElement.classList.add("correct");
-
-            score++;
-            scoreDisplay.innerText = score;
-
-            // Mágica de UX: Pula para o próximo input vazio
-            const nextInput = document.querySelector(
-              ".capital-input:not(:disabled)"
-            );
-            if (nextInput) {
-              nextInput.focus();
-            } else if (score === currentRegionList.length) {
-              endGame(true);
-            }
-          }
-        }
-      });
-    </script>
+    <script src="js/main.js"></script>
+    <script src="js/capitais.js"></script>
 
     <footer class="site-footer">
       <marquee behavior="scroll" direction="left" class="marquee-90s"
-        >CURIOSIDADE: LA PAZ, NA BOLÍVIA, É CONSIDERADA A CAPITAL NACIONAL MAIS ALTA DO MUNDO! ELA FICA LOCALIZADA NA CORDILHEIRA DOS ANDES, A MAIS DE 3.600 METROS ACIMA DO NÍVEL DO MAR! ⛰️ --- CONTINUE EXPLORANDO O GEO GAMES!</marquee
+        >CURIOSIDADE: LA PAZ, NA BOLÍVIA, É CONSIDERADA A CAPITAL NACIONAL MAIS
+        ALTA DO MUNDO! ELA FICA LOCALIZADA NA CORDILHEIRA DOS ANDES, A MAIS DE
+        3.600 METROS ACIMA DO NÍVEL DO MAR! ⛰️ --- CONTINUE EXPLORANDO O GEO
+        GAMES!</marquee
       >
     </footer>
   </body>
