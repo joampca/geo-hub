@@ -1,3 +1,19 @@
+/* Trava o modelo de caixas para que padding não aumente a largura dos elementos */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Impede que a página passe da largura da tela e esconde a barra de rolagem horizontal */
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
 <style>
       /* --- RESET BÁSICO E CONFIGURAÇÕES GERAIS --- */
       * {
@@ -1486,36 +1502,44 @@ body.clicando * {
 
 /* Ajustes para Celular (Responsividade) */
 @media (max-width: 768px) {
-  /* Faz o menu e o jogo ficarem um em cima do outro, não lado a lado */
   .main-layout-flex {
     flex-direction: column;
+    width: 100%;
+    max-width: 100%;
   }
 
-  /* Ajusta o menu lateral para ocupar a largura toda ou ser escondido */
+  .content-wrapper {
+    padding: 10px; /* Reduz o padding geral no mobile para não espremer os jogos */
+    width: 100%;
+    max-width: 100%;
+  }
+
   .side-menu {
     width: 100%;
+    max-width: 100%;
     margin-bottom: 20px;
-    position: static; /* Garante que ele não flutue sobre o conteúdo */
+    position: static;
+    margin-left: 0; /* Reseta qualquer margem que possa empurrar o menu pra direita */
+    margin-right: 0;
   }
 
-  /* Faz a área do jogo ocupar 100% da largura da tela */
   .game-main-area {
     width: 100%;
+    max-width: 100%;
     padding: 10px;
+    margin: 0;
   }
 
-  /* Ajusta o tamanho das fontes e botões que podem estar gigantes */
   h1 {
     font-size: 1.5rem;
   }
 
   .btn-start,
   .btn-action {
-    width: 100%; /* Botões cheios são melhores para o polegar no mobile */
+    width: 100%;
     font-size: 1.1rem;
   }
 
-  /* Esconde as propagandas de desktop no mobile para não poluir */
   .ad-desktop-only {
     display: none !important;
   }
