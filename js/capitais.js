@@ -236,8 +236,10 @@ const regionTimes = {
 };
 
 const startBtn = document.getElementById("startBtn");
+const giveUpBtn = document.getElementById("giveUpBtn");
 const playArea = document.getElementById("playArea");
 const regionNameDisplay = document.getElementById("regionName");
+const mainInput = document.getElementById("mainInput");
 const answersGrid = document.getElementById("answersGrid");
 const scoreDisplay = document.getElementById("scoreDisplay");
 const totalDisplay = document.getElementById("totalDisplay");
@@ -268,35 +270,42 @@ function updateTimer() {
 
 function endGame(won) {
   clearInterval(timerInterval);
-  const allInputs = document.querySelectorAll(".capital-input");
-  allInputs.forEach((input) => (input.disabled = true));
+  mainInput.disabled = true;
+  giveUpBtn.style.display = "none";
 
   if (won) {
     victoryMsg.style.display = "block";
   } else {
     gameOverMsg.style.display = "block";
     // Mostra as respostas corretas nas que faltaram
-    allInputs.forEach((input, index) => {
-      if (!input.classList.contains("correct-input")) {
-        input.value = currentRegionList[index].capitals[0]; // Mostra a 1ª opção de resposta
-        input.parentElement.classList.add("missed");
+    currentRegionList.forEach((item, index) => {
+      const displaySpan = document.getElementById(`display-${index}`);
+      if (!displaySpan.classList.contains("correct-input")) {
+        displaySpan.innerText = item.capitals[0].toUpperCase();
+        displaySpan.parentElement.classList.add("missed");
       }
     });
   }
 }
+
+// Lógica de desistir
+giveUpBtn.addEventListener("click", () => {
+  endGame(false);
+});
 
 startBtn.addEventListener("click", () => {
   const regionsList = Object.keys(database);
   const randomRegion =
     regionsList[Math.floor(Math.random() * regionsList.length)];
 
-  // Embaralha os países dentro da região
+  // Embaralha os países dentro da região para garantir aleatoriedade
   currentRegionList = database[randomRegion].sort(() => Math.random() - 0.5);
 
   regionNameDisplay.innerText = randomRegion;
   totalDisplay.innerText = currentRegionList.length;
   startBtn.style.display = "none";
   playArea.style.display = "block";
+  giveUpBtn.style.display = "inline-block";
 
   answersGrid.innerHTML = "";
   score = 0;
@@ -308,16 +317,16 @@ startBtn.addEventListener("click", () => {
     card.id = "card-" + index;
 
     card.innerHTML = `
-                    <div class="country-name">${item.country}</div>
-                    <input type="text" class="capital-input" id="input-${index}" data-index="${index}" placeholder="Capital?" autocomplete="off">
-                `;
+                      <div class="country-name">${item.country}</div>
+                      <span class="capital-display" id="display-${index}"></span>
+                  `;
     answersGrid.appendChild(card);
   });
 
-  // Foca no primeiro input
-  document.getElementById("input-0").focus();
+  mainInput.value = "";
+  mainInput.disabled = false;
+  mainInput.focus();
 
-  // --- AQUI ESTÁ A CORREÇÃO ---
   timeRemaining = regionTimes[randomRegion] || 300;
 
   updateTimer();
@@ -328,35 +337,32 @@ startBtn.addEventListener("click", () => {
   }, 1000);
 });
 
-// Delegação de eventos para os inputs da grade
-answersGrid.addEventListener("keyup", (e) => {
-  if (e.target.classList.contains("capital-input")) {
-    const inputElement = e.target;
-    const index = inputElement.getAttribute("data-index");
-    const typedVal = normalizeText(inputElement.value);
+// Listener para o input principal único
+mainInput.addEventListener("keyup", (e) => {
+  const typedVal = normalizeText(e.target.value);
 
-    // Pega o array de respostas aceitas (já normalizadas)
-    const validAnswers = currentRegionList[index].capitals.map((c) =>
-      normalizeText(c)
-    );
+  // Procura se o que foi digitado corresponde a alguma capital não respondida
+  currentRegionList.forEach((item, index) => {
+    const displaySpan = document.getElementById(`display-${index}`);
+
+    // Pula se já foi respondido
+    if (displaySpan.classList.contains("correct-input")) return;
+
+    const validAnswers = item.capitals.map((c) => normalizeText(c));
 
     if (validAnswers.includes(typedVal)) {
       // Acertou!
-      inputElement.value = currentRegionList[index].capitals[0]; // Formata bonitinho
-      inputElement.disabled = true;
-      inputElement.classList.add("correct-input");
-      inputElement.parentElement.classList.add("correct");
+      displaySpan.innerText = item.capitals[0].toUpperCase();
+      displaySpan.classList.add("correct-input");
+      displaySpan.parentElement.classList.add("correct");
 
+      e.target.value = ""; // Limpa a caixa de texto
       score++;
       scoreDisplay.innerText = score;
 
-      // Mágica de UX: Pula para o próximo input vazio
-      const nextInput = document.querySelector(".capital-input:not(:disabled)");
-      if (nextInput) {
-        nextInput.focus();
-      } else if (score === currentRegionList.length) {
+      if (score === currentRegionList.length) {
         endGame(true);
       }
     }
-  }
+  });
 });

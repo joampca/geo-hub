@@ -109,22 +109,43 @@
 
         <main class="game-main-area">
           <p class="game-desc">
-            Digite o nome da capital abaixo de cada país. O cursor avança
-            sozinho ao acertar!
+            Você consegue listar as capitais da região sorteada? Digite o nome
+            abaixo e o sistema preencherá o país correspondente automaticamente!
           </p>
 
           <div id="regionName" class="region-display">???</div>
 
           <button id="startBtn" class="btn-start">▶ COMEÇAR JOGO</button>
 
-          <div id="playArea" class="play-area">
-            <div class="status-bar">
-              <span
-                >Acertos: <span id="scoreDisplay">0</span> /
-                <span id="totalDisplay">0</span></span
-              >
-              <span id="timer">05:00</span>
+          <div id="playArea" class="play-area" style="display: none">
+            <div class="stats-panel">
+              <!-- Caixinha Vermelha do Placar -->
+              <div class="status-bar score-box">
+                Acertos: <span id="scoreDisplay">0</span> /
+                <span id="totalDisplay">0</span>
+              </div>
+
+              <!-- Nova Caixinha do Relógio -->
+              <div class="timer-box">⏱️ <span id="timer">00:00</span></div>
             </div>
+
+            <!-- Nova caixa de texto única -->
+            <input
+              type="text"
+              id="mainInput"
+              class="input-box"
+              placeholder="Digite o nome de uma capital..."
+              autocomplete="off"
+            />
+
+            <!-- Botão de Desistir -->
+            <button
+              id="giveUpBtn"
+              class="btn-action btn-skip"
+              style="margin-bottom: 20px; display: none"
+            >
+              🏳️ DESISTIR (Mostrar Respostas)
+            </button>
 
             <div id="answersGrid" class="answers-grid"></div>
 
@@ -140,7 +161,7 @@
             </div>
 
             <div id="gameOverMsg" class="game-over-msg">
-              ⏰ TEMPO ESGOTADO! ⏰<br />
+              ⏰ FIM DE JOGO! ⏰<br />
               As capitais que faltaram apareceram em vermelho.<br />
               <button
                 onclick="location.reload()"

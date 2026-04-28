@@ -1500,6 +1500,36 @@ body.clicando * {
   }
 }
 
+/* --- PAINEL DE STATUS (Placar + Relógio) --- */
+.stats-panel {
+  display: flex;
+  justify-content: center;
+  gap: 15px; /* Espaço entre o placar e o relógio */
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+/* Faz a barra vermelha antiga se adaptar ao novo espaço */
+.score-box {
+  margin-bottom: 0 !important;
+  flex: 1; /* Faz o placar esticar e ocupar a maior parte da tela */
+}
+
+/* O novo visual exclusivo do relógio */
+.timer-box {
+  background-color: #0047ab; /* Azul vibrante (pode alterar a cor se quiser) */
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding: 10px 20px;
+  border: 2px solid #000; /* Borda padrão do site */
+  box-shadow: 2px 2px 0px #000; /* Sombrinha padrão do site */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 140px;
+}
+
 /* Ajustes para Celular (Responsividade) */
 @media (max-width: 768px) {
   .main-layout-flex {
@@ -1542,5 +1572,10 @@ body.clicando * {
 
   .ad-desktop-only {
     display: none !important;
+  }
+
+  .stats-panel {
+    flex-direction: column;
+    gap: 10px;
   }
 }
