@@ -187,6 +187,7 @@ const database = {
 };
 
 const startBtn = document.getElementById("startBtn");
+const giveUpBtn = document.getElementById("giveUpBtn"); // Novo botão referenciado
 const playArea = document.getElementById("playArea");
 const countryNameDisplay = document.getElementById("countryName");
 const userInput = document.getElementById("userInput");
@@ -222,12 +223,16 @@ function updateTimer() {
 function endGame(won) {
   clearInterval(timerInterval);
   userInput.disabled = true;
+  giveUpBtn.style.display = "none"; // Esconde o botão de desistir no fim
+
   if (won) {
     userInput.placeholder = "PARABÉNS!";
     victoryMsg.style.display = "block";
   } else {
-    userInput.placeholder = "TEMPO ESGOTADO!";
+    userInput.placeholder = "FIM DE JOGO!";
     gameOverMsg.style.display = "block";
+
+    // Revela as respostas corretas nas que faltaram em vermelho
     currentBorders.forEach((border, index) => {
       if (!guessedCountries.includes(border)) {
         const targetSlot = document.getElementById("slot-" + index);
@@ -238,22 +243,37 @@ function endGame(won) {
   }
 }
 
+// Listener para o botão de desistir
+giveUpBtn.addEventListener("click", () => {
+  endGame(false);
+});
+
 startBtn.addEventListener("click", () => {
   const countriesList = Object.keys(database);
+
+  // Sorteia um país aleatoriamente
   currentCountry =
     countriesList[Math.floor(Math.random() * countriesList.length)];
-  currentBorders = database[currentCountry];
+
+  // Puxa as fronteiras e embaralha a ordem delas para dificultar um pouco
+  currentBorders = database[currentCountry].sort(() => Math.random() - 0.5);
 
   countryNameDisplay.innerText = currentCountry;
   totalDisplay.innerText = currentBorders.length;
+
   startBtn.style.display = "none";
   playArea.style.display = "block";
+  giveUpBtn.style.display = "inline-block"; // Mostra o botão ao iniciar
+
   userInput.focus();
+  userInput.value = "";
+  userInput.placeholder = "Digite o nome do país...";
 
   answersGrid.innerHTML = "";
   guessedCountries = [];
   scoreDisplay.innerText = "0";
 
+  // Cria as caixinhas vazias
   currentBorders.forEach((_, index) => {
     const slot = document.createElement("div");
     slot.className = "answer-slot";
@@ -262,7 +282,7 @@ startBtn.addEventListener("click", () => {
     answersGrid.appendChild(slot);
   });
 
-  timeRemaining = 120;
+  timeRemaining = 120; // 2 Minutos para fronteiras
   updateTimer();
   timerInterval = setInterval(() => {
     timeRemaining--;
@@ -290,11 +310,12 @@ userInput.addEventListener("keyup", (e) => {
 
     scoreDisplay.innerText = guessedCountries.length;
     userInput.value = "";
-    userInput.style.backgroundColor = "#90EE90";
+    userInput.style.backgroundColor = "#90EE90"; // Pisca verde
     setTimeout(() => (userInput.style.backgroundColor = "#FFF"), 200);
 
     if (guessedCountries.length === currentBorders.length) endGame(true);
   } else if (e.key === "Enter") {
+    // Feedback visual para erro (pisca vermelho)
     userInput.style.backgroundColor = "#FFCCCC";
     setTimeout(() => (userInput.style.backgroundColor = "#FFF"), 200);
     userInput.value = "";

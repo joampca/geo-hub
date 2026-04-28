@@ -115,14 +115,16 @@
           <div id="countryName" class="country-display">???</div>
           <button id="startBtn" class="btn-start">▶ COMEÇAR JOGO</button>
 
-          <div id="playArea" class="play-area">
-            <div class="status-bar">
-              <span
-                >Acertos: <span id="scoreDisplay">0</span> /
-                <span id="totalDisplay">0</span></span
-              >
-              <span id="timer">02:00</span>
+          <div id="playArea" class="play-area" style="display: none">
+            <!-- Novo Painel de Status Dividido -->
+            <div class="stats-panel">
+              <div class="status-bar score-box">
+                Acertos: <span id="scoreDisplay">0</span> /
+                <span id="totalDisplay">0</span>
+              </div>
+              <div class="timer-box">⏱️ <span id="timer">02:00</span></div>
             </div>
+
             <input
               type="text"
               id="userInput"
@@ -130,6 +132,16 @@
               placeholder="Digite um país..."
               autocomplete="off"
             />
+
+            <!-- Novo botão de desistir -->
+            <button
+              id="giveUpBtn"
+              class="btn-action btn-skip"
+              style="margin-bottom: 20px; display: none"
+            >
+              🏳️ DESISTIR (Mostrar Respostas)
+            </button>
+
             <div id="answersGrid" class="answers-grid"></div>
 
             <div id="victoryMsg" class="victory-msg">
@@ -144,7 +156,7 @@
             </div>
 
             <div id="gameOverMsg" class="game-over-msg">
-              ⏰ TEMPO ESGOTADO! ⏰<br />
+              ⏰ FIM DE JOGO! ⏰<br />
               As respostas que faltaram apareceram em vermelho.<br />
               <button
                 onclick="location.reload()"
