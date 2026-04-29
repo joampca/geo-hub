@@ -6,18 +6,26 @@
     <title>GEO GAMES - Fale Conosco</title>
 
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-N2ZZJ1F6T1"></script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-N2ZZJ1F6T1"
+    ></script>
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1158047772982385"
+      crossorigin="anonymous"
+    ></script>
 
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1158047772982385"
-     crossorigin="anonymous"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-N2ZZJ1F6T1");
+    </script>
 
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-N2ZZJ1F6T1');
-</script>
+    <link rel="stylesheet" href="css/style.css" />
 
     <style>
       /* --- RESET E PADRÃO --- */
@@ -163,6 +171,11 @@
         margin-right: 10px;
       }
 
+      /* Esconde o botão hambúrguer no desktop */
+      .hamburger-btn {
+        display: none;
+      }
+
       /* --- ÁREA CENTRAL (CONTATO) --- */
       .main-content {
         flex: 1;
@@ -260,7 +273,7 @@
 
       /* --- MENSAGEM DE SUCESSO --- */
       .success-box {
-        display: none; /* Fica escondido até o email ser enviado */
+        display: none;
         text-align: center;
         background-color: #e6ffe6;
         border: 4px dashed #008000;
@@ -302,7 +315,7 @@
         color: #ffffff;
       }
 
-      /* Responsividade */
+      /* Responsividade - Ajuste Intermediário (Tablets) */
       @media (max-width: 1100px) {
         .main-layout-flex {
           flex-direction: column;
@@ -318,23 +331,66 @@
           justify-content: center;
           gap: 10px;
         }
-        /* Oculta completamente a barra de anúncios no Mobile */
         .ad-desktop-only {
           display: none !important;
         }
       }
 
+      /* Responsividade - Menu Hambúrguer (Mobile) */
+      @media (max-width: 768px) {
+        .side-menu {
+          background: transparent !important;
+          border: none !important;
+          box-shadow: none !important;
+          padding: 0 !important;
+          margin-bottom: 20px;
+        }
+        .menu-header {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: #ff0000;
+          padding: 10px;
+          border: 2px solid #000;
+        }
+        .menu-header span {
+          display: none;
+        }
+        .hamburger-btn {
+          display: block;
+          background: none;
+          border: none;
+          color: #fff;
+          font-size: 2.2rem;
+          cursor: pointer;
+          padding: 0;
+          margin: 0;
+        }
+        .side-menu ul {
+          display: none;
+          flex-direction: column;
+          background-color: #ffffcc;
+          border: 2px solid #000;
+          border-top: none;
+          padding: 10px 0;
+        }
+        .side-menu ul.show-menu {
+          display: flex !important;
+        }
+      }
+
       /* --- CURSOR RETRÔ ANOS 90 --- */
-      body, a, button {
-        /* Seta pixelada branca com borda preta (maior que o normal) */
-        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Cpath d='M2,2 L2,26 L8,20 L13,31 L18,29 L13,18 L22,18 Z' fill='white' stroke='black' stroke-width='2'/%3E%3C/svg%3E"), auto !important;
+      body,
+      a,
+      button {
+        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Cpath d='M2,2 L2,26 L8,20 L13,31 L18,29 L13,18 L22,18 Z' fill='white' stroke='black' stroke-width='2'/%3E%3C/svg%3E"),
+          auto !important;
       }
-
-      /* Quando a classe 'clicando' for ativada pelo JavaScript, tudo vira um globo! */
-      body.clicando, body.clicando * {
-        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' style='font-size:26px'%3E%3Ctext y='26'%3E%F0%9F%8C%90%3C/text%3E%3C/svg%3E"), pointer !important;
+      body.clicando,
+      body.clicando * {
+        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' style='font-size:26px'%3E%3Ctext y='26'%3E%F0%9F%8C%90%3C/text%3E%3C/svg%3E"),
+          pointer !important;
       }
-
     </style>
   </head>
   <body>
@@ -346,7 +402,11 @@
     <div class="content-wrapper">
       <div class="main-layout-flex">
         <aside class="side-menu">
-          <div class="menu-header">MENU PRINCIPAL</div>
+          <!-- Cabeçalho do Menu com o Botão Hambúrguer -->
+          <div class="menu-header">
+            <span>MENU PRINCIPAL</span>
+            <button class="hamburger-btn" onclick="toggleMenu()">☰</button>
+          </div>
           <ul>
             <li>
               <a href="index.html"><span class="menu-icon">🏠</span>Início</a>
@@ -410,7 +470,7 @@
             <div class="profile-text">
               Bem-vindo(a) à central de contato do <b>GEO GAMES!</b> Este portal
               nasceu da paixão por explorar o mundo, com a missão de testar seus
-              conhecimentos geográficos de um jeito divertido e nostálgica.
+              conhecimentos geográficos de um jeito divertido e nostálgico.
               Estamos em constante evolução, sempre buscando trazer os melhores
               desafios e expandir nossos minigames. Tem uma sugestão incrível?
               Encontrou algum 'bug' na matriz? Mande sua mensagem! A sua
@@ -525,24 +585,22 @@
       >
     </footer>
 
-    <script>
+    <!-- Script Global contendo a função toggleMenu() -->
+    <script src="js/main.js"></script>
 
+    <script>
       // --- EFEITO DO MOUSE (GLOBO) COM ATRASO ---
       let temporizadorGlobo;
-      
-      document.addEventListener('mousedown', () => {
-        // Adiciona o globo
-        document.body.classList.add('clicando');
-        
-        // Limpa o cronômetro se o usuário der vários cliques muito rápidos
+
+      document.addEventListener("mousedown", () => {
+        document.body.classList.add("clicando");
         clearTimeout(temporizadorGlobo);
-        
-        // Define quanto tempo o globo vai ficar na tela (em milissegundos)
         temporizadorGlobo = setTimeout(() => {
-          document.body.classList.remove('clicando');
-        }, 300); // 300 milissegundos (0.3 segundos). Se quiser mais tempo, mude para 500!
+          document.body.classList.remove("clicando");
+        }, 300);
       });
 
+      // --- CONTROLE DO FORMULÁRIO ---
       document
         .getElementById("contactForm")
         .addEventListener("submit", function (e) {
