@@ -232,6 +232,7 @@ const playArea = document.getElementById("playArea");
 const flagImage = document.getElementById("flagImage");
 const userInput = document.getElementById("userInput");
 const skipBtn = document.getElementById("skipBtn");
+const giveUpBtn = document.getElementById("giveUpBtn"); // Novo botão de desistir
 const scoreDisplay = document.getElementById("scoreDisplay");
 const timerDisplay = document.getElementById("timer");
 const feedbackDisplay = document.getElementById("feedback");
@@ -260,12 +261,19 @@ function updateTimer() {
     .padStart(2, "0")}`;
 }
 
-function endGame() {
+function endGame(forced = false) {
   clearInterval(timerInterval);
   userInput.disabled = true;
   skipBtn.disabled = true;
-  userInput.placeholder = "TEMPO ESGOTADO!";
-  flagImage.style.display = "none";
+  giveUpBtn.style.display = "none";
+
+  if (forced) {
+    userInput.placeholder = "JOGO ENCERRADO!";
+  } else {
+    userInput.placeholder = "TEMPO ESGOTADO!";
+  }
+
+  //flagImage.style.display = "none";
   feedbackDisplay.innerText = "";
 
   finalScore.innerText = score;
@@ -285,22 +293,23 @@ function nextFlag() {
 }
 
 startBtn.addEventListener("click", () => {
-  // Cria uma cópia do banco de dados e embaralha logo no início
+  // Cria uma cópia do banco de dados e embaralha logo no início (aleatoriedade garantida)
   availableFlags = [...flagDatabase].sort(() => Math.random() - 0.5);
   score = 0;
   scoreDisplay.innerText = "0";
 
   startBtn.style.display = "none";
   playArea.style.display = "block";
+  giveUpBtn.style.display = "inline-block";
 
   nextFlag();
 
-  timeRemaining = 120;
+  timeRemaining = 120; // 2 minutos
   updateTimer();
   timerInterval = setInterval(() => {
     timeRemaining--;
     updateTimer();
-    if (timeRemaining <= 0) endGame();
+    if (timeRemaining <= 0) endGame(false);
   }, 1000);
 });
 
@@ -334,5 +343,10 @@ skipBtn.addEventListener("click", () => {
   setTimeout(() => {
     feedbackDisplay.innerText = "";
     nextFlag();
-  }, 600); // Dá um tempo pro usuário ler qual era a bandeira antes de pular
+  }, 800); // Dei um tempinho a mais (800ms) pro usuário conseguir ler melhor antes de sumir
+});
+
+// Listener do botão desistir
+giveUpBtn.addEventListener("click", () => {
+  endGame(true);
 });

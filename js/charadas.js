@@ -461,13 +461,15 @@ let score = 0;
 let level = 1;
 const maxLevel = 10;
 let currentRiddle = null;
-let availableRiddles = [...database];
+let availableRiddles = [];
 let hintsUsed = 0;
 let currentRoundPoints = 100;
 
 const riddleText = document.getElementById("riddleText");
 const userInput = document.getElementById("userInput");
 const hintBtn = document.getElementById("hintBtn");
+const skipBtn = document.getElementById("skipBtn");
+const giveUpBtn = document.getElementById("giveUpBtn");
 const scoreDisplay = document.getElementById("score");
 const levelDisplay = document.getElementById("level");
 const prizeDisplay = document.getElementById("prizePoints");
@@ -486,7 +488,10 @@ function initGame() {
   score = 0;
   level = 1;
   scoreDisplay.innerText = score;
-  availableRiddles = [...database];
+
+  // ALTA PRIORIDADE: Valida a aleatoriedade embaralhando a lista no início do jogo
+  availableRiddles = [...database].sort(() => Math.random() - 0.5);
+
   loadNext();
 }
 
@@ -498,8 +503,13 @@ function loadNext() {
 
   customAlert.style.display = "none";
   inputArea.style.display = "block";
-  hintBtn.style.display = "inline-block";
-  hintBtn.disabled = false;
+
+  if (hintBtn) {
+    hintBtn.style.display = "inline-block";
+    hintBtn.disabled = false;
+  }
+  if (skipBtn) skipBtn.style.display = "inline-block";
+  if (giveUpBtn) giveUpBtn.style.display = "block";
 
   userInput.value = "";
   userInput.disabled = false;
@@ -509,16 +519,18 @@ function loadNext() {
 
   hintsUsed = 0;
   currentRoundPoints = 100;
-  prizeDisplay.innerText = currentRoundPoints;
+  if (prizeDisplay) prizeDisplay.innerText = currentRoundPoints;
 
   for (let i = 1; i <= 3; i++) {
     const h = document.getElementById("hint" + i);
-    h.style.display = "none";
-    h.innerText = "";
+    if (h) {
+      h.style.display = "none";
+      h.innerText = "";
+    }
   }
 
-  const randomIndex = Math.floor(Math.random() * availableRiddles.length);
-  currentRiddle = availableRiddles.splice(randomIndex, 1)[0];
+  // Coleta a primeira charada do array já embaralhado
+  currentRiddle = availableRiddles.shift();
 
   riddleText.innerText = currentRiddle.q;
   levelDisplay.innerText = level;
@@ -528,14 +540,16 @@ window.showHint = function () {
   if (hintsUsed >= 3) return;
   hintsUsed++;
   currentRoundPoints -= 20;
-  prizeDisplay.innerText = currentRoundPoints;
+  if (prizeDisplay) prizeDisplay.innerText = currentRoundPoints;
 
   const hintElem = document.getElementById("hint" + hintsUsed);
-  hintElem.innerText =
-    "Dica " + hintsUsed + ": " + currentRiddle.h[hintsUsed - 1];
-  hintElem.style.display = "block";
+  if (hintElem) {
+    hintElem.innerText =
+      "Dica " + hintsUsed + ": " + currentRiddle.h[hintsUsed - 1];
+    hintElem.style.display = "block";
+  }
 
-  if (hintsUsed === 3) hintBtn.disabled = true;
+  if (hintsUsed === 3 && hintBtn) hintBtn.disabled = true;
   userInput.focus();
 };
 
@@ -563,14 +577,27 @@ window.checkAnswer = function () {
 
 window.skipRiddle = function () {
   const correctAnswer = currentRiddle.a[0];
-  customAlert.innerHTML = `⏭️ <strong>VOCÊ PULOU!</strong><br><br>A resposta correta era:<br><span class="answer-highlight"><strong>${correctAnswer}</strong></span>`;
+
+  customAlert.innerHTML = `⏭️ <strong>VOCÊ PULOU!</strong><br><br>A resposta correta era:<br><span class="answer-highlight" style="color: #0047AB; font-size: 1.5rem;"><strong>${correctAnswer}</strong></span>`;
   customAlert.className = "custom-alert alert-error";
   customAlert.style.display = "block";
 
   inputArea.style.display = "none";
-  hintBtn.style.display = "none";
 
   customAlert.innerHTML += `<br><button onclick="loadNextWrapper()" class="btn-action" style="margin-top:20px;">PRÓXIMA CHARADA ▶</button>`;
+};
+
+// NOVA FUNÇÃO: Desistir do Jogo (Mantém a charada visível e exibe a resposta)
+window.giveUpGame = function () {
+  const correctAnswer = currentRiddle.a[0];
+
+  // Oculta os inputs para travar o jogo, deixando apenas a charada visível
+  inputArea.style.display = "none";
+
+  customAlert.innerHTML = `🏳️ <strong>VOCÊ DESISTIU!</strong><br><br>A resposta da charada atual era:<br><span class="answer-highlight" style="color: #0047AB; font-size: 1.5rem;"><strong>${correctAnswer}</strong></span><br><br>Sua Pontuação Final: <strong>${score}</strong> pts!<br><br><button onclick="window.location.reload()" class="btn-action" style="margin-top:15px;">TENTAR NOVAMENTE 🔄</button>`;
+
+  customAlert.className = "custom-alert alert-error";
+  customAlert.style.display = "block";
 };
 
 window.loadNextWrapper = function () {
@@ -586,7 +613,6 @@ function showFeedback(msg, isSuccess) {
 
   if (isSuccess) {
     inputArea.style.display = "none";
-    hintBtn.style.display = "none";
     customAlert.innerHTML += `<br><button onclick="loadNextWrapper()" class="btn-action" style="margin-top:15px;">PRÓXIMA CHARADA ▶</button>`;
   } else {
     setTimeout(() => {
@@ -602,11 +628,9 @@ function showFeedback(msg, isSuccess) {
 
 function endGame() {
   inputArea.style.display = "none";
-  hintBtn.style.display = "none";
-  riddleText.innerText = "FIM DE JOGO!";
   document.querySelector(".hints-container").innerHTML = "";
 
-  customAlert.innerHTML = `🏆 <strong>PARABÉNS!</strong> Você completou todas as ${maxLevel} rodadas.<br><br>Sua Pontuação Final: <strong>${score}</strong> pts!<br><br><button onclick="initGame()" class="btn-action" style="margin-top:15px;">JOGAR NOVAMENTE 🔄</button>`;
+  customAlert.innerHTML = `🏆 <strong>PARABÉNS!</strong> Você completou todas as ${maxLevel} rodadas.<br><br>Sua Pontuação Final: <strong>${score}</strong> pts!<br><br><button onclick="window.location.reload()" class="btn-action" style="margin-top:15px;">JOGAR NOVAMENTE 🔄</button>`;
   customAlert.className = "custom-alert alert-success";
   customAlert.style.display = "block";
 }
@@ -617,5 +641,3 @@ userInput.addEventListener("keypress", function (event) {
     checkAnswer();
   }
 });
-
-window.onload = initGame;

@@ -118,10 +118,14 @@
             ▶ GERAR NOVO JOGO
           </button>
 
-          <div id="playArea" class="play-area">
-            <div class="status-bar">
-              <span>Palavras: <span id="wordsCountDisplay">0</span> / 6</span>
-              <span id="timer">00:00</span>
+          <div id="playArea" class="play-area" style="display: none">
+            <!-- Novo Painel de Status Dividido -->
+            <div class="stats-panel">
+              <div class="status-bar score-box">
+                Palavras: <span id="wordsCountDisplay">0</span> /
+                <span id="totalWordsDisplay">6</span>
+              </div>
+              <div class="timer-box">⏱️ <span id="timer">00:00</span></div>
             </div>
 
             <div class="game-flex-container">
@@ -133,7 +137,16 @@
               </div>
             </div>
 
-            <div id="victoryMsg" class="victory-msg">
+            <!-- Novo botão de desistir -->
+            <button
+              id="giveUpBtn"
+              class="btn-action btn-skip"
+              style="margin-top: 20px; display: none; width: 100%"
+            >
+              🏳️ DESISTIR (Mostrar Respostas)
+            </button>
+
+            <div id="victoryMsg" class="victory-msg" style="display: none">
               🎉 PARABÉNS! VOCÊ VENCEU! 🎉<br />
               <span style="font-size: 20px; color: #0000ff"
                 >Seu tempo foi:
@@ -149,6 +162,19 @@
                 style="margin-top: 15px; font-size: 16px"
               >
                 JOGAR NOVAMENTE
+              </button>
+            </div>
+
+            <div id="gameOverMsg" class="game-over-msg" style="display: none">
+              🏳️ VOCÊ DESISTIU! 🏳️<br />
+              As palavras que faltaram foram destacadas em vermelho no tabuleiro
+              e riscadas na lista.<br />
+              <button
+                onclick="generateGame()"
+                class="btn-start"
+                style="margin-top: 15px; font-size: 16px"
+              >
+                TENTAR NOVAMENTE
               </button>
             </div>
           </div>

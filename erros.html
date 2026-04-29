@@ -110,39 +110,109 @@
             OVER.
           </p>
 
-          <button id="startBtn" class="btn-action" onclick="startGame()">
+          <button id="startBtn" class="btn-start" onclick="startGame()">
             ▶ INICIAR INVESTIGAÇÃO
           </button>
 
           <div id="playArea" style="display: none">
-            <div class="status-bar status-bar-erros">
-              <span>PONTOS: <span id="scoreDisplay">0</span></span>
-              <div class="right-stats">
-                <span>RODADA: <span id="roundCounter">1 / 30</span></span>
-                <span
-                  >TEMPO:
-                  <span id="timerDisplay" class="timer-box">120</span></span
-                >
+            <!-- Painel de Status Padronizado -->
+            <div
+              class="stats-panel"
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+              "
+            >
+              <div class="status-bar score-box">
+                PONTOS: <span id="scoreDisplay">0</span> | RODADA:
+                <span id="roundCounter">1 / 30</span>
+              </div>
+              <div
+                class="timer-box"
+                style="
+                  background-color: #ffd700;
+                  color: #000;
+                  text-align: right;
+                "
+              >
+                ⏱️ TEMPO: <span id="timerDisplay">120</span>s
               </div>
             </div>
 
-            <div id="countryName" class="country-title">
+            <div
+              id="countryName"
+              class="country-title"
+              style="font-size: 1.5rem; margin-bottom: 10px"
+            >
               BANDEIRA: CARREGANDO...
             </div>
-            <div class="instruction">👇 CLIQUE NA BANDEIRA FALSA! 👇</div>
+            <div
+              class="instruction"
+              style="font-weight: bold; margin-bottom: 20px"
+            >
+              👇 CLIQUE NA BANDEIRA FALSA! 👇
+            </div>
 
-            <div class="vs-container" id="vsContainer">
+            <div
+              class="vs-container"
+              id="vsContainer"
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 20px;
+                flex-wrap: wrap;
+              "
+            >
               <div
                 class="flag-box"
                 id="flagLeft"
                 onclick="checkFlag('left')"
+                style="
+                  cursor: pointer;
+                  border: 4px solid #000;
+                  transition: border-color 0.3s;
+                "
               ></div>
-              <div class="vs-text">VS</div>
+              <div class="vs-text" style="font-size: 2rem; font-weight: bold">
+                VS
+              </div>
               <div
                 class="flag-box"
                 id="flagRight"
                 onclick="checkFlag('right')"
+                style="
+                  cursor: pointer;
+                  border: 4px solid #000;
+                  transition: border-color 0.3s;
+                "
               ></div>
+            </div>
+
+            <!-- Botão de Desistir Padronizado (Amarelo) -->
+            <div style="text-align: center; margin-top: 30px">
+              <button
+                id="giveUpBtn"
+                class="btn-skip"
+                onclick="giveUpGame()"
+                style="
+                  background-color: #ffcc00;
+                  color: #000;
+                  font-size: 1.2rem;
+                  font-weight: bold;
+                  border: 2px solid #000;
+                  box-shadow: 2px 2px 0px #000;
+                  cursor: pointer;
+                  padding: 10px 20px;
+                  width: 100%;
+                  max-width: 400px;
+                  display: none;
+                "
+              >
+                🏳️ DESISTIR (Mostrar Respostas)
+              </button>
             </div>
 
             <div id="customAlert" class="custom-alert"></div>

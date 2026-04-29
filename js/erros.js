@@ -196,6 +196,8 @@ let clickable = false;
 let timeLeft = 120;
 let timerInterval;
 
+const giveUpBtn = document.getElementById("giveUpBtn");
+
 function initGameData() {
   shuffledFlags = [...flagDB].sort(() => Math.random() - 0.5);
   currentIndex = 0;
@@ -229,6 +231,8 @@ function handleTimeOut() {
   document.getElementById(
     "flag" + (fakeSide === "left" ? "Left" : "Right")
   ).style.borderColor = "#FF0000";
+
+  if (giveUpBtn) giveUpBtn.style.display = "none";
 
   showResult(
     `💀 TEMPO ESGOTADO! GAME OVER! 💀<br>Sua pontuação zerou.<br><span style="font-size:18px;">O erro era: ${currentObj.errorMsg}</span>`,
@@ -265,6 +269,7 @@ function loadLevel() {
   }
 
   document.getElementById("customAlert").style.display = "none";
+  if (giveUpBtn) giveUpBtn.style.display = "inline-block";
   clickable = true;
 
   flagLeft.style.borderColor = "#000";
@@ -275,8 +280,9 @@ function loadLevel() {
 
 window.checkFlag = function (chosenSide) {
   if (!clickable) return;
-  clickable = false;
-  clearInterval(timerInterval);
+  clickable = false; // Trava o clique enquanto exibe a mensagem
+  clearInterval(timerInterval); // Pausa o tempo
+  if (giveUpBtn) giveUpBtn.style.display = "none";
 
   const currentObj = shuffledFlags[currentIndex];
   let isCorrect = chosenSide === fakeSide;
@@ -337,6 +343,33 @@ window.checkFlag = function (chosenSide) {
   }
 };
 
+// Função: Desistir
+window.giveUpGame = function () {
+  if (!clickable) return;
+  clickable = false;
+  clearInterval(timerInterval);
+
+  const currentObj = shuffledFlags[currentIndex];
+
+  document.getElementById(
+    "flag" + (fakeSide === "left" ? "Left" : "Right")
+  ).style.borderColor = "#FF0000";
+  document.getElementById(
+    "flag" + (fakeSide === "left" ? "Right" : "Left")
+  ).style.borderColor = "#00FF00";
+
+  if (giveUpBtn) giveUpBtn.style.display = "none";
+
+  showResult(
+    `🏳️ VOCÊ DESISTIU! 🏳️<br><br><span style="font-size:18px;">A bandeira falsa era a da <b>${
+      fakeSide === "left" ? "Esquerda" : "Direita"
+    }</b>!<br><br><b>O erro:</b> ${currentObj.errorMsg}</span>`,
+    false,
+    true
+  );
+};
+
+// Modificada para o pulo automático nas rodadas normais
 function showResult(msg, isSuccess, isEndGame, isVictory = false) {
   const alertBox = document.getElementById("customAlert");
   alertBox.innerHTML = msg;
@@ -351,9 +384,13 @@ function showResult(msg, isSuccess, isEndGame, isVictory = false) {
   alertBox.style.display = "block";
 
   if (isEndGame) {
+    // Se for fim de jogo ou desistência, mostra o botão para recomeçar
     alertBox.innerHTML += `<br><button onclick="resetGame()" class="btn-action" style="margin-top:15px; font-size: 18px; padding: 10px 20px;">🔄 JOGAR NOVAMENTE</button>`;
   } else {
-    alertBox.innerHTML += `<br><button onclick="loadNextWrapper()" class="btn-action" style="margin-top:15px; font-size: 18px; padding: 10px 20px;">PRÓXIMO DESAFIO ▶</button>`;
+    // Se for uma rodada normal, não mostra botão. Pula automaticamente em 3 segundos.
+    setTimeout(() => {
+      loadNextWrapper();
+    }, 3000);
   }
 }
 

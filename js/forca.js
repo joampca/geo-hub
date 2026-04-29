@@ -184,6 +184,7 @@ const scoreDisplay = document.getElementById("score");
 const keyboardArea = document.getElementById("keyboardArea");
 const customAlert = document.getElementById("customAlert");
 const hintDisplay = document.getElementById("hintDisplay");
+const giveUpBtn = document.getElementById("giveUpBtn"); // Referência do botão desistir
 
 // Cria o teclado virtual (A a Z)
 function generateKeyboard() {
@@ -221,6 +222,8 @@ function initGame() {
   asciiArt.innerText = asciiStages[0];
   customAlert.style.display = "none";
   keyboardArea.style.display = "flex";
+
+  if (giveUpBtn) giveUpBtn.style.display = "block";
 
   generateKeyboard();
   updateWordDisplay();
@@ -280,8 +283,25 @@ function handleGuess(letter) {
   }
 }
 
+// NOVA FUNÇÃO: Desistir do jogo
+window.giveUpGame = function () {
+  if (gameOver) return;
+
+  gameOver = true;
+  mistakes = maxMistakes; // Força os erros pro máximo
+  mistakesDisplay.innerText = mistakes;
+  asciiArt.innerText = asciiStages[maxMistakes]; // Desenha a forca completa
+
+  wordDisplay.innerText = chosenWord.split("").join(" ");
+  wordDisplay.style.color = "#CC0000"; // Destaca a palavra em vermelho
+
+  showResult(`🏳️ VOCÊ DESISTIU! A palavra era: ${chosenWord}`, false);
+};
+
 function showResult(msg, isWin) {
   keyboardArea.style.display = "none"; // Esconde o teclado para forçar o clique no botão de continuar
+  if (giveUpBtn) giveUpBtn.style.display = "none"; // Esconde botão de desistir
+
   customAlert.innerHTML = msg;
   customAlert.className =
     "custom-alert " + (isWin ? "alert-success" : "alert-error");
