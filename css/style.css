@@ -385,6 +385,12 @@ a:visited {
 @media (max-width: 768px) {
   .top-games-grid {
     flex-direction: column;
+
+    /* Centraliza os links e os ícones do menu aberto no mobile */
+    .side-menu li a {
+      justify-content: center;
+      width: 100%;
+    }
   }
 
   .side-menu {
