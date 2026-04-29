@@ -194,7 +194,7 @@ const database = [
 ];
 
 // Variáveis de Controle
-let availableWords = [...database];
+let availableWords = [];
 let originalWord = "";
 let scrambledWord = "";
 let currentIndex = 1;
@@ -251,13 +251,28 @@ function renderBlocks(wordStr, animate = false) {
     const block = document.createElement("div");
     block.className = "letter-block";
     block.innerText = char;
+
+    // Aplica estilo em linha para garantir que fiquem grandes e visíveis
+    block.style.display = "inline-flex";
+    block.style.alignItems = "center";
+    block.style.justifyContent = "center";
+    block.style.width = "40px";
+    block.style.height = "50px";
+    block.style.backgroundColor = "#fff";
+    block.style.border = "2px solid #000";
+    block.style.boxShadow = "2px 2px 0 #000";
+    block.style.fontSize = "1.5rem";
+    block.style.fontWeight = "bold";
+
     if (animate) block.classList.add("spin");
     scrambleBoard.appendChild(block);
   }
 }
 
 function initGame() {
-  availableWords = [...database];
+  // Aleatoriedade garantida!
+  availableWords = [...database].sort(() => Math.random() - 0.5);
+
   totalScore = 0;
   currentIndex = 1;
   scoreDisplay.innerText = totalScore;
@@ -301,8 +316,8 @@ function loadNext() {
     if (wordTime <= 0) timeUpForWord();
   }, 1000);
 
-  const rIndex = Math.floor(Math.random() * availableWords.length);
-  const currentItem = availableWords.splice(rIndex, 1)[0];
+  // Como já foi embaralhado no initGame, pegamos o primeiro (shift)
+  const currentItem = availableWords.shift();
   originalWord = currentItem.w;
   scrambledWord = scramble(originalWord);
 
@@ -334,9 +349,20 @@ function timeUpForWord() {
   showResultRevealing(`⏰ <strong>TEMPO ESGOTADO!</strong>`, "alert-error");
 }
 
+// NOVA FUNÇÃO: Desistir do jogo (Revela a palavra atual e encerra os timers)
+window.giveUpGame = function () {
+  clearInterval(globalTimerInterval);
+  clearInterval(wordTimerInterval);
+  inputArea.style.display = "none";
+
+  customAlert.innerHTML = `🏳️ <strong>VOCÊ DESISTIU!</strong><br><br>A resposta correta era:<br><span class="answer-highlight" style="color: #CC0000; font-size: 1.5rem;">${originalWord}</span><br><br>Pontuação Final: <strong>${totalScore}</strong> pts!<br><br><button onclick="window.location.reload()" class="btn-action" style="margin-top:20px;">TENTAR NOVAMENTE 🔄</button>`;
+  customAlert.className = "custom-alert alert-error";
+  customAlert.style.display = "block";
+};
+
 function showResultRevealing(title, className) {
   inputArea.style.display = "none";
-  customAlert.innerHTML = `${title}<br><br>A resposta correta era:<br><span class="answer-highlight">${originalWord}</span>`;
+  customAlert.innerHTML = `${title}<br><br>A resposta correta era:<br><span class="answer-highlight" style="color: #0047AB; font-size: 1.5rem;">${originalWord}</span>`;
   customAlert.className = "custom-alert " + className;
   customAlert.style.display = "block";
   customAlert.innerHTML += `<br><button onclick="loadNextWrapper()" class="btn-action" style="margin-top:20px;">PRÓXIMA PALAVRA ▶</button>`;
@@ -356,10 +382,13 @@ function checkAnswer() {
     totalScore += currentRoundPoints;
     scoreDisplay.innerText = totalScore;
     renderBlocks(originalWord);
+
+    // Animação de acerto
     scrambleBoard.querySelectorAll(".letter-block").forEach((b) => {
-      b.style.background = "linear-gradient(180deg, #008000, #006400)";
+      b.style.backgroundColor = "#008000";
       b.style.color = "#FFF";
     });
+
     inputArea.style.display = "none";
     customAlert.innerHTML = `🎉 CORRETO! VOCÊ GANHOU +${currentRoundPoints} PONTOS!`;
     customAlert.className = "custom-alert alert-success";
@@ -390,4 +419,4 @@ function endGame(titleMsg) {
 userInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") checkAnswer();
 });
-window.onload = initGame;
+// Removido window.onload para disparar pelo botão START

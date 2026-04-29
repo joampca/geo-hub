@@ -110,56 +110,226 @@
             isso custa pontos.
           </p>
 
-          <div class="status-bar">
-            <div>NÍVEL: <span id="level">1</span>/10</div>
-            <div>PONTOS: <span id="score">0</span></div>
-            <div class="global-timer">
-              TEMPO JOGO: <span id="globalTimerDisplay">03:00</span>
-            </div>
-            <div class="timer-warning">
-              PALAVRA: <span id="wordTimerDisplay">40</span>s
-            </div>
-            <div class="round-prize">
-              Valendo: <span id="prizePoints">100</span> pts
-            </div>
-          </div>
+          <!-- Botão Start -->
+          <button
+            id="startBtn"
+            class="btn-start"
+            onclick="initGame(); this.style.display='none'; document.getElementById('playArea').style.display='block';"
+          >
+            ▶ INICIAR DESAFIO
+          </button>
 
-          <div class="hint-text-box" id="hintText">DICA: Carregando...</div>
-
-          <div class="scramble-board" id="scrambleBoard"></div>
-
-          <div class="input-area" id="inputArea" style="display: none">
-            <div style="text-align: center">
-              <input
-                type="text"
-                id="userInput"
-                class="input-box-scramble"
-                placeholder="QUAL É A PALAVRA?"
-                autocomplete="off"
-              />
-            </div>
-
-            <div class="game-btn-area">
-              <button
-                class="btn-game-scramble btn-responder"
-                onclick="checkAnswer()"
+          <div id="playArea" style="display: none">
+            <!-- Painel de Status Padronizado com Dois Relógios -->
+            <div
+              class="stats-panel"
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: stretch;
+                gap: 10px;
+                margin-bottom: 20px;
+                flex-wrap: wrap;
+              "
+            >
+              <div
+                class="status-bar score-box"
+                style="flex: 1; min-width: 200px"
               >
-                ✔️ RESPONDER
-              </button>
-              <button class="btn-game-scramble btn-pular" onclick="skipWord()">
-                ⏭️ PULAR
-              </button>
-              <button
-                class="btn-game-scramble btn-tornado"
-                id="shuffleBtn"
-                onclick="shuffleWord()"
+                NÍVEL: <span id="level">1</span>/10 | PONTOS:
+                <span id="score">0</span>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  gap: 10px;
+                  flex: 1;
+                  min-width: 280px;
+                  justify-content: flex-end;
+                "
               >
-                🌪️ TORNADO
-              </button>
+                <!-- Relógio Global -->
+                <div
+                  class="timer-box"
+                  style="
+                    background-color: #ffd700;
+                    color: #000;
+                    font-size: 14px;
+                    padding: 10px;
+                  "
+                >
+                  ⏱️ TOTAL: <span id="globalTimerDisplay">03:00</span>
+                </div>
+                <!-- Relógio da Palavra (Cor Diferente) -->
+                <div
+                  class="timer-box"
+                  style="
+                    background-color: #8a2be2;
+                    color: #fff;
+                    font-size: 14px;
+                    padding: 10px;
+                  "
+                >
+                  ⏳ PALAVRA: <span id="wordTimerDisplay">40</span>s
+                </div>
+              </div>
             </div>
-          </div>
 
-          <div id="customAlert" class="custom-alert"></div>
+            <div
+              style="
+                text-align: center;
+                margin-bottom: 15px;
+                font-weight: bold;
+                color: #333;
+              "
+            >
+              Valendo:
+              <span id="prizePoints" style="color: #008000; font-size: 1.2rem"
+                >100</span
+              >
+              pts
+            </div>
+
+            <div
+              class="hint-text-box"
+              id="hintText"
+              style="
+                font-size: 1.2rem;
+                font-weight: bold;
+                margin-bottom: 15px;
+                text-align: center;
+              "
+            >
+              DICA: Carregando...
+            </div>
+
+            <div
+              class="scramble-board"
+              id="scrambleBoard"
+              style="
+                display: flex;
+                justify-content: center;
+                gap: 5px;
+                flex-wrap: wrap;
+                margin-bottom: 20px;
+              "
+            ></div>
+
+            <div class="input-area" id="inputArea" style="display: none">
+              <div style="text-align: center; margin-bottom: 20px">
+                <input
+                  type="text"
+                  id="userInput"
+                  class="input-box-scramble"
+                  placeholder="QUAL É A PALAVRA?"
+                  autocomplete="off"
+                  style="
+                    width: 100%;
+                    max-width: 400px;
+                    padding: 12px;
+                    font-size: 1.2rem;
+                    text-align: center;
+                    text-transform: uppercase;
+                    border: 2px solid #000;
+                    box-shadow: 2px 2px 0px #000;
+                  "
+                />
+              </div>
+
+              <!-- Botões de Ação Alinhados e Padronizados (Grid 2x2) -->
+              <div
+                class="game-btn-area"
+                style="
+                  display: grid;
+                  grid-template-columns: 1fr 1fr;
+                  gap: 15px;
+                  max-width: 500px;
+                  margin: 0 auto;
+                "
+              >
+                <button
+                  class="btn-action"
+                  onclick="checkAnswer()"
+                  style="
+                    margin: 0;
+                    padding: 15px 5px;
+                    font-size: 1rem;
+                    background-color: #008000;
+                    color: #fff;
+                    font-weight: bold;
+                    border: 2px solid #000;
+                    box-shadow: 2px 2px 0px #000;
+                    cursor: pointer;
+                    width: 100%;
+                  "
+                >
+                  ✔️ RESPONDER
+                </button>
+
+                <button
+                  id="skipBtn"
+                  class="btn-action"
+                  onclick="skipWord()"
+                  style="
+                    margin: 0;
+                    padding: 15px 5px;
+                    font-size: 1rem;
+                    background-color: #0047ab;
+                    color: #fff;
+                    font-weight: bold;
+                    border: 2px solid #000;
+                    box-shadow: 2px 2px 0px #000;
+                    cursor: pointer;
+                    width: 100%;
+                  "
+                >
+                  ⏭️ PULAR
+                </button>
+
+                <button
+                  class="btn-action"
+                  id="shuffleBtn"
+                  onclick="shuffleWord()"
+                  style="
+                    margin: 0;
+                    padding: 15px 5px;
+                    font-size: 1rem;
+                    background-color: #ffa500;
+                    color: #000;
+                    font-weight: bold;
+                    border: 2px solid #000;
+                    box-shadow: 2px 2px 0px #000;
+                    cursor: pointer;
+                    width: 100%;
+                  "
+                >
+                  🌪️ TORNADO (-20 pts)
+                </button>
+
+                <button
+                  id="giveUpBtn"
+                  class="btn-action"
+                  onclick="giveUpGame()"
+                  style="
+                    margin: 0;
+                    padding: 15px 5px;
+                    font-size: 1rem;
+                    background-color: #cc0000;
+                    color: #fff;
+                    font-weight: bold;
+                    border: 2px solid #000;
+                    box-shadow: 2px 2px 0px #000;
+                    cursor: pointer;
+                    width: 100%;
+                  "
+                >
+                  🏳️ DESISTIR
+                </button>
+              </div>
+            </div>
+
+            <div id="customAlert" class="custom-alert"></div>
+          </div>
         </main>
 
         <aside class="ads-sidebar ad-desktop-only">

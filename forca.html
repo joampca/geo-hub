@@ -95,14 +95,32 @@
             Salve o boneco palito antes que suas 6 vidas acabem!
           </p>
 
-          <button id="startBtn" class="btn-action">▶ JOGAR FORCA</button>
+          <button id="startBtn" class="btn-start">▶ JOGAR FORCA</button>
 
           <div id="playArea" style="display: none">
-            <div class="status-bar">
-              <span>Pontos: <span id="score">0</span></span>
-              <span style="color: #ffff00"
-                >Erros: <span id="mistakes">0</span> / 6</span
+            <!-- Painel de Status Padronizado -->
+            <div
+              class="stats-panel"
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+              "
+            >
+              <div class="status-bar score-box">
+                Pontos: <span id="score">0</span>
+              </div>
+              <div
+                class="timer-box"
+                style="
+                  background-color: #cc0000;
+                  color: #fff;
+                  text-align: right;
+                "
               >
+                ⚠️ Erros: <span id="mistakes">0</span> / 6
+              </div>
             </div>
 
             <div id="hintDisplay" class="word-category">
@@ -118,6 +136,26 @@
             <div id="customAlert" class="custom-alert"></div>
 
             <div class="keyboard" id="keyboardArea"></div>
+
+            <!-- Novo botão de desistir -->
+            <button
+              id="giveUpBtn"
+              class="btn-action btn-skip"
+              onclick="giveUpGame()"
+              style="
+                margin-top: 20px;
+                display: none;
+                width: 100%;
+                background-color: #0047ab;
+                color: #fff;
+                font-weight: bold;
+                border: 2px solid #000;
+                box-shadow: 2px 2px 0px #000;
+                cursor: pointer;
+              "
+            >
+              🏳️ DESISTIR (Encerrar e Ver Palavra)
+            </button>
           </div>
         </main>
 

@@ -205,6 +205,7 @@ const database = {
 };
 
 const startBtn = document.getElementById("startBtn");
+const giveUpBtn = document.getElementById("giveUpBtn");
 const playArea = document.getElementById("playArea");
 const continentNameDisplay = document.getElementById("continentName");
 const userInput = document.getElementById("userInput");
@@ -240,11 +241,13 @@ function updateTimer() {
 function endGame(won) {
   clearInterval(timerInterval);
   userInput.disabled = true;
+  giveUpBtn.style.display = "none";
+
   if (won) {
     userInput.placeholder = "PARABÉNS!";
     victoryMsg.style.display = "block";
   } else {
-    userInput.placeholder = "TEMPO ESGOTADO!";
+    userInput.placeholder = "FIM DE JOGO!";
     gameOverMsg.style.display = "block";
     currentCountries.forEach((country, index) => {
       if (!guessedCountries.includes(country)) {
@@ -256,18 +259,28 @@ function endGame(won) {
   }
 }
 
+giveUpBtn.addEventListener("click", () => {
+  endGame(false);
+});
+
 startBtn.addEventListener("click", () => {
   const continentList = Object.keys(database);
+
+  // Aleatoriedade 100% mantida na roleta de continentes
   currentContinent =
     continentList[Math.floor(Math.random() * continentList.length)];
 
+  // AQUI: Os países do continente selecionado ficam em ordem alfabética para facilitar o jogo
   currentCountries = database[currentContinent].sort();
 
   continentNameDisplay.innerText = currentContinent;
   totalDisplay.innerText = currentCountries.length;
   startBtn.style.display = "none";
   playArea.style.display = "block";
+  giveUpBtn.style.display = "inline-block";
   userInput.focus();
+  userInput.value = "";
+  userInput.placeholder = "Digite o nome do país...";
 
   answersGrid.innerHTML = "";
   guessedCountries = [];

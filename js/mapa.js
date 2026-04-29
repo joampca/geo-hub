@@ -1,5 +1,4 @@
 // DICIONÁRIO DE TRADUÇÃO: Filtra estritamente os 50 maiores países do GeoJSON para serem jogáveis.
-// O nome em inglês deve bater exatamente com o arquivo topográfico global.
 const top50Countries = {
   Russia: "RÚSSIA",
   Canada: "CANADÁ",
@@ -55,21 +54,22 @@ const top50Countries = {
 
 let score = 0;
 let skipCount = 0;
-let timeLeft = 120;
+let timeLeft = 120; // 2 minutos para achar no mapa
 let timerInterval;
 let isWaitingForClick = false;
 let isSpinning = false;
 
-let availableTargets = []; // Array com os países que ainda não foram sorteados
-let currentTargetEnglish = null; // O alvo atual (chave)
+let availableTargets = [];
+let currentTargetEnglish = null;
 
 // Variáveis do DOM
 const targetDisplay = document.getElementById("targetDisplay");
 const spinBtn = document.getElementById("spinBtn");
 const skipBtn = document.getElementById("skipBtn");
+const giveUpBtn = document.getElementById("giveUpBtn"); // Novo botão padronizado
 const scoreDisplay = document.getElementById("scoreDisplay");
 const skipDisplay = document.getElementById("skipDisplay");
-const timerDisplay = document.getElementById("timerDisplay");
+const timerDisplay = document.getElementById("timer"); // Atualizado para ID do novo painel
 const customAlert = document.getElementById("customAlert");
 const svgContainer = d3.select("#mapContainer");
 
@@ -87,7 +87,7 @@ const projection = d3
   .translate([width / 2, height / 1.5]);
 const pathGenerator = d3.geoPath().projection(projection);
 
-// 1. CARREGAR OS DADOS GEOGRÁFICOS DO SATÉLITE (GeoJSON)
+// 1. CARREGAR OS DADOS GEOGRÁFICOS DO SATÉLITE
 d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
   .then(function (world) {
     document.getElementById("loadingText").style.display = "none";
@@ -95,7 +95,6 @@ d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
 
     const countries = topojson.feature(world, world.objects.countries).features;
 
-    // Desenhar os polígonos no SVG
     svg
       .selectAll("path")
       .data(countries)
@@ -103,13 +102,12 @@ d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
       .append("path")
       .attr("d", pathGenerator)
       .attr("class", function (d) {
-        // Se o país estiver na nossa lista Top 50, ele é jogável.
         return top50Countries[d.properties.name]
           ? "country-path playable-hover"
           : "country-path country-unplayable";
       })
       .attr("id", function (d) {
-        return "country-" + d.properties.name.replace(/\s+/g, ""); // Cria um ID limpo para selecionar depois
+        return "country-" + d.properties.name.replace(/\s+/g, "");
       })
       .on("click", handleMapClick);
   })
@@ -122,48 +120,74 @@ d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
 window.startGame = function () {
   document.getElementById("controlsArea").style.display = "none";
   document.getElementById("playArea").style.display = "block";
+  giveUpBtn.style.display = "inline-block";
 
   score = 0;
   skipCount = 0;
   scoreDisplay.innerText = score;
-  skipDisplay.innerText = skipCount;
+  if (skipDisplay) skipDisplay.innerText = skipCount;
 
-  // Popula a lista de alvos com os nomes em inglês
+  // Popula e garante a aleatoriedade (embora a roleta já seja aleatória)
   availableTargets = Object.keys(top50Countries);
 
   startTimer();
   spinTarget();
 };
 
+function updateTimerDisplay() {
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
+  timerDisplay.innerText = `${minutes.toString().padStart(2, "0")}:${seconds
+    .toString()
+    .padStart(2, "0")}`;
+}
+
 function startTimer() {
   clearInterval(timerInterval);
   timeLeft = 120;
-  timerDisplay.innerText = timeLeft;
+  updateTimerDisplay();
 
   timerInterval = setInterval(() => {
     timeLeft--;
-    timerDisplay.innerText = timeLeft;
+    updateTimerDisplay();
     if (timeLeft <= 0) {
-      clearInterval(timerInterval);
-      handleTimeOut();
+      handleTimeOut(false);
     }
   }, 1000);
 }
 
-function handleTimeOut() {
+function handleTimeOut(userGaveUp = false) {
+  clearInterval(timerInterval);
   isWaitingForClick = false;
   spinBtn.disabled = true;
   skipBtn.disabled = true;
+  giveUpBtn.style.display = "none";
+
+  // Se o usuário desistiu ou o tempo acabou, pinta o alvo atual e todos os restantes de vermelho
+  if (currentTargetEnglish) {
+    availableTargets.push(currentTargetEnglish); // Devolve o atual pra lista pra ser pintado
+  }
+
+  availableTargets.forEach((countryKey) => {
+    const id = "#country-" + countryKey.replace(/\s+/g, "");
+    d3.select(id).classed("found-wrong", true).classed("playable-hover", false);
+  });
+
+  const reason = userGaveUp ? "🏳️ VOCÊ DESISTIU!" : "⏰ TEMPO ESGOTADO!";
+
   showResult(
-    `⏰ TEMPO ESGOTADO! FIM DE JOGO!<br>Você fez ${score} pontos e usou ${skipCount} pulos.`,
+    `${reason}<br>O radar finalizou a varredura.<br><strong>Pontuação: ${score} | Pulos: ${skipCount}</strong><br>Os países que faltaram estão em vermelho no mapa.`,
     false,
     true
   );
 }
 
+// Botão de Desistir
+giveUpBtn.addEventListener("click", () => {
+  handleTimeOut(true);
+});
+
 function resetMapColors() {
-  // Limpa APENAS as cores temporárias (o clique errado e a animação de piscar).
-  // As classes 'found-correct' e 'found-wrong' ficam no mapa para sempre!
   d3.selectAll(".country-path")
     .classed("wrong-click", false)
     .classed("reveal-country", false);
@@ -185,13 +209,12 @@ function spinTarget() {
   const spinInterval = setInterval(() => {
     let randomKey =
       availableTargets[Math.floor(Math.random() * availableTargets.length)];
-    targetDisplay.innerText = top50Countries[randomKey]; // Mostra em Português
+    targetDisplay.innerText = top50Countries[randomKey];
     ticks++;
 
     if (ticks >= maxTicks) {
       clearInterval(spinInterval);
 
-      // Define o alvo real e remove do array
       const targetIndex = Math.floor(Math.random() * availableTargets.length);
       currentTargetEnglish = availableTargets.splice(targetIndex, 1)[0];
 
@@ -209,28 +232,21 @@ spinBtn.onclick = spinTarget;
 skipBtn.onclick = () => {
   if (isSpinning || !isWaitingForClick) return;
 
-  // 1. Identifica o ID do país que o usuário resolveu pular
-  // Usamos a mesma lógica de limpeza de ID (remover espaços) que usamos na criação do mapa
   const skippedId = "#country-" + currentTargetEnglish.replace(/\s+/g, "");
 
-  // 2. O D3 entra em ação: Seleciona o país e marca de vermelho
-  // Adicionamos 'found-wrong' para a cor e removemos 'playable-hover' para desativar o mouse
   d3.select(skippedId)
     .classed("found-wrong", true)
     .classed("playable-hover", false);
 
-  // 3. Atualiza os contadores
   skipCount++;
-  skipDisplay.innerText = skipCount;
+  if (skipDisplay) skipDisplay.innerText = skipCount;
 
-  // 4. Limpa alertas e gira a roleta para o próximo alvo
   customAlert.style.display = "none";
   spinTarget();
 };
 
 // 3. O CLIQUE NO MAPA VETORIAL
 function handleMapClick(event, d) {
-  // Se não for hora de clicar ou não for país do Top 50, ignora.
   if (!isWaitingForClick || !top50Countries[d.properties.name]) return;
 
   isWaitingForClick = false;
@@ -243,7 +259,6 @@ function handleMapClick(event, d) {
   const correctId = "#country-" + currentTargetEnglish.replace(/\s+/g, "");
 
   if (clickedEnglishName === currentTargetEnglish) {
-    // REGRA 1: ACERTOU (Destaca de verde permanente e tira o hover)
     score += 50;
     scoreDisplay.innerText = score;
 
@@ -253,11 +268,8 @@ function handleMapClick(event, d) {
 
     showResult(`🎯 TIRO CERTEIRO! (+50 Pts)`, true);
   } else {
-    // REGRA 3: ERROU
-    // Marca temporariamente onde ele clicou errado de laranja
     d3.select(clickedId).classed("wrong-click", true);
 
-    // Marca o alvo real de vermelho permanente, tira o hover e faz piscar
     d3.select(correctId)
       .classed("found-wrong", true)
       .classed("reveal-country", true)
@@ -273,9 +285,10 @@ function handleMapClick(event, d) {
   if (availableTargets.length === 0) {
     clearInterval(timerInterval);
     spinBtn.disabled = true;
+    giveUpBtn.style.display = "none";
     setTimeout(() => {
       showResult(
-        `🏆 FIM DE JOGO! O radar finalizou a varredura.<br>Pontuação Final: ${score} | Pulos: ${skipCount}`,
+        `🏆 VARREDURA COMPLETA!<br>Pontuação Final: ${score} | Pulos: ${skipCount}`,
         true,
         true
       );

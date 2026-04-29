@@ -198,18 +198,23 @@ let gridData = [];
 let wordsToFind = [];
 let wordsFound = 0;
 let firstClickCell = null;
+let wordPlacements = {}; // NOVO: Armazena as posições reais de cada palavra na grade
 
 let timeElapsed = 0; // Cronômetro progressivo
 let timerInterval;
+let gameActive = false; // Controle para travar a grade após fim de jogo
 
 const startBtn = document.getElementById("startBtn");
+const giveUpBtn = document.getElementById("giveUpBtn");
 const playArea = document.getElementById("playArea");
 const gridContainer = document.getElementById("gridContainer");
 const wordListDiv = document.getElementById("wordList");
 const victoryMsg = document.getElementById("victoryMsg");
+const gameOverMsg = document.getElementById("gameOverMsg");
 const timerDisplay = document.getElementById("timer");
 const finalTimeDisplay = document.getElementById("finalTime");
 const wordsCountDisplay = document.getElementById("wordsCountDisplay");
+const totalWordsDisplay = document.getElementById("totalWordsDisplay");
 
 function updateTimer() {
   const minutes = Math.floor(timeElapsed / 60);
@@ -219,12 +224,57 @@ function updateTimer() {
     .padStart(2, "0")}`;
 }
 
+function endGame(won) {
+  clearInterval(timerInterval);
+  gameActive = false;
+  giveUpBtn.style.display = "none";
+
+  if (won) {
+    finalTimeDisplay.innerText = timerDisplay.innerText;
+    victoryMsg.style.display = "block";
+  } else {
+    // Revela as palavras que faltaram na lista e na grade
+    wordsToFind.forEach((word) => {
+      let wordElement = document.getElementById("word-" + word);
+      if (!wordElement.classList.contains("found-word")) {
+        // Marca na lista lateral
+        wordElement.style.color = "#ff0000";
+        wordElement.style.textDecoration = "line-through";
+
+        // Pinta na grade
+        if (wordPlacements[word]) {
+          wordPlacements[word].forEach((pos) => {
+            let cell = document.querySelector(
+              `.grid-cell[data-r='${pos.r}'][data-c='${pos.c}']`
+            );
+            if (cell) {
+              cell.style.backgroundColor = "#ff4d4d"; // Vermelho claro
+              cell.style.color = "#ffffff";
+              cell.style.fontWeight = "bold";
+            }
+          });
+        }
+      }
+    });
+    gameOverMsg.style.display = "block";
+  }
+}
+
+// Evento de desistir
+giveUpBtn.addEventListener("click", () => {
+  endGame(false);
+});
+
 // FUNÇÃO PRINCIPAL: Gera a grade randomicamente
 function generateGame() {
-  // Esconde botão inicial e mensagem de vitória, mostra área do jogo
+  gameActive = true;
   startBtn.style.display = "none";
   playArea.style.display = "block";
+  giveUpBtn.style.display = "inline-block";
   victoryMsg.style.display = "none";
+  wordPlacements = {}; // Zera o mapa de posições
+
+  if (gameOverMsg) gameOverMsg.style.display = "none";
 
   // Zera o Relógio Progressivo
   clearInterval(timerInterval);
@@ -240,6 +290,9 @@ function generateGame() {
   wordsToFind = shuffledWords.slice(0, 6);
   wordsFound = 0;
   wordsCountDisplay.innerText = wordsFound;
+
+  if (totalWordsDisplay) totalWordsDisplay.innerText = wordsToFind.length;
+
   firstClickCell = null;
 
   // Cria a grade vazia
@@ -303,10 +356,12 @@ function generateGame() {
         }
       }
 
-      // Coloca a palavra
+      // Coloca a palavra e salva as posições
       if (canPlace) {
+        wordPlacements[word] = [];
         for (let i = 0; i < word.length; i++) {
           gridData[row + i * rStep][col + i * cStep] = word[i];
+          wordPlacements[word].push({ r: row + i * rStep, c: col + i * cStep });
         }
         placed = true;
       }
@@ -355,7 +410,7 @@ function generateGame() {
 
 // LÓGICA DE INTERAÇÃO
 function handleCellClick(cell) {
-  if (cell.classList.contains("found")) return;
+  if (!gameActive || cell.classList.contains("found")) return;
 
   if (!firstClickCell) {
     // Primeiro clique
@@ -412,9 +467,7 @@ function handleCellClick(cell) {
         wordsCountDisplay.innerText = wordsFound;
 
         if (wordsFound === wordsToFind.length) {
-          clearInterval(timerInterval);
-          finalTimeDisplay.innerText = timerDisplay.innerText;
-          victoryMsg.style.display = "block";
+          endGame(true); // Venceu o jogo!
         }
       } else {
         firstClickCell.classList.remove("selected");

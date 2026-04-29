@@ -125,17 +125,13 @@
           </div>
 
           <div id="playArea" style="display: none">
-            <div class="status-bar-map">
-              <span>PONTOS: <span id="scoreDisplay">0</span></span>
-              <div class="right-stats">
-                <span class="skip-box"
-                  >PULOS: <span id="skipDisplay">0</span></span
-                >
-                <span
-                  >TEMPO:
-                  <span id="timerDisplay" class="timer-box">120</span></span
-                >
+            <!-- Novo Painel de Status Dividido -->
+            <div class="stats-panel">
+              <div class="status-bar score-box">
+                Pontos: <span id="scoreDisplay">0</span> | Pulos:
+                <span id="skipDisplay">0</span>
               </div>
+              <div class="timer-box">⏱️ <span id="timer">02:00</span></div>
             </div>
 
             <div class="roulette-box">
@@ -145,14 +141,43 @@
               </div>
             </div>
 
-            <div style="margin-bottom: 20px">
-              <button id="spinBtn" class="btn-action">
+            <div
+              style="
+                margin-bottom: 20px;
+                display: flex;
+                gap: 10px;
+                justify-content: center;
+                flex-wrap: wrap;
+              "
+            >
+              <button id="spinBtn" class="btn-action" style="margin: 0">
                 🎰 GIRAR PRÓXIMO ALVO
               </button>
-              <button id="skipBtn" class="btn-action btn-skip">
+              <button
+                id="skipBtn"
+                class="btn-action btn-skip"
+                style="
+                  margin: 0;
+                  background-color: #0047ab;
+                  color: #fff;
+                  font-weight: bold;
+                  border: 2px solid #000;
+                  box-shadow: 2px 2px 0px #000;
+                  cursor: pointer;
+                "
+              >
                 ⏭ PULAR ALVO (0 pts)
               </button>
             </div>
+
+            <!-- Novo botão de desistir -->
+            <button
+              id="giveUpBtn"
+              class="btn-action btn-skip"
+              style="margin-bottom: 20px; display: none; width: 100%"
+            >
+              🏳️ DESISTIR (Encerrar e Mostrar Faltantes)
+            </button>
 
             <div class="map-wrapper" id="mapContainer"></div>
 

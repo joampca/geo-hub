@@ -93,48 +93,174 @@
         <main class="game-main-area">
           <p class="game-desc">
             Adivinhe o local, país ou fenômeno geográfico baseado nas pistas!
+            São 10 rodadas de puro conhecimento.
           </p>
 
-          <div class="status-bar">
-            <div>NÍVEL: <span id="level">1</span>/10</div>
-            <div>PONTOS: <span id="score">0</span></div>
-            <div class="round-prize">
-              Valendo: <span id="prizePoints">100</span> pts
-            </div>
-          </div>
-
-          <div class="riddle-card" id="riddleCard">
-            <div class="riddle-text" id="riddleText">Carregando charada...</div>
-            <div class="hints-container">
-              <div class="hint-text" id="hint1"></div>
-              <div class="hint-text" id="hint2"></div>
-              <div class="hint-text" id="hint3"></div>
-            </div>
-          </div>
-
-          <button class="btn-action btn-hint" id="hintBtn" onclick="showHint()">
-            💡 PEDIR DICA (-20 pts)
+          <!-- Botão para iniciar e seguir o padrão dos outros jogos -->
+          <button
+            id="startBtn"
+            class="btn-start"
+            onclick="initGame(); this.style.display='none'; document.getElementById('playArea').style.display='block';"
+          >
+            ▶ COMEÇAR DESAFIO
           </button>
 
-          <div class="input-area" id="inputArea" style="display: none">
-            <div class="input-group">
-              <input
-                type="text"
-                id="userInput"
-                class="input-box-charada"
-                placeholder="Digite sua resposta..."
-                autocomplete="off"
-              />
+          <div id="playArea" style="display: none">
+            <!-- Painel de Status Padronizado (Sem Relógio, Pontos alinhados à direita) -->
+            <div
+              class="stats-panel"
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+              "
+            >
+              <div class="status-bar score-box">
+                NÍVEL: <span id="level">1</span>/10 | PONTOS:
+                <span id="score">0</span>
+              </div>
+              <div
+                class="timer-box"
+                style="
+                  background-color: #ffd700;
+                  color: #000;
+                  text-align: right;
+                "
+              >
+                🏆 Valendo: <span id="prizePoints">100</span> pts
+              </div>
             </div>
-            <div class="input-group">
-              <button class="btn-action" onclick="checkAnswer()">
-                ENVIAR RESPOSTA
-              </button>
-              <button class="btn-skip" onclick="skipRiddle()">PULAR ⏭️</button>
-            </div>
-          </div>
 
-          <div id="customAlert" class="custom-alert"></div>
+            <div class="riddle-card" id="riddleCard" style="margin-top: 20px">
+              <div
+                class="riddle-text"
+                id="riddleText"
+                style="
+                  font-size: 1.2rem;
+                  font-weight: bold;
+                  margin-bottom: 15px;
+                "
+              >
+                Carregando charada...
+              </div>
+              <div class="hints-container">
+                <div
+                  class="hint-text"
+                  id="hint1"
+                  style="
+                    display: none;
+                    background: #f0f0f0;
+                    margin: 5px 0;
+                    padding: 8px;
+                    border-radius: 5px;
+                  "
+                ></div>
+                <div
+                  class="hint-text"
+                  id="hint2"
+                  style="
+                    display: none;
+                    background: #f0f0f0;
+                    margin: 5px 0;
+                    padding: 8px;
+                    border-radius: 5px;
+                  "
+                ></div>
+                <div
+                  class="hint-text"
+                  id="hint3"
+                  style="
+                    display: none;
+                    background: #f0f0f0;
+                    margin: 5px 0;
+                    padding: 8px;
+                    border-radius: 5px;
+                  "
+                ></div>
+              </div>
+            </div>
+
+            <div
+              class="input-area"
+              id="inputArea"
+              style="display: none; margin-top: 20px"
+            >
+              <div
+                class="input-group"
+                style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  gap: 10px;
+                  margin-bottom: 15px;
+                "
+              >
+                <input
+                  type="text"
+                  id="userInput"
+                  class="input-box-charada"
+                  placeholder="Digite sua resposta..."
+                  autocomplete="off"
+                  style="flex-grow: 1; margin: 0"
+                />
+                <button
+                  class="btn-action"
+                  onclick="checkAnswer()"
+                  style="margin: 0"
+                >
+                  ENVIAR
+                </button>
+              </div>
+
+              <div
+                class="input-group"
+                style="
+                  display: flex;
+                  justify-content: center;
+                  gap: 10px;
+                  flex-wrap: wrap;
+                "
+              >
+                <button
+                  class="btn-action btn-hint"
+                  id="hintBtn"
+                  onclick="showHint()"
+                  style="margin: 0; background-color: #ffa500"
+                >
+                  💡 PEDIR DICA (-20 pts)
+                </button>
+                <button
+                  id="skipBtn"
+                  class="btn-skip"
+                  onclick="skipRiddle()"
+                  style="
+                    margin: 0;
+                    background-color: #0047ab;
+                    color: #fff;
+                    font-weight: bold;
+                    border: 2px solid #000;
+                    box-shadow: 2px 2px 0px #000;
+                    cursor: pointer;
+                    padding: 10px 20px;
+                  "
+                >
+                  PULAR ⏭️
+                </button>
+              </div>
+
+              <!-- Novo botão de desistir -->
+              <button
+                id="giveUpBtn"
+                class="btn-action btn-skip"
+                onclick="giveUpGame()"
+                style="margin-top: 20px; display: block; width: 100%"
+              >
+                🏳️ DESISTIR (Encerrar e Ver Resposta)
+              </button>
+            </div>
+
+            <div id="customAlert" class="custom-alert"></div>
+          </div>
         </main>
 
         <aside class="ads-sidebar ad-desktop-only">
