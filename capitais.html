@@ -9,20 +9,17 @@
       async
       src="https://www.googletagmanager.com/gtag/js?id=G-N2ZZJ1F6T1"
     ></script>
-
     <script
       async
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1158047772982385"
       crossorigin="anonymous"
     ></script>
-
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
       }
       gtag("js", new Date());
-
       gtag("config", "G-N2ZZJ1F6T1");
     </script>
 
@@ -42,7 +39,9 @@
             <span>OUTROS JOGOS</span>
             <button class="hamburger-btn" onclick="toggleMenu()">☰</button>
           </div>
-          <ul>
+
+          <!-- ATENÇÃO AQUI: Adicionado o id="menuList" para o JS encontrar o menu -->
+          <ul id="menuList">
             <li>
               <a href="index.html"><span class="menu-icon">🏠</span>Início</a>
             </li>
@@ -213,12 +212,12 @@
     <script src="js/capitais.js"></script>
 
     <footer class="site-footer">
-      <marquee behavior="scroll" direction="left" class="marquee-90s"
-        >CURIOSIDADE: LA PAZ, NA BOLÍVIA, É CONSIDERADA A CAPITAL NACIONAL MAIS
+      <marquee behavior="scroll" direction="left" class="marquee-90s">
+        CURIOSIDADE: LA PAZ, NA BOLÍVIA, É CONSIDERADA A CAPITAL NACIONAL MAIS
         ALTA DO MUNDO! ELA FICA LOCALIZADA NA CORDILHEIRA DOS ANDES, A MAIS DE
         3.600 METROS ACIMA DO NÍVEL DO MAR! ⛰️ --- CONTINUE EXPLORANDO O GEO
-        GAMES!</marquee
-      >
+        GAMES!
+      </marquee>
     </footer>
   </body>
 </html>

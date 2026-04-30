@@ -1,0 +1,555 @@
+[
+  {
+    "nome": "AFEGANISTAO",
+    "code": "af",
+    "colors": ["black", "red", "dark green", "white"]
+  },
+  {
+    "nome": "AFRICA DO SUL",
+    "code": "za",
+    "colors": ["red", "dark blue", "dark green", "yellow", "black", "white"]
+  },
+  { "nome": "ALBANIA", "code": "al", "colors": ["red", "black"] },
+  { "nome": "ALEMANHA", "code": "de", "colors": ["black", "red", "yellow"] },
+  { "nome": "ANDORRA", "code": "ad", "colors": ["blue", "yellow", "red"] },
+  { "nome": "ANGOLA", "code": "ao", "colors": ["red", "black", "yellow"] },
+  {
+    "nome": "ANTIGUA E BARBUDA",
+    "code": "ag",
+    "colors": ["black", "blue", "white", "red", "yellow"]
+  },
+  { "nome": "ARABIA SAUDITA", "code": "sa", "colors": ["dark green", "white"] },
+  { "nome": "ARGELIA", "code": "dz", "colors": ["green", "white", "red"] },
+  {
+    "nome": "ARGENTINA",
+    "code": "ar",
+    "colors": ["light blue", "white", "yellow"]
+  },
+  { "nome": "ARMENIA", "code": "am", "colors": ["red", "dark blue", "orange"] },
+  {
+    "nome": "AUSTRALIA",
+    "code": "au",
+    "colors": ["dark blue", "white", "red"]
+  },
+  { "nome": "AUSTRIA", "code": "at", "colors": ["red", "white"] },
+  {
+    "nome": "AZERBAIJAO",
+    "code": "az",
+    "colors": ["light blue", "red", "green", "white"]
+  },
+  {
+    "nome": "BAHAMAS",
+    "code": "bs",
+    "colors": ["light blue", "yellow", "black"]
+  },
+  { "nome": "BANGLADESH", "code": "bd", "colors": ["dark green", "red"] },
+  {
+    "nome": "BARBADOS",
+    "code": "bb",
+    "colors": ["dark blue", "yellow", "black"]
+  },
+  { "nome": "BAHREIN", "code": "bh", "colors": ["white", "red"] },
+  { "nome": "BELARUS", "code": "by", "colors": ["red", "green", "white"] },
+  { "nome": "BELGICA", "code": "be", "colors": ["black", "yellow", "red"] },
+  {
+    "nome": "BELIZE",
+    "code": "bz",
+    "colors": ["dark blue", "red", "white", "green"]
+  },
+  { "nome": "BENIN", "code": "bj", "colors": ["green", "yellow", "red"] },
+  { "nome": "BOLIVIA", "code": "bo", "colors": ["red", "yellow", "green"] },
+  {
+    "nome": "BOSNIA E HERZEGOVINA",
+    "code": "ba",
+    "colors": ["dark blue", "yellow", "white"]
+  },
+  {
+    "nome": "BOTSUANA",
+    "code": "bw",
+    "colors": ["light blue", "black", "white"]
+  },
+  {
+    "nome": "BRASIL",
+    "code": "br",
+    "colors": ["dark green", "yellow", "dark blue", "white"]
+  },
+  {
+    "nome": "BRUNEI",
+    "code": "bn",
+    "colors": ["yellow", "white", "black", "red"]
+  },
+  { "nome": "BULGARIA", "code": "bg", "colors": ["white", "green", "red"] },
+  {
+    "nome": "BURKINA FASO",
+    "code": "bf",
+    "colors": ["red", "green", "yellow"]
+  },
+  { "nome": "BURUNDI", "code": "bi", "colors": ["white", "red", "green"] },
+  { "nome": "BUTAO", "code": "bt", "colors": ["yellow", "orange", "white"] },
+  {
+    "nome": "CABO VERDE",
+    "code": "cv",
+    "colors": ["dark blue", "white", "red", "yellow"]
+  },
+  { "nome": "CAMAROES", "code": "cm", "colors": ["green", "red", "yellow"] },
+  { "nome": "CAMBOJA", "code": "kh", "colors": ["dark blue", "red", "white"] },
+  { "nome": "CANADA", "code": "ca", "colors": ["red", "white"] },
+  { "nome": "CATAR", "code": "qa", "colors": ["white", "dark red"] },
+  { "nome": "CAZAQUISTAO", "code": "kz", "colors": ["light blue", "yellow"] },
+  { "nome": "CHADE", "code": "td", "colors": ["dark blue", "yellow", "red"] },
+  { "nome": "CHILE", "code": "cl", "colors": ["red", "white", "dark blue"] },
+  { "nome": "CHINA", "code": "cn", "colors": ["red", "yellow"] },
+  { "nome": "CHIPRE", "code": "cy", "colors": ["white", "orange", "green"] },
+  {
+    "nome": "COLOMBIA",
+    "code": "co",
+    "colors": ["yellow", "dark blue", "red"]
+  },
+  {
+    "nome": "COMORES",
+    "code": "km",
+    "colors": ["yellow", "white", "red", "blue", "green"]
+  },
+  { "nome": "CONGO", "code": "cg", "colors": ["green", "yellow", "red"] },
+  {
+    "nome": "COREIA DO NORTE",
+    "code": "kp",
+    "colors": ["red", "white", "dark blue"]
+  },
+  {
+    "nome": "COREIA DO SUL",
+    "code": "kr",
+    "colors": ["white", "black", "red", "dark blue"]
+  },
+  {
+    "nome": "COSTA DO MARFIM",
+    "code": "ci",
+    "colors": ["orange", "white", "green"]
+  },
+  {
+    "nome": "COSTA RICA",
+    "code": "cr",
+    "colors": ["dark blue", "white", "red"]
+  },
+  { "nome": "CROACIA", "code": "hr", "colors": ["red", "white", "dark blue"] },
+  { "nome": "CUBA", "code": "cu", "colors": ["dark blue", "white", "red"] },
+  { "nome": "DINAMARCA", "code": "dk", "colors": ["red", "white"] },
+  {
+    "nome": "DJIBUTI",
+    "code": "dj",
+    "colors": ["light blue", "green", "white", "red"]
+  },
+  {
+    "nome": "DOMINICA",
+    "code": "dm",
+    "colors": ["green", "yellow", "black", "white", "red", "purple"]
+  },
+  {
+    "nome": "EGITO",
+    "code": "eg",
+    "colors": ["red", "white", "black", "yellow"]
+  },
+  { "nome": "EL SALVADOR", "code": "sv", "colors": ["light blue", "white"] },
+  {
+    "nome": "EMIRADOS ARABES UNIDOS",
+    "code": "ae",
+    "colors": ["green", "white", "black", "red"]
+  },
+  { "nome": "EQUADOR", "code": "ec", "colors": ["yellow", "dark blue", "red"] },
+  {
+    "nome": "ERITREIA",
+    "code": "er",
+    "colors": ["green", "red", "blue", "yellow"]
+  },
+  { "nome": "ESLOVAQUIA", "code": "sk", "colors": ["white", "blue", "red"] },
+  { "nome": "ESLOVENIA", "code": "si", "colors": ["white", "blue", "red"] },
+  { "nome": "ESPANHA", "code": "es", "colors": ["red", "yellow"] },
+  {
+    "nome": "ESTADOS UNIDOS",
+    "code": "us",
+    "colors": ["red", "white", "dark blue"]
+  },
+  { "nome": "ESTONIA", "code": "ee", "colors": ["blue", "black", "white"] },
+  {
+    "nome": "ESWATINI",
+    "code": "sz",
+    "colors": ["blue", "yellow", "red", "black", "white"]
+  },
+  {
+    "nome": "ETIOPIA",
+    "code": "et",
+    "colors": ["green", "yellow", "red", "blue"]
+  },
+  {
+    "nome": "FIJI",
+    "code": "fj",
+    "colors": ["light blue", "white", "red", "dark blue"]
+  },
+  {
+    "nome": "FILIPINAS",
+    "code": "ph",
+    "colors": ["dark blue", "red", "white", "yellow"]
+  },
+  { "nome": "FINLANDIA", "code": "fi", "colors": ["white", "dark blue"] },
+  { "nome": "FRANCA", "code": "fr", "colors": ["dark blue", "white", "red"] },
+  { "nome": "GABAO", "code": "ga", "colors": ["green", "yellow", "blue"] },
+  {
+    "nome": "GAMBIA",
+    "code": "gm",
+    "colors": ["red", "white", "blue", "green"]
+  },
+  {
+    "nome": "GANA",
+    "code": "gh",
+    "colors": ["red", "yellow", "green", "black"]
+  },
+  { "nome": "GEORGIA", "code": "ge", "colors": ["white", "red"] },
+  { "nome": "GRANADA", "code": "gd", "colors": ["red", "yellow", "green"] },
+  { "nome": "GRECIA", "code": "gr", "colors": ["blue", "white"] },
+  { "nome": "GUATEMALA", "code": "gt", "colors": ["light blue", "white"] },
+  {
+    "nome": "GUIANA",
+    "code": "gy",
+    "colors": ["green", "white", "black", "yellow", "red"]
+  },
+  { "nome": "GUINE", "code": "gn", "colors": ["red", "yellow", "green"] },
+  {
+    "nome": "GUINE BISSOU",
+    "code": "gw",
+    "colors": ["red", "yellow", "green", "black"]
+  },
+  {
+    "nome": "GUINE EQUATORIAL",
+    "code": "gq",
+    "colors": ["green", "white", "red", "blue"]
+  },
+  {
+    "nome": "HAITI",
+    "code": "ht",
+    "colors": ["dark blue", "red", "white", "green"]
+  },
+  { "nome": "HONDURAS", "code": "hn", "colors": ["light blue", "white"] },
+  { "nome": "HUNGRIA", "code": "hu", "colors": ["red", "white", "green"] },
+  { "nome": "IEMEN", "code": "ye", "colors": ["red", "white", "black"] },
+  {
+    "nome": "ILHAS MARSHALL",
+    "code": "mh",
+    "colors": ["dark blue", "orange", "white"]
+  },
+  {
+    "nome": "INDIA",
+    "code": "in",
+    "colors": ["orange", "white", "green", "dark blue"]
+  },
+  { "nome": "INDONESIA", "code": "id", "colors": ["red", "white"] },
+  { "nome": "IRA", "code": "ir", "colors": ["green", "white", "red"] },
+  {
+    "nome": "IRAQUE",
+    "code": "iq",
+    "colors": ["red", "white", "black", "green"]
+  },
+  { "nome": "IRLANDA", "code": "ie", "colors": ["green", "white", "orange"] },
+  { "nome": "ISLANDIA", "code": "is", "colors": ["dark blue", "white", "red"] },
+  { "nome": "ISRAEL", "code": "il", "colors": ["white", "dark blue"] },
+  { "nome": "ITALIA", "code": "it", "colors": ["dark green", "white", "red"] },
+  { "nome": "JAMAICA", "code": "jm", "colors": ["green", "yellow", "black"] },
+  { "nome": "JAPAO", "code": "jp", "colors": ["white", "red"] },
+  {
+    "nome": "JORDANIA",
+    "code": "jo",
+    "colors": ["black", "white", "green", "red"]
+  },
+  {
+    "nome": "KIRIBATI",
+    "code": "ki",
+    "colors": ["red", "white", "blue", "yellow"]
+  },
+  {
+    "nome": "KUWAIT",
+    "code": "kw",
+    "colors": ["green", "white", "red", "black"]
+  },
+  { "nome": "LAOS", "code": "la", "colors": ["red", "dark blue", "white"] },
+  {
+    "nome": "LESOTO",
+    "code": "ls",
+    "colors": ["blue", "white", "green", "black"]
+  },
+  { "nome": "LETONIA", "code": "lv", "colors": ["dark red", "white"] },
+  { "nome": "LIBANO", "code": "lb", "colors": ["red", "white", "green"] },
+  { "nome": "LIBERIA", "code": "lr", "colors": ["red", "white", "dark blue"] },
+  {
+    "nome": "LIBIA",
+    "code": "ly",
+    "colors": ["red", "black", "green", "white"]
+  },
+  {
+    "nome": "LIECHTENSTEIN",
+    "code": "li",
+    "colors": ["dark blue", "red", "yellow"]
+  },
+  { "nome": "LITUANIA", "code": "lt", "colors": ["yellow", "green", "red"] },
+  {
+    "nome": "LUXEMBURGO",
+    "code": "lu",
+    "colors": ["red", "white", "light blue"]
+  },
+  { "nome": "MACEDONIA DO NORTE", "code": "mk", "colors": ["red", "yellow"] },
+  { "nome": "MADAGASCAR", "code": "mg", "colors": ["white", "red", "green"] },
+  {
+    "nome": "MALASIA",
+    "code": "my",
+    "colors": ["red", "white", "dark blue", "yellow"]
+  },
+  { "nome": "MALAWI", "code": "mw", "colors": ["black", "red", "green"] },
+  { "nome": "MALDIVAS", "code": "mv", "colors": ["red", "green", "white"] },
+  { "nome": "MALI", "code": "ml", "colors": ["green", "yellow", "red"] },
+  { "nome": "MALTA", "code": "mt", "colors": ["white", "red"] },
+  { "nome": "MARROCOS", "code": "ma", "colors": ["dark red", "dark green"] },
+  {
+    "nome": "MAURICIO",
+    "code": "mu",
+    "colors": ["red", "blue", "yellow", "green"]
+  },
+  { "nome": "MAURITANIA", "code": "mr", "colors": ["green", "yellow", "red"] },
+  { "nome": "MEXICO", "code": "mx", "colors": ["dark green", "white", "red"] },
+  { "nome": "MICRONESIA", "code": "fm", "colors": ["light blue", "white"] },
+  {
+    "nome": "MOCAMBIQUE",
+    "code": "mz",
+    "colors": ["green", "black", "yellow", "white", "red"]
+  },
+  { "nome": "MOLDAVIA", "code": "md", "colors": ["blue", "yellow", "red"] },
+  { "nome": "MONACO", "code": "mc", "colors": ["red", "white"] },
+  { "nome": "MONGOLIA", "code": "mn", "colors": ["red", "blue", "yellow"] },
+  { "nome": "MONTENEGRO", "code": "me", "colors": ["red", "yellow"] },
+  {
+    "nome": "MIANMAR",
+    "code": "mm",
+    "colors": ["yellow", "green", "red", "white"]
+  },
+  {
+    "nome": "NAMIBIA",
+    "code": "na",
+    "colors": ["blue", "red", "green", "white", "yellow"]
+  },
+  { "nome": "NAURU", "code": "nr", "colors": ["dark blue", "yellow", "white"] },
+  { "nome": "NEPAL", "code": "np", "colors": ["red", "dark blue", "white"] },
+  {
+    "nome": "NICARAGUA",
+    "code": "ni",
+    "colors": ["light blue", "white", "purple"]
+  },
+  { "nome": "NIGER", "code": "ne", "colors": ["orange", "white", "green"] },
+  { "nome": "NIGERIA", "code": "ng", "colors": ["dark green", "white"] },
+  { "nome": "NORUEGA", "code": "no", "colors": ["red", "white", "dark blue"] },
+  {
+    "nome": "NOVA ZELANDIA",
+    "code": "nz",
+    "colors": ["dark blue", "red", "white"]
+  },
+  { "nome": "OMA", "code": "om", "colors": ["white", "red", "green"] },
+  {
+    "nome": "PAISES BAIXOS",
+    "code": "nl",
+    "colors": ["red", "white", "dark blue"]
+  },
+  { "nome": "PALAU", "code": "pw", "colors": ["light blue", "yellow"] },
+  {
+    "nome": "PALESTINA",
+    "code": "ps",
+    "colors": ["black", "white", "green", "red"]
+  },
+  { "nome": "PANAMA", "code": "pa", "colors": ["white", "red", "dark blue"] },
+  {
+    "nome": "PAPUA NOVA GUINE",
+    "code": "pg",
+    "colors": ["red", "black", "yellow", "white"]
+  },
+  { "nome": "PAQUISTAO", "code": "pk", "colors": ["dark green", "white"] },
+  { "nome": "PARAGUAI", "code": "py", "colors": ["red", "white", "dark blue"] },
+  { "nome": "PERU", "code": "pe", "colors": ["red", "white"] },
+  { "nome": "POLONIA", "code": "pl", "colors": ["white", "red"] },
+  {
+    "nome": "PORTUGAL",
+    "code": "pt",
+    "colors": ["dark green", "red", "yellow"]
+  },
+  {
+    "nome": "QUENIA",
+    "code": "ke",
+    "colors": ["black", "red", "green", "white"]
+  },
+  { "nome": "QUIRGUISTAO", "code": "kg", "colors": ["red", "yellow"] },
+  {
+    "nome": "REINO UNIDO",
+    "code": "gb",
+    "colors": ["dark blue", "white", "red"]
+  },
+  {
+    "nome": "REPUBLICA CENTRO AFRICANA",
+    "code": "cf",
+    "colors": ["blue", "white", "green", "yellow", "red"]
+  },
+  {
+    "nome": "REPUBLICA CHECA",
+    "code": "cz",
+    "colors": ["dark blue", "white", "red"]
+  },
+  {
+    "nome": "REPUBLICA DEMOCRATICA DO CONGO",
+    "code": "cd",
+    "colors": ["light blue", "red", "yellow"]
+  },
+  {
+    "nome": "REPUBLICA DOMINICANA",
+    "code": "do",
+    "colors": ["dark blue", "red", "white"]
+  },
+  { "nome": "ROMENIA", "code": "ro", "colors": ["dark blue", "yellow", "red"] },
+  {
+    "nome": "RUANDA",
+    "code": "rw",
+    "colors": ["light blue", "yellow", "green"]
+  },
+  { "nome": "RUSSIA", "code": "ru", "colors": ["white", "dark blue", "red"] },
+  { "nome": "SAMOA", "code": "ws", "colors": ["red", "dark blue", "white"] },
+  { "nome": "SAN MARINO", "code": "sm", "colors": ["white", "light blue"] },
+  {
+    "nome": "SANTA LUCIA",
+    "code": "lc",
+    "colors": ["light blue", "yellow", "black", "white"]
+  },
+  {
+    "nome": "SAO CRISTOVAO E NEVIS",
+    "code": "kn",
+    "colors": ["green", "red", "black", "yellow", "white"]
+  },
+  {
+    "nome": "SAO TOME E PRINCIPE",
+    "code": "st",
+    "colors": ["green", "yellow", "red", "black"]
+  },
+  {
+    "nome": "SAO VICENTE E GRANADINAS",
+    "code": "vc",
+    "colors": ["blue", "yellow", "green"]
+  },
+  {
+    "nome": "SEICHELES",
+    "code": "sc",
+    "colors": ["blue", "yellow", "red", "white", "green"]
+  },
+  {
+    "nome": "SENEGAL",
+    "code": "sn",
+    "colors": ["dark green", "yellow", "red"]
+  },
+  { "nome": "SERVIA", "code": "rs", "colors": ["red", "dark blue", "white"] },
+  { "nome": "CINGAPURA", "code": "sg", "colors": ["red", "white"] },
+  {
+    "nome": "SIRIA",
+    "code": "sy",
+    "colors": ["red", "white", "black", "green"]
+  },
+  { "nome": "SOMALIA", "code": "so", "colors": ["light blue", "white"] },
+  {
+    "nome": "SRI LANKA",
+    "code": "lk",
+    "colors": ["yellow", "dark red", "orange", "green"]
+  },
+  {
+    "nome": "SOUDAO",
+    "code": "sd",
+    "colors": ["red", "white", "black", "green"]
+  },
+  {
+    "nome": "SOUDAO DO SUL",
+    "code": "ss",
+    "colors": ["black", "red", "green", "blue", "yellow", "white"]
+  },
+  { "nome": "SUECIA", "code": "se", "colors": ["blue", "yellow"] },
+  { "nome": "SUICA", "code": "ch", "colors": ["red", "white"] },
+  {
+    "nome": "SURINAME",
+    "code": "sr",
+    "colors": ["green", "white", "red", "yellow"]
+  },
+  {
+    "nome": "TADJIQUISTAO",
+    "code": "tj",
+    "colors": ["red", "white", "green", "yellow"]
+  },
+  {
+    "nome": "TAILANDIA",
+    "code": "th",
+    "colors": ["red", "white", "dark blue"]
+  },
+  {
+    "nome": "TANZANIA",
+    "code": "tz",
+    "colors": ["green", "black", "blue", "yellow"]
+  },
+  {
+    "nome": "TIMOR LESTE",
+    "code": "tl",
+    "colors": ["red", "yellow", "black", "white"]
+  },
+  {
+    "nome": "TOGO",
+    "code": "tg",
+    "colors": ["green", "yellow", "red", "white"]
+  },
+  { "nome": "TONGA", "code": "to", "colors": ["red", "white"] },
+  {
+    "nome": "TRINIDAD E TOBAGO",
+    "code": "tt",
+    "colors": ["red", "black", "white"]
+  },
+  { "nome": "TUNISIA", "code": "tn", "colors": ["red", "white"] },
+  {
+    "nome": "TURCOMENISTAO",
+    "code": "tm",
+    "colors": ["dark green", "white", "red"]
+  },
+  { "nome": "TURQUIA", "code": "tr", "colors": ["red", "white"] },
+  {
+    "nome": "TUVALU",
+    "code": "tv",
+    "colors": ["light blue", "dark blue", "yellow", "white"]
+  },
+  { "nome": "UCRANIA", "code": "ua", "colors": ["light blue", "yellow"] },
+  {
+    "nome": "UGANDA",
+    "code": "ug",
+    "colors": ["black", "yellow", "red", "white"]
+  },
+  { "nome": "URUGUAI", "code": "uy", "colors": ["white", "blue", "yellow"] },
+  {
+    "nome": "UZBEQUISTAO",
+    "code": "uz",
+    "colors": ["light blue", "white", "green", "red"]
+  },
+  {
+    "nome": "VANUATU",
+    "code": "vu",
+    "colors": ["red", "green", "black", "yellow"]
+  },
+  { "nome": "VATICANO", "code": "va", "colors": ["yellow", "white"] },
+  {
+    "nome": "VENEZUELA",
+    "code": "ve",
+    "colors": ["yellow", "dark blue", "red", "white"]
+  },
+  { "nome": "VIETNA", "code": "vn", "colors": ["red", "yellow"] },
+  {
+    "nome": "ZAMBIA",
+    "code": "zm",
+    "colors": ["green", "red", "black", "orange"]
+  },
+  {
+    "nome": "ZIMBABUE",
+    "code": "zw",
+    "colors": ["green", "yellow", "red", "black", "white"]
+  }
+]

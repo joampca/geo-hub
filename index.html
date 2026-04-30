@@ -3,221 +3,405 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GEO GAMES - O seu portal geográfico!</title>
-    <link rel="icon" type="image/png" href="assets/favicon.png" />
+    <title>GEO GAMES - O seu portal geográfico da internet!</title>
 
     <script
       async
       src="https://www.googletagmanager.com/gtag/js?id=G-N2ZZJ1F6T1"
     ></script>
-
     <script
       async
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1158047772982385"
       crossorigin="anonymous"
     ></script>
-
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
       }
       gtag("js", new Date());
-
       gtag("config", "G-N2ZZJ1F6T1");
     </script>
 
     <link rel="stylesheet" href="css/style.css" />
+
+    <style>
+      /* --- PADRONIZAÇÃO DE FONTES --- */
+      body {
+        font-family: "Comic Sans MS", Arial, sans-serif;
+      }
+      .game-title-font {
+        font-family: "Comic Sans MS", Arial, sans-serif;
+        font-weight: bold;
+      }
+
+      /* --- ESTRUTURA PRINCIPAL EXPANDIDA --- */
+      .content-wrapper {
+        width: 100%;
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #ffffff;
+        min-height: 80vh;
+      }
+
+      .main-layout-flex {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 30px;
+        width: 100%;
+      }
+
+      /* --- COLUNA DA ESQUERDA (Ajustada para 300px) --- */
+      .left-sidebar {
+        width: 300px; /* Alinhado com a largura dos blocos de anúncio */
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      /* Ajuste no menu lateral para ocupar toda a largura da coluna de 300px */
+      .side-menu {
+        width: 100% !important;
+        margin-bottom: 0;
+      }
+
+      /* --- COLUNA CENTRAL (Flexível) --- */
+      .home-center-column {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      /* --- COLUNA DA DIREITA (Fixa em 300px) --- */
+      .right-sidebar {
+        width: 300px;
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      /* --- ESTILIZAÇÃO DO DESTAQUE --- */
+      .highlight-box {
+        border: 4px solid #ff0000;
+        background-color: #ffffff;
+        text-align: center;
+        width: 100%;
+      }
+      .highlight-header {
+        background-color: #ff0000;
+        color: #ffffff;
+        font-weight: bold;
+        padding: 10px;
+        text-transform: uppercase;
+        font-size: 1.1rem;
+      }
+      .highlight-content {
+        padding: 30px;
+      }
+      .highlight-content h2 {
+        color: #0000ff;
+        font-size: 2rem;
+        margin-bottom: 10px;
+      }
+      .highlight-content p {
+        font-weight: bold;
+        margin-bottom: 20px;
+        font-size: 1.1rem;
+        font-family: Arial, sans-serif;
+      }
+      .highlight-icon-box {
+        background-color: #008000;
+        display: inline-block;
+        padding: 15px 30px;
+        margin-bottom: 25px;
+        font-size: 50px;
+        border: 2px solid #000;
+      }
+
+      /* --- ESTILIZAÇÃO DOS MINIGAMES (4 Colunas) --- */
+      .minigames-section {
+        border: 4px solid #ff0000;
+        background-color: #ffffff;
+        width: 100%;
+      }
+      .minigames-header {
+        background-color: #ff0000;
+        color: #ffffff;
+        font-weight: bold;
+        padding: 10px;
+        text-align: center;
+        text-transform: uppercase;
+      }
+      .minigames-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        padding: 20px;
+        background-color: #e0f7fa;
+      }
+      .mini-game-card {
+        background-color: #ffffff;
+        border: 3px solid #000;
+        text-align: center;
+        padding: 20px 5px;
+        text-decoration: none;
+        color: #800080;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+      .mini-game-card:hover {
+        background-color: #ffffcc;
+      }
+      .mini-game-icon {
+        font-size: 32px;
+      }
+
+      /* --- ESTILIZAÇÃO DOS JOGOS LATERAIS --- */
+      .side-game-box {
+        border: 4px solid #000;
+        background-color: #f0f0f8;
+        text-align: center;
+        padding: 20px 10px;
+        box-shadow: 2px 2px 0px #000;
+        width: 100%;
+      }
+      .side-game-box h3 {
+        color: #800080;
+        margin-bottom: 5px;
+        font-size: 1.3rem;
+        text-transform: uppercase;
+      }
+      .side-game-box p {
+        font-size: 14px;
+        margin-bottom: 15px;
+        color: #333;
+        font-family: Arial, sans-serif;
+      }
+      .btn-small {
+        background-color: #d3d3d3;
+        border: 3px outset #fff;
+        padding: 8px 15px;
+        text-decoration: none;
+        color: #800080;
+        font-weight: bold;
+        font-size: 14px;
+        display: inline-block;
+        box-shadow: 2px 2px 0px #000;
+      }
+
+      /* --- PLACEHOLDERS DE ANÚNCIOS --- */
+      .ad-placeholder {
+        display: block;
+        width: 100%;
+        margin: 0 auto;
+        min-height: 250px;
+      }
+
+      .ad-mobile-only {
+        display: none;
+      }
+
+      /* --- RESPONSIVIDADE --- */
+      @media (max-width: 1150px) {
+        .main-layout-flex {
+          flex-direction: column;
+          align-items: center;
+        }
+        .left-sidebar,
+        .right-sidebar {
+          width: 100%;
+          max-width: 800px;
+        }
+        .right-sidebar {
+          flex-direction: row;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+        .side-game-box {
+          width: calc(50% - 15px);
+        }
+        .ad-desktop-only {
+          display: none !important;
+        }
+        .ad-mobile-only {
+          display: block;
+          margin-bottom: 20px;
+        }
+      }
+      @media (max-width: 768px) {
+        .minigames-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .side-game-box {
+          width: 100%;
+        }
+      }
+    </style>
   </head>
   <body>
     <header class="site-header">
-      <div class="site-logo">🌍 GEO GAMES 🌐</div>
+      <h1 class="site-logo">🌍 GEO GAMES 🌐</h1>
       <p class="site-tagline">O seu portal geográfico da internet!</p>
     </header>
 
     <div class="content-wrapper">
-      <div class="main-content-area">
-        <main class="primary-content">
-          <section class="top-games-grid">
-            <nav class="side-menu">
-              <!-- Cabeçalho do Menu com o Botão Hambúrguer -->
-              <div class="menu-header">
-                <span>MENU PRINCIPAL</span>
-                <button class="hamburger-btn" onclick="toggleMenu()">☰</button>
-              </div>
-              <ul>
-                <li>
-                  <a href="#"><span class="menu-icon">🏠</span>Início</a>
-                </li>
-                <li>
-                  <a href="fronteiras.html"
-                    ><span class="menu-icon">🗺️</span>Fronteiras</a
-                  >
-                </li>
-                <li>
-                  <a href="continentes.html"
-                    ><span class="menu-icon">🌍</span>Continentes</a
-                  >
-                </li>
-                <li>
-                  <a href="capitais.html"
-                    ><span class="menu-icon">📍</span>Capitais</a
-                  >
-                </li>
-                <li>
-                  <a href="bandeiras.html"
-                    ><span class="menu-icon">🚩</span>Bandeiras</a
-                  >
-                </li>
-                <li>
-                  <a href="contato.html"
-                    ><span class="menu-icon">✉️</span>Contato</a
-                  >
-                </li>
-              </ul>
-            </nav>
-
-            <article class="center-game-box">
-              <div class="block-header">DESTAQUE!</div>
-              <div class="block-content">
-                <h3>Adivinhe as Fronteiras!</h3>
-                <p class="game-desc">
-                  Você consegue listar todos os países que fazem fronteira com o
-                  país sorteado??
-                </p>
-                <div class="fake-image-box">🗺️</div>
-                <a href="fronteiras.html" class="jogar-link">JOGAR AGORA!</a>
-              </div>
-            </article>
-
-            <div class="ad-placeholder ad-mobile-only ad-336x280-flex">
-              <ins
-                class="adsbygoogle"
-                style="display: block"
-                data-ad-client="ca-pub-1158047772982385"
-                data-ad-slot="4700847273"
-                data-ad-format="auto"
-                data-full-width-responsive="true"
-              ></ins>
-              <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-              </script>
+      <div class="main-layout-flex">
+        <!-- COLUNA DA ESQUERDA -->
+        <aside class="left-sidebar">
+          <nav class="side-menu">
+            <div class="menu-header">
+              <span>MENU PRINCIPAL</span>
+              <button class="hamburger-btn" onclick="toggleMenu()">☰</button>
             </div>
-
-            <div class="right-games-list">
-              <div class="sub-game-box continents">
-                <h4>Continentes</h4>
-                <p style="font-size: 13px; margin-bottom: 5px">
-                  Liste os países!
-                </p>
-                <a href="continentes.html" class="clique-jogue-link"
-                  >CLIQUE E JOGUE</a
+            <ul id="menuList">
+              <li>
+                <a href="index.html"><span class="menu-icon">🏠</span>Início</a>
+              </li>
+              <li>
+                <a href="fronteiras.html"
+                  ><span class="menu-icon">🗺️</span>Fronteiras</a
                 >
-              </div>
-              <div class="sub-game-box capitals">
-                <h4>Capitais</h4>
-                <a href="capitais.html" class="jogar-small-link">JOGAR</a>
-              </div>
-              <div class="sub-game-box flags">
-                <h4>Bandeiras</h4>
-                <a href="bandeiras.html" class="jogar-small-link">JOGAR</a>
-              </div>
-            </div>
+              </li>
+              <li>
+                <a href="continentes.html"
+                  ><span class="menu-icon">🌍</span>Continentes</a
+                >
+              </li>
+              <li>
+                <a href="capitais.html"
+                  ><span class="menu-icon">📍</span>Capitais</a
+                >
+              </li>
+              <li>
+                <a href="bandeiras.html"
+                  ><span class="menu-icon">🚩</span>Bandeiras</a
+                >
+              </li>
+              <li>
+                <a href="contato.html"
+                  ><span class="menu-icon">✉️</span>Contato</a
+                >
+              </li>
+            </ul>
+          </nav>
 
-            <div class="ad-placeholder ad-mobile-only ad-336x280-flex">
-              <ins
-                class="adsbygoogle"
-                style="display: block"
-                data-ad-client="ca-pub-1158047772982385"
-                data-ad-slot="4700847273"
-                data-ad-format="auto"
-                data-full-width-responsive="true"
-              ></ins>
-              <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-              </script>
-            </div>
-          </section>
+          <div class="ad-placeholder ad-desktop-only">
+            <!-- AdSense Esquerda -->
+          </div>
+        </aside>
 
-          <section class="mini-games-gallery">
-            <div class="gallery-header">MINI GAMES - DIVIRTA-SE!</div>
-            <div class="gallery-grid">
-              <div
-                class="mini-game-item"
-                onclick="location.href='caca-palavras.html'"
-              >
-                <div class="mini-icon">🔍</div>
-                <p>Caça Palavras</p>
-              </div>
-              <div class="mini-game-item" onclick="location.href='mapa.html'">
-                <div class="mini-icon">📌</div>
-                <p>Onde Fica?</p>
-              </div>
-              <div
-                class="mini-game-item"
-                onclick="location.href='charadas.html'"
-              >
-                <div class="mini-icon">🤔</div>
-                <p>Charadas</p>
-              </div>
-              <div class="mini-game-item" onclick="location.href='forca.html'">
-                <div class="mini-icon">💀</div>
-                <p>Forca</p>
-              </div>
-              <div
-                class="mini-game-item"
-                onclick="location.href='embaralhadas.html'"
-              >
-                <div class="mini-icon">🌪️</div>
-                <p>Palavras Embaralhadas</p>
-              </div>
-              <div class="mini-game-item" onclick="location.href='erros.html'">
-                <div class="mini-icon">❌</div>
-                <p>Encontre o erro</p>
-              </div>
-            </div>
-          </section>
-        </main>
-
-        <aside class="ads-sidebar ad-desktop-only">
-          <div class="ad-placeholder ad-300x250">
-            <ins
-              class="adsbygoogle"
-              style="display: block"
-              data-ad-client="ca-pub-1158047772982385"
-              data-ad-slot="4700847273"
-              data-ad-format="auto"
-              data-full-width-responsive="true"
-            ></ins>
-            <script>
-              (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
+        <!-- COLUNA CENTRAL -->
+        <div class="home-center-column">
+          <div class="ad-placeholder ad-mobile-only">
+            <!-- AdSense Mobile Topo -->
           </div>
 
-          <div class="ad-placeholder ad-300x600">
-            <ins
-              class="adsbygoogle"
-              style="display: block"
-              data-ad-client="ca-pub-1158047772982385"
-              data-ad-slot="6704938945"
-              data-ad-format="auto"
-              data-full-width-responsive="true"
-            ></ins>
-            <script>
-              (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
+          <div class="highlight-box">
+            <div class="highlight-header">DESTAQUE!</div>
+            <div class="highlight-content">
+              <h2 class="game-title-font">Desafio Diário!</h2>
+              <p>
+                Um país novo todos os dias. Você consegue adivinhar a bandeira
+                misteriosa usando apenas as cores? Sem moleza!
+              </p>
+              <div class="highlight-icon-box">📅 🌍</div>
+              <br />
+              <a
+                href="diario.html"
+                class="btn-action game-title-font"
+                style="
+                  font-size: 1.2rem;
+                  padding: 15px 40px;
+                  background-color: #ffcc00;
+                  color: #000;
+                  text-decoration: none;
+                  display: inline-block;
+                "
+                >JOGAR AGORA!</a
+              >
+            </div>
+          </div>
+
+          <div class="minigames-section">
+            <div class="minigames-header">MINI GAMES - DIVIRTA-SE!</div>
+            <div class="minigames-grid">
+              <a href="capitais.html" class="mini-game-card"
+                ><span class="mini-game-icon">📍</span
+                ><span class="game-title-font">Capitais</span></a
+              >
+              <a href="bandeiras.html" class="mini-game-card"
+                ><span class="mini-game-icon">🚩</span
+                ><span class="game-title-font">Bandeiras</span></a
+              >
+              <a href="caca-palavras.html" class="mini-game-card"
+                ><span class="mini-game-icon">🔍</span
+                ><span class="game-title-font">Caça Palavras</span></a
+              >
+              <a href="mapa.html" class="mini-game-card"
+                ><span class="mini-game-icon">📌</span
+                ><span class="game-title-font">Onde Fica?</span></a
+              >
+              <a href="charadas.html" class="mini-game-card"
+                ><span class="mini-game-icon">🤔</span
+                ><span class="game-title-font">Charadas</span></a
+              >
+              <a href="forca.html" class="mini-game-card"
+                ><span class="mini-game-icon">☠️</span
+                ><span class="game-title-font">Forca</span></a
+              >
+              <a href="embaralhadas.html" class="mini-game-card"
+                ><span class="mini-game-icon">🌪️</span
+                ><span class="game-title-font">Embaralhadas</span></a
+              >
+              <a href="erros.html" class="mini-game-card"
+                ><span class="mini-game-icon">❌</span
+                ><span class="game-title-font">Encontre o erro</span></a
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- COLUNA DA DIREITA -->
+        <aside class="right-sidebar">
+          <div class="side-game-box">
+            <h3 class="game-title-font">🗺️ Fronteiras</h3>
+            <p>Liste os países!</p>
+            <a href="fronteiras.html" class="btn-small game-title-font"
+              >CLIQUE E JOGUE</a
+            >
+          </div>
+          <div class="side-game-box">
+            <h3 class="game-title-font">🌎 Continentes</h3>
+            <p>Liste os países!</p>
+            <a href="continentes.html" class="btn-small game-title-font"
+              >CLIQUE E JOGUE</a
+            >
+          </div>
+          <div class="ad-placeholder ad-desktop-only">
+            <!-- AdSense Direita -->
           </div>
         </aside>
       </div>
     </div>
 
-    <script src="js/main.js"></script>
-
     <footer class="site-footer">
-      <marquee behavior="scroll" direction="left" class="marquee-90s"
+      <marquee
+        behavior="scroll"
+        direction="left"
+        class="marquee-90s game-title-font"
         >BEM-VINDO AO GEO GAMES! O SEU PORTAL GEOGRÁFICO DA INTERNET! JOGUE
         AGORA! © 2026</marquee
       >
     </footer>
+
+    <script src="js/main.js"></script>
   </body>
 </html>
