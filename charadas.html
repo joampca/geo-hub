@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
@@ -9,9 +9,11 @@
       async
       src="https://www.googletagmanager.com/gtag/js?id=G-N2ZZJ1F6T1"
     ></script>
+    <meta name="google-adsense-account" content="ca-pub-6421589139268393" />
+
     <script
       async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1158047772982385"
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6421589139268393"
       crossorigin="anonymous"
     ></script>
     <script>
@@ -104,7 +106,11 @@
           <button
             id="startBtn"
             class="btn-start"
-            onclick="initGame(); this.style.display='none'; document.getElementById('playArea').style.display='block';"
+            onclick="
+              initGame();
+              this.style.display = 'none';
+              document.getElementById('playArea').style.display = 'block';
+            "
           >
             ▶ COMEÇAR DESAFIO
           </button>
@@ -299,11 +305,11 @@
     </div>
 
     <footer class="site-footer">
-      <marquee behavior="scroll" direction="left" class="marquee-90s"
-        >CURIOSIDADE: O MAR DE SARGAÇO É O ÚNICO MAR DO PLANETA QUE NÃO POSSUI
+      <marquee behavior="scroll" direction="left" class="marquee-90s">
+        CURIOSIDADE: O MAR DE SARGAÇO É O ÚNICO MAR DO PLANETA QUE NÃO POSSUI
         NENHUM LITORAL! ELE FICA NO MEIO DO OCEANO ATLÂNTICO... --- CONTINUE
-        EXPLORANDO O GEO GAMES!</marquee
-      >
+        EXPLORANDO O GEO GAMES!
+      </marquee>
     </footer>
 
     <script src="js/main.js"></script>
