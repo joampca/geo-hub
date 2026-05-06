@@ -1,17 +1,20 @@
 // --- CONFIGURAÇÕES DO CICLO DIÁRIO ---
-// Data de lançamento do jogo (Dia 1 do ciclo).
 const DATA_LANCAMENTO = new Date("2026-04-30T00:00:00-03:00");
 
-// O banco de dados agora inicia vazio e será preenchido pelo arquivo JSON
 let dbPaises = [];
-
 let paisDoDia = null;
 let numeroDoDesafioAtual = 1;
 let tentativas = 0;
 const maxTentativas = 5;
-let canvas, ctx, originalImageData;
-let revealedColors = [];
 let isGameOver = false;
+
+// Níveis de desfoque (blur) em pixels de acordo com o número de erros
+// Índice 0 = 0 erros (MUITO borrado), Índice 4 = 4 erros (quase nítido)
+const niveisBlur = [30, 22, 15, 8, 3, 0];
+
+// Variáveis para a nova mecânica de revelação em grid
+let imgOriginal = new Image();
+let gridIndices = [];
 
 // --- SISTEMA DE ANTI-BURLA (FINGERPRINTING) ---
 function generateFingerprint() {
@@ -35,7 +38,10 @@ function checkDailyLock() {
     document.getElementById("inputArea").style.display = "none";
     document.getElementById("endGamePanel").style.display = "block";
 
-    document.getElementById("triesLeft").innerText = maxTentativas - tentativas;
+    document.getElementById("triesLeft").innerText = Math.max(
+      0,
+      maxTentativas - tentativas,
+    );
     const endGameMsg = document.getElementById("endGameMsg");
     if (result === "WIN") {
       endGameMsg.innerHTML = `<span style="color:#008000;">VOCÊ JÁ VENCEU HOJE!</span><br>Volte amanhã para um novo desafio.`;
@@ -73,122 +79,80 @@ function getDailyCountry() {
   const inicio = new Date(DATA_LANCAMENTO);
   inicio.setHours(0, 0, 0, 0);
 
-  // Calcula dias totais e define o número visual do desafio (#001, #002...)
   const diasPassados = Math.floor((hoje - inicio) / (1000 * 60 * 60 * 24));
   numeroDoDesafioAtual = Math.max(1, diasPassados + 1);
 
-  // Injeta o número no HTML
   const numFormatado = String(numeroDoDesafioAtual).padStart(3, "0");
   const spanDesafio = document.getElementById("desafioNum");
   if (spanDesafio) spanDesafio.innerText = numFormatado;
 
   const totalPaises = dbPaises.length;
-
-  // Identifica o Ciclo (0 = primeira rodada, 1 = segunda rodada...)
   const cicloAtual = Math.floor(Math.max(0, diasPassados) / totalPaises);
   const diaDoCiclo = Math.max(0, diasPassados) % totalPaises;
 
   let indices = Array.from({ length: totalPaises }, (_, i) => i);
 
-  // A Semente soma com o ciclo atual, criando uma roleta totalmente nova quando a anterior acaba
   const rng = mulberry32(2026 + cicloAtual);
   for (let i = indices.length - 1; i > 0; i--) {
     const j = Math.floor(rng() * (i + 1));
     [indices[i], indices[j]] = [indices[j], indices[i]];
   }
 
+  // Prepara o grid diário (Garante que todo jogador revele os mesmos pedaços no mesmo dia)
+  let rngGrid = mulberry32(1000 + diasPassados);
+  gridIndices = [0, 1, 2, 3, 4, 5]; // 6 pedaços (3 colunas x 2 linhas)
+  for (let i = gridIndices.length - 1; i > 0; i--) {
+    const j = Math.floor(rngGrid() * (i + 1));
+    [gridIndices[i], gridIndices[j]] = [gridIndices[j], gridIndices[i]];
+  }
+
   return dbPaises[indices[diaDoCiclo]];
 }
 
-// --- CLASSIFICADOR DE CORES AVANÇADO ---
-function rgbToHsl(r, g, b) {
-  r /= 255;
-  g /= 255;
-  b /= 255;
-  let max = Math.max(r, g, b),
-    min = Math.min(r, g, b);
-  let h,
-    s,
-    l = (max + min) / 2;
-  if (max === min) {
-    h = s = 0;
+// --- CONTROLE VISUAL (BLUR E MÁSCARA CINZA) ---
+function aplicarBlur() {
+  const canvas = document.getElementById("flagCanvas");
+  if (!canvas) return;
+
+  if (isGameOver) {
+    canvas.style.filter = "blur(0px)";
   } else {
-    let d = max - min;
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-    switch (max) {
-      case r:
-        h = (g - b) / d + (g < b ? 6 : 0);
-        break;
-      case g:
-        h = (b - r) / d + 2;
-        break;
-      case b:
-        h = (r - g) / d + 4;
-        break;
-    }
-    h /= 6;
+    const blurLevel =
+      niveisBlur[tentativas] !== undefined ? niveisBlur[tentativas] : 0;
+    canvas.style.filter = `blur(${blurLevel}px)`;
   }
-  return [h * 360, s, l];
 }
 
-function classifyColor(r, g, b) {
-  const hsl = rgbToHsl(r, g, b);
-  const h = hsl[0],
-    s = hsl[1],
-    l = hsl[2];
+function desenharMascara() {
+  const canvas = document.getElementById("flagCanvas");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
 
-  if (l < 0.15) return "black";
-  if (l > 0.88) return "white";
-  if (s < 0.15) return "grey";
+  const colunas = 3;
+  const linhas = 2;
+  const blockW = canvas.width / colunas;
+  const blockH = canvas.height / linhas;
 
-  let baseColor = "unknown";
-  if (h < 15 || h >= 345) baseColor = "red";
-  else if (h >= 15 && h < 45) baseColor = "orange";
-  else if (h >= 45 && h < 70) baseColor = "yellow";
-  else if (h >= 70 && h < 160) baseColor = "green";
-  else if (h >= 160 && h < 260) baseColor = "blue";
-  else if (h >= 260 && h < 345) baseColor = "purple";
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  if (
-    baseColor !== "unknown" &&
-    baseColor !== "yellow" &&
-    baseColor !== "orange"
-  ) {
-    if (l < 0.35) return "dark " + baseColor;
-    if (l > 0.65) return "light " + baseColor;
-  }
-  return baseColor;
-}
+  // Desenha a bandeira inteira por baixo
+  ctx.drawImage(imgOriginal, 0, 0, canvas.width, canvas.height);
 
-// --- RENDERIZAÇÃO DA MÁSCARA NO CANVAS ---
-function updateCanvasMask() {
-  if (!originalImageData) return;
-  const imgData = ctx.createImageData(originalImageData);
+  if (isGameOver) return;
 
-  for (let i = 0; i < originalImageData.data.length; i += 4) {
-    const r = originalImageData.data[i];
-    const g = originalImageData.data[i + 1];
-    const b = originalImageData.data[i + 2];
-    const a = originalImageData.data[i + 3];
-
-    const colorName = classifyColor(r, g, b);
-
-    if (revealedColors.includes(colorName) || isGameOver) {
-      imgData.data[i] = r;
-      imgData.data[i + 1] = g;
-      imgData.data[i + 2] = b;
-      imgData.data[i + 3] = a;
-    } else {
-      imgData.data[i] = 160;
-      imgData.data[i + 1] = 160;
-      imgData.data[i + 2] = 160;
-      imgData.data[i + 3] = a;
+  // Desenha quadrados cinzas nas partes que ainda não foram reveladas
+  ctx.fillStyle = "#a0a0a0"; // Cor cinza
+  for (let i = 0; i < 6; i++) {
+    // Só desenha o bloco cinza se o índice dele for maior ou igual ao número de tentativas
+    if (i >= tentativas) {
+      const blockIndex = gridIndices[i];
+      const col = blockIndex % colunas;
+      const row = Math.floor(blockIndex / colunas);
+      ctx.fillRect(col * blockW - 1, row * blockH - 1, blockW + 2, blockH + 2);
     }
   }
-  ctx.putImageData(imgData, 0, 0);
 }
 
-// --- INICIALIZAÇÃO DO JOGO (Agora com Fetch do JSON) ---
 function normalize(str) {
   return str
     .normalize("NFD")
@@ -197,19 +161,15 @@ function normalize(str) {
     .trim();
 }
 
+// --- INICIALIZAÇÃO DO JOGO ---
 window.onload = async function () {
-  canvas = document.getElementById("flagCanvas");
-  if (!canvas) return;
-  ctx = canvas.getContext("2d");
-
-  // Puxa os dados do JSON externo antes de iniciar o jogo
   try {
     const response = await fetch("js/paises.json");
     dbPaises = await response.json();
   } catch (error) {
     showAlert(
       "⚠️ Erro ao carregar o banco de dados. Verifique o arquivo paises.json.",
-      "alert-error"
+      "alert-error",
     );
     return;
   }
@@ -217,11 +177,11 @@ window.onload = async function () {
   paisDoDia = getDailyCountry();
 
   if (checkDailyLock()) {
-    carregarBandeira(true);
+    carregarBandeira();
     return;
   }
 
-  carregarBandeira(false);
+  carregarBandeira();
 
   const inputElement = document.getElementById("countryInput");
   inputElement.addEventListener("keypress", function (e) {
@@ -229,25 +189,17 @@ window.onload = async function () {
   });
 };
 
-function carregarBandeira(showAll) {
-  const img = new Image();
-  img.crossOrigin = "Anonymous";
-  img.src = `https://flagcdn.com/w640/${paisDoDia.code}.png`;
+function carregarBandeira() {
+  const canvas = document.getElementById("flagCanvas");
+  imgOriginal.crossOrigin = "Anonymous";
+  imgOriginal.src = `https://flagcdn.com/w640/${paisDoDia.code}.png`;
 
-  img.onload = () => {
-    canvas.width = img.width;
-    canvas.height = img.height;
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    try {
-      originalImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      if (showAll) isGameOver = true;
-      updateCanvasMask();
-    } catch (e) {
-      showAlert(
-        "⚠️ Rode via servidor (Live Server) para a detecção de pixels funcionar.",
-        "alert-error"
-      );
-    }
+  imgOriginal.onload = () => {
+    canvas.width = imgOriginal.width;
+    canvas.height = imgOriginal.height;
+
+    desenharMascara();
+    aplicarBlur();
   };
 }
 
@@ -263,7 +215,7 @@ window.makeGuess = function () {
 
   if (palpiteNome === "") return;
 
-  const palpiteObj = dbPaises.find((p) => p.nome === palpiteNome);
+  const palpiteObj = dbPaises.find((p) => normalize(p.nome) === palpiteNome);
 
   if (!palpiteObj) {
     showAlert("❌ País não encontrado no banco de dados!", "alert-error");
@@ -271,50 +223,44 @@ window.makeGuess = function () {
   }
 
   tentativas++;
-  document.getElementById("triesLeft").innerText = maxTentativas - tentativas;
-
-  palpiteObj.colors.forEach((cor) => {
-    if (!revealedColors.includes(cor)) revealedColors.push(cor);
-  });
-
-  let coresAcertadasNestaTentativa = 0;
-  palpiteObj.colors.forEach((corDoPalpite) => {
-    if (paisDoDia.colors.includes(corDoPalpite)) {
-      coresAcertadasNestaTentativa++;
-    }
-  });
-
-  const percentage = Math.round(
-    (coresAcertadasNestaTentativa / paisDoDia.colors.length) * 100
+  document.getElementById("triesLeft").innerText = Math.max(
+    0,
+    maxTentativas - tentativas,
   );
 
   if (palpiteObj.nome === paisDoDia.nome) {
-    adicionarNaLista(palpiteObj, 100, true);
+    adicionarNaLista(palpiteObj, true);
     isGameOver = true;
-    updateCanvasMask();
+    desenharMascara();
+    aplicarBlur();
     finalizarJogo(true);
   } else {
-    adicionarNaLista(palpiteObj, percentage, false);
-    updateCanvasMask();
+    adicionarNaLista(palpiteObj, false);
+
+    // Atualiza a arte visual após o erro
+    desenharMascara();
+    aplicarBlur();
 
     if (tentativas >= maxTentativas) {
       isGameOver = true;
-      updateCanvasMask();
+      desenharMascara();
+      aplicarBlur();
       finalizarJogo(false);
     }
   }
 };
 
-function adicionarNaLista(pais, porcentagem, isCorreto) {
+function adicionarNaLista(pais, isCorreto) {
   const guessesList = document.getElementById("guessesList");
   const item = document.createElement("div");
   item.className = `guess-item ${isCorreto ? "correct" : "wrong"}`;
 
   if (isCorreto) {
-    item.innerHTML = `<span>${pais.nome}</span> <div class="guess-data"><span>100% 🎯</span></div>`;
+    item.innerHTML = `<span>${pais.nome}</span> <div class="guess-data"><span>🎉 CORRETO!</span></div>`;
   } else {
-    item.innerHTML = `<span>${pais.nome}</span> <div class="guess-data"><span>${porcentagem}%</span></div>`;
+    item.innerHTML = `<span>${pais.nome}</span> <div class="guess-data"><span>❌ INCORRETO</span></div>`;
   }
+
   guessesList.appendChild(item);
 }
 
@@ -343,15 +289,16 @@ function showAlert(msg, className) {
   }, 3500);
 }
 
-// --- BOTÃO DE COMPARTILHAR ATUALIZADO ---
 window.shareResult = function () {
   const venceu =
     tentativas <= maxTentativas &&
     document.querySelector(".guess-item.correct");
   let emojiGrid = "";
+
   for (let i = 1; i <= maxTentativas; i++) {
     if (i < tentativas) emojiGrid += "🟥";
     else if (i === tentativas && venceu) emojiGrid += "🟩";
+    else if (i === tentativas && !venceu) emojiGrid += "🟥";
     else emojiGrid += "⬜";
   }
 
