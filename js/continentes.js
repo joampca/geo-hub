@@ -31,6 +31,7 @@ const database = {
     "Nicarágua",
     "Panamá",
     "República Dominicana",
+    "Trinidad e Tobago",
     "Santa Lúcia",
     "São Cristóvão e Neves",
     "São Vicente e Granadinas",
@@ -306,7 +307,7 @@ startBtn.addEventListener("click", () => {
 userInput.addEventListener("keyup", (e) => {
   const inputVal = normalizeText(userInput.value);
   const matchIndex = currentCountries.findIndex(
-    (country) => normalizeText(country) === inputVal
+    (country) => normalizeText(country) === inputVal,
   );
 
   if (
