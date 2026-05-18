@@ -187,7 +187,7 @@ const database = {
 };
 
 const startBtn = document.getElementById("startBtn");
-const giveUpBtn = document.getElementById("giveUpBtn"); // Novo botão referenciado
+const giveUpBtn = document.getElementById("giveUpBtn");
 const playArea = document.getElementById("playArea");
 const countryNameDisplay = document.getElementById("countryName");
 const userInput = document.getElementById("userInput");
@@ -223,7 +223,7 @@ function updateTimer() {
 function endGame(won) {
   clearInterval(timerInterval);
   userInput.disabled = true;
-  giveUpBtn.style.display = "none"; // Esconde o botão de desistir no fim
+  giveUpBtn.style.display = "none";
 
   if (won) {
     userInput.placeholder = "PARABÉNS!";
@@ -248,32 +248,52 @@ giveUpBtn.addEventListener("click", () => {
   endGame(false);
 });
 
-startBtn.addEventListener("click", () => {
-  const countriesList = Object.keys(database);
+// Inicialização: Carrega o grid na tela antes do jogo iniciar (Anti-Robô Google)
+function initializeBoard() {
+  // Ajuste visual: alinha os botões com o input de forma fluída
+  if (!document.getElementById("actionContainer")) {
+    const container = document.createElement("div");
+    container.id = "actionContainer";
+    container.style.display = "flex";
+    container.style.gap = "10px";
+    container.style.marginBottom = "20px";
+    container.style.alignItems = "stretch";
 
-  // Sorteia um país aleatoriamente
+    userInput.parentNode.insertBefore(container, userInput);
+
+    container.appendChild(userInput);
+    container.appendChild(startBtn);
+    container.appendChild(giveUpBtn);
+
+    userInput.style.margin = "0";
+    userInput.style.flex = "6";
+
+    startBtn.style.margin = "0";
+    startBtn.style.flex = "4";
+    startBtn.style.width = "100%";
+
+    giveUpBtn.style.margin = "0";
+    giveUpBtn.style.flex = "4";
+    giveUpBtn.style.width = "100%";
+  }
+
+  const countriesList = Object.keys(database);
   currentCountry =
     countriesList[Math.floor(Math.random() * countriesList.length)];
 
-  // Puxa as fronteiras e embaralha a ordem delas para dificultar um pouco
-  currentBorders = database[currentCountry].sort(() => Math.random() - 0.5);
+  // Ordena as fronteiras em ordem alfabética para facilitar a experiência do usuário
+  currentBorders = database[currentCountry].sort((a, b) =>
+    a.localeCompare(b, "pt-BR"),
+  );
 
   countryNameDisplay.innerText = currentCountry;
   totalDisplay.innerText = currentBorders.length;
-
-  startBtn.style.display = "none";
-  playArea.style.display = "block";
-  giveUpBtn.style.display = "inline-block"; // Mostra o botão ao iniciar
-
-  userInput.focus();
-  userInput.value = "";
-  userInput.placeholder = "Digite o nome do país...";
 
   answersGrid.innerHTML = "";
   guessedCountries = [];
   scoreDisplay.innerText = "0";
 
-  // Cria as caixinhas vazias
+  // Desenha os blocos "?"
   currentBorders.forEach((_, index) => {
     const slot = document.createElement("div");
     slot.className = "answer-slot";
@@ -282,8 +302,27 @@ startBtn.addEventListener("click", () => {
     answersGrid.appendChild(slot);
   });
 
-  timeRemaining = 120; // 2 Minutos para fronteiras
+  // Oculta funcionalidades de input, mas mostra o grid
+  playArea.style.display = "block";
+  startBtn.style.display = "block";
+  giveUpBtn.style.display = "none";
+
+  userInput.disabled = true;
+  userInput.placeholder = "Clique em COMEÇAR ao lado ➡️";
+
+  timeRemaining = 120;
   updateTimer();
+}
+
+// O botão iniciar apenas habilita o input e troca de botão, sem piscar a tela
+startBtn.addEventListener("click", () => {
+  startBtn.style.display = "none";
+  giveUpBtn.style.display = "block";
+
+  userInput.disabled = false;
+  userInput.placeholder = "Digite o nome da fronteira...";
+  userInput.focus();
+
   timerInterval = setInterval(() => {
     timeRemaining--;
     updateTimer();
@@ -294,7 +333,7 @@ startBtn.addEventListener("click", () => {
 userInput.addEventListener("keyup", (e) => {
   const inputVal = normalizeText(userInput.value);
   const matchIndex = currentBorders.findIndex(
-    (border) => normalizeText(border) === inputVal
+    (border) => normalizeText(border) === inputVal,
   );
 
   if (
@@ -310,14 +349,16 @@ userInput.addEventListener("keyup", (e) => {
 
     scoreDisplay.innerText = guessedCountries.length;
     userInput.value = "";
-    userInput.style.backgroundColor = "#90EE90"; // Pisca verde
+    userInput.style.backgroundColor = "#90EE90";
     setTimeout(() => (userInput.style.backgroundColor = "#FFF"), 200);
 
     if (guessedCountries.length === currentBorders.length) endGame(true);
   } else if (e.key === "Enter") {
-    // Feedback visual para erro (pisca vermelho)
     userInput.style.backgroundColor = "#FFCCCC";
     setTimeout(() => (userInput.style.backgroundColor = "#FFF"), 200);
     userInput.value = "";
   }
 });
+
+// Ao carregar a tela, desenha o layout (Visão amigável ao robô Google)
+window.onload = initializeBoard;

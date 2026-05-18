@@ -293,19 +293,50 @@ giveUpBtn.addEventListener("click", () => {
   endGame(false);
 });
 
-startBtn.addEventListener("click", () => {
+// Inicializa a lista de países assim que a página abre
+function initializeBoard() {
+  // 1. Resolvemos a quebra de layout criando um contêiner flexível via JS
+  // Isso coloca o Input e o Botão de Começar perfeitamente lado a lado.
+  if (!document.getElementById("actionContainer")) {
+    const container = document.createElement("div");
+    container.id = "actionContainer";
+    container.style.display = "flex";
+    container.style.gap = "10px";
+    container.style.marginBottom = "20px";
+    container.style.alignItems = "stretch"; // Garante a mesma altura
+
+    // Insere o container no lugar do input
+    mainInput.parentNode.insertBefore(container, mainInput);
+
+    // Agrupa os elementos
+    container.appendChild(mainInput);
+    container.appendChild(startBtn);
+    container.appendChild(giveUpBtn);
+
+    // Ajusta as proporções para ficar visualmente balanceado
+    mainInput.style.margin = "0";
+    mainInput.style.flex = "6";
+
+    startBtn.style.margin = "0";
+    startBtn.style.flex = "4";
+    startBtn.style.width = "100%"; // Sobrescreve largura fixa caso exista no CSS
+
+    giveUpBtn.style.margin = "0";
+    giveUpBtn.style.flex = "4";
+    giveUpBtn.style.width = "100%";
+  }
+
   const regionsList = Object.keys(database);
   const randomRegion =
     regionsList[Math.floor(Math.random() * regionsList.length)];
 
-  // Embaralha os países dentro da região para garantir aleatoriedade
-  currentRegionList = database[randomRegion].sort(() => Math.random() - 0.5);
+  // Embaralha e ORDENA EM ORDEM ALFABÉTICA
+  currentRegionList = database[randomRegion].sort((a, b) =>
+    a.country.localeCompare(b.country, "pt-BR"),
+  );
 
   regionNameDisplay.innerText = randomRegion;
   totalDisplay.innerText = currentRegionList.length;
-  startBtn.style.display = "none";
-  playArea.style.display = "block";
-  giveUpBtn.style.display = "inline-block";
 
   answersGrid.innerHTML = "";
   score = 0;
@@ -323,13 +354,27 @@ startBtn.addEventListener("click", () => {
     answersGrid.appendChild(card);
   });
 
-  mainInput.value = "";
-  mainInput.disabled = false;
-  mainInput.focus();
+  // Oculta a área de digitação inicialmente, mas exibe todo o layout e botões
+  playArea.style.display = "block";
+  startBtn.style.display = "block";
+  giveUpBtn.style.display = "none";
+
+  mainInput.disabled = true;
+  mainInput.placeholder = "Clique em COMEÇAR ao lado ➡️";
 
   timeRemaining = regionTimes[randomRegion] || 300;
-
   updateTimer();
+}
+
+// Quando o usuário clicar em começar, ele APENAS troca os botões e libera a escrita
+startBtn.addEventListener("click", () => {
+  startBtn.style.display = "none";
+  giveUpBtn.style.display = "block";
+
+  mainInput.disabled = false;
+  mainInput.placeholder = "Digite o nome de uma capital...";
+  mainInput.focus();
+
   timerInterval = setInterval(() => {
     timeRemaining--;
     updateTimer();
@@ -366,3 +411,6 @@ mainInput.addEventListener("keyup", (e) => {
     }
   });
 });
+
+// Chama a função para desenhar a página logo no início
+window.onload = initializeBoard;

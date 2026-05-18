@@ -264,24 +264,47 @@ giveUpBtn.addEventListener("click", () => {
   endGame(false);
 });
 
-startBtn.addEventListener("click", () => {
+// Inicialização "Anti-Robô" e ajuste perfeito de botões
+function initializeBoard() {
+  // Ajuste do container para manter botões alinhados
+  if (!document.getElementById("actionContainer")) {
+    const container = document.createElement("div");
+    container.id = "actionContainer";
+    container.style.display = "flex";
+    container.style.gap = "10px";
+    container.style.marginBottom = "20px";
+    container.style.alignItems = "stretch";
+
+    userInput.parentNode.insertBefore(container, userInput);
+
+    container.appendChild(userInput);
+    container.appendChild(startBtn);
+    container.appendChild(giveUpBtn);
+
+    userInput.style.margin = "0";
+    userInput.style.flex = "6";
+
+    startBtn.style.margin = "0";
+    startBtn.style.flex = "4";
+    startBtn.style.width = "100%";
+
+    giveUpBtn.style.margin = "0";
+    giveUpBtn.style.flex = "4";
+    giveUpBtn.style.width = "100%";
+  }
+
   const continentList = Object.keys(database);
 
-  // Aleatoriedade 100% mantida na roleta de continentes
   currentContinent =
     continentList[Math.floor(Math.random() * continentList.length)];
 
-  // AQUI: Os países do continente selecionado ficam em ordem alfabética para facilitar o jogo
-  currentCountries = database[currentContinent].sort();
+  // Ordena com suporte ao idioma português
+  currentCountries = database[currentContinent].sort((a, b) =>
+    a.localeCompare(b, "pt-BR"),
+  );
 
   continentNameDisplay.innerText = currentContinent;
   totalDisplay.innerText = currentCountries.length;
-  startBtn.style.display = "none";
-  playArea.style.display = "block";
-  giveUpBtn.style.display = "inline-block";
-  userInput.focus();
-  userInput.value = "";
-  userInput.placeholder = "Digite o nome do país...";
 
   answersGrid.innerHTML = "";
   guessedCountries = [];
@@ -295,8 +318,26 @@ startBtn.addEventListener("click", () => {
     answersGrid.appendChild(slot);
   });
 
+  playArea.style.display = "block";
+  startBtn.style.display = "block";
+  giveUpBtn.style.display = "none";
+
+  userInput.disabled = true;
+  userInput.placeholder = "Clique em COMEÇAR ao lado ➡️";
+
   timeRemaining = 300;
   updateTimer();
+}
+
+// Botão de Start
+startBtn.addEventListener("click", () => {
+  startBtn.style.display = "none";
+  giveUpBtn.style.display = "block";
+
+  userInput.disabled = false;
+  userInput.placeholder = "Digite o nome do país...";
+  userInput.focus();
+
   timerInterval = setInterval(() => {
     timeRemaining--;
     updateTimer();
@@ -333,3 +374,6 @@ userInput.addEventListener("keyup", (e) => {
     userInput.value = "";
   }
 });
+
+// Aciona na inicialização
+window.onload = initializeBoard;
