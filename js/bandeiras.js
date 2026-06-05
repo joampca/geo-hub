@@ -232,7 +232,7 @@ const playArea = document.getElementById("playArea");
 const flagImage = document.getElementById("flagImage");
 const userInput = document.getElementById("userInput");
 const skipBtn = document.getElementById("skipBtn");
-const giveUpBtn = document.getElementById("giveUpBtn"); // Novo botão de desistir
+const giveUpBtn = document.getElementById("giveUpBtn");
 const scoreDisplay = document.getElementById("scoreDisplay");
 const timerDisplay = document.getElementById("timer");
 const feedbackDisplay = document.getElementById("feedback");
@@ -273,39 +273,54 @@ function endGame(forced = false) {
     userInput.placeholder = "TEMPO ESGOTADO!";
   }
 
-  //flagImage.style.display = "none";
   feedbackDisplay.innerText = "";
-
   finalScore.innerText = score;
   gameOverMsg.style.display = "block";
 }
 
 function nextFlag() {
   if (availableFlags.length === 0) {
-    // Prevenção: caso o usuário seja um gênio e zere as 200 bandeiras em 2 minutos!
     availableFlags = [...flagDatabase].sort(() => Math.random() - 0.5);
   }
 
   currentFlag = availableFlags.pop();
   flagImage.src = `https://flagcdn.com/${currentFlag.code}.svg`;
   userInput.value = "";
-  userInput.focus();
+
+  if (!userInput.disabled) {
+    userInput.focus();
+  }
+}
+
+// Inicialização: Exibe a interface com a primeira bandeira carregada para avaliação do bot
+function initializeBoard() {
+  availableFlags = [...flagDatabase].sort(() => Math.random() - 0.5);
+
+  playArea.style.display = "block";
+  skipBtn.style.display = "none";
+  giveUpBtn.style.display = "none";
+
+  userInput.disabled = true;
+  userInput.placeholder = "Clique em COMEÇAR acima ⬆️";
+
+  nextFlag(); // Carrega a imagem imediatamente
+
+  timeRemaining = 120;
+  updateTimer();
 }
 
 startBtn.addEventListener("click", () => {
-  // Cria uma cópia do banco de dados e embaralha logo no início (aleatoriedade garantida)
-  availableFlags = [...flagDatabase].sort(() => Math.random() - 0.5);
   score = 0;
   scoreDisplay.innerText = "0";
 
   startBtn.style.display = "none";
-  playArea.style.display = "block";
-  giveUpBtn.style.display = "inline-block";
+  skipBtn.style.display = "inline-block";
+  giveUpBtn.style.display = "block";
 
-  nextFlag();
+  userInput.disabled = false;
+  userInput.placeholder = "Qual é o país?";
+  userInput.focus();
 
-  timeRemaining = 120; // 2 minutos
-  updateTimer();
   timerInterval = setInterval(() => {
     timeRemaining--;
     updateTimer();
@@ -317,19 +332,15 @@ userInput.addEventListener("keyup", (e) => {
   const typedVal = normalizeText(userInput.value);
 
   if (currentFlag.names.includes(typedVal)) {
-    // ACERTO: Ação quase instantânea!
     score++;
     scoreDisplay.innerText = score;
-    feedbackDisplay.innerText = ""; // Limpa qualquer mensagem de erro
+    feedbackDisplay.innerText = "";
 
-    // Pisca verde rapidamente
     userInput.style.backgroundColor = "#90EE90";
     setTimeout(() => (userInput.style.backgroundColor = "#FFF"), 150);
 
-    // Vai pra próxima imediatamente
     nextFlag();
   } else if (e.key === "Enter") {
-    // Errou e deu Enter
     userInput.style.backgroundColor = "#FFCCCC";
     setTimeout(() => (userInput.style.backgroundColor = "#FFF"), 200);
   }
@@ -343,10 +354,12 @@ skipBtn.addEventListener("click", () => {
   setTimeout(() => {
     feedbackDisplay.innerText = "";
     nextFlag();
-  }, 800); // Dei um tempinho a mais (800ms) pro usuário conseguir ler melhor antes de sumir
+  }, 800);
 });
 
-// Listener do botão desistir
 giveUpBtn.addEventListener("click", () => {
   endGame(true);
 });
+
+// Executa o carregamento inicial do tabuleiro
+window.onload = initializeBoard;

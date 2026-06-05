@@ -232,7 +232,6 @@ function endGame(won) {
     userInput.placeholder = "FIM DE JOGO!";
     gameOverMsg.style.display = "block";
 
-    // Revela as respostas corretas nas que faltaram em vermelho
     currentBorders.forEach((border, index) => {
       if (!guessedCountries.includes(border)) {
         const targetSlot = document.getElementById("slot-" + index);
@@ -243,14 +242,11 @@ function endGame(won) {
   }
 }
 
-// Listener para o botão de desistir
 giveUpBtn.addEventListener("click", () => {
   endGame(false);
 });
 
-// Inicialização: Carrega o grid na tela antes do jogo iniciar (Anti-Robô Google)
 function initializeBoard() {
-  // Ajuste visual: alinha os botões com o input de forma fluída
   if (!document.getElementById("actionContainer")) {
     const container = document.createElement("div");
     container.id = "actionContainer";
@@ -266,22 +262,21 @@ function initializeBoard() {
     container.appendChild(giveUpBtn);
 
     userInput.style.margin = "0";
-    userInput.style.flex = "6";
+    userInput.style.flex = "1";
 
     startBtn.style.margin = "0";
-    startBtn.style.flex = "4";
-    startBtn.style.width = "100%";
+    startBtn.style.width = "auto";
+    startBtn.style.padding = "15px 30px";
 
     giveUpBtn.style.margin = "0";
-    giveUpBtn.style.flex = "4";
-    giveUpBtn.style.width = "100%";
+    giveUpBtn.style.width = "auto";
+    giveUpBtn.style.padding = "15px 30px";
   }
 
   const countriesList = Object.keys(database);
   currentCountry =
     countriesList[Math.floor(Math.random() * countriesList.length)];
 
-  // Ordena as fronteiras em ordem alfabética para facilitar a experiência do usuário
   currentBorders = database[currentCountry].sort((a, b) =>
     a.localeCompare(b, "pt-BR"),
   );
@@ -293,7 +288,6 @@ function initializeBoard() {
   guessedCountries = [];
   scoreDisplay.innerText = "0";
 
-  // Desenha os blocos "?"
   currentBorders.forEach((_, index) => {
     const slot = document.createElement("div");
     slot.className = "answer-slot";
@@ -302,7 +296,6 @@ function initializeBoard() {
     answersGrid.appendChild(slot);
   });
 
-  // Oculta funcionalidades de input, mas mostra o grid
   playArea.style.display = "block";
   startBtn.style.display = "block";
   giveUpBtn.style.display = "none";
@@ -314,7 +307,6 @@ function initializeBoard() {
   updateTimer();
 }
 
-// O botão iniciar apenas habilita o input e troca de botão, sem piscar a tela
 startBtn.addEventListener("click", () => {
   startBtn.style.display = "none";
   giveUpBtn.style.display = "block";
@@ -360,5 +352,4 @@ userInput.addEventListener("keyup", (e) => {
   }
 });
 
-// Ao carregar a tela, desenha o layout (Visão amigável ao robô Google)
 window.onload = initializeBoard;

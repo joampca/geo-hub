@@ -1,4 +1,3 @@
-// Banco de Dados com Múltiplas Grafias Aceitas para facilitar o jogo
 const database = {
   "América do Sul": [
     { country: "Argentina", capitals: ["buenos aires"] },
@@ -225,14 +224,13 @@ const database = {
   ],
 };
 
-// Configuração de tempo por região (em segundos)
 const regionTimes = {
-  "América do Sul": 120, // 2 minutos
-  "América do Norte": 60, // 1 minuto
-  Oceania: 300, // 5 minutos
-  Europa: 480, // 8 minutos
-  Ásia: 600, // 10 minutos
-  África: 600, // 10 minutos
+  "América do Sul": 120,
+  "América do Norte": 60,
+  Oceania: 300,
+  Europa: 480,
+  Ásia: 600,
+  África: 600,
 };
 
 const startBtn = document.getElementById("startBtn");
@@ -277,7 +275,6 @@ function endGame(won) {
     victoryMsg.style.display = "block";
   } else {
     gameOverMsg.style.display = "block";
-    // Mostra as respostas corretas nas que faltaram
     currentRegionList.forEach((item, index) => {
       const displaySpan = document.getElementById(`display-${index}`);
       if (!displaySpan.classList.contains("correct-input")) {
@@ -288,38 +285,31 @@ function endGame(won) {
   }
 }
 
-// Lógica de desistir
 giveUpBtn.addEventListener("click", () => {
   endGame(false);
 });
 
-// Inicializa a lista de países assim que a página abre
 function initializeBoard() {
-  // 1. Resolvemos a quebra de layout criando um contêiner flexível via JS
-  // Isso coloca o Input e o Botão de Começar perfeitamente lado a lado.
   if (!document.getElementById("actionContainer")) {
     const container = document.createElement("div");
     container.id = "actionContainer";
     container.style.display = "flex";
     container.style.gap = "10px";
     container.style.marginBottom = "20px";
-    container.style.alignItems = "stretch"; // Garante a mesma altura
+    container.style.alignItems = "stretch";
 
-    // Insere o container no lugar do input
     mainInput.parentNode.insertBefore(container, mainInput);
 
-    // Agrupa os elementos
     container.appendChild(mainInput);
     container.appendChild(startBtn);
     container.appendChild(giveUpBtn);
 
-    // Ajusta as proporções para ficar visualmente balanceado
     mainInput.style.margin = "0";
     mainInput.style.flex = "6";
 
     startBtn.style.margin = "0";
     startBtn.style.flex = "4";
-    startBtn.style.width = "100%"; // Sobrescreve largura fixa caso exista no CSS
+    startBtn.style.width = "100%";
 
     giveUpBtn.style.margin = "0";
     giveUpBtn.style.flex = "4";
@@ -330,7 +320,6 @@ function initializeBoard() {
   const randomRegion =
     regionsList[Math.floor(Math.random() * regionsList.length)];
 
-  // Embaralha e ORDENA EM ORDEM ALFABÉTICA
   currentRegionList = database[randomRegion].sort((a, b) =>
     a.country.localeCompare(b.country, "pt-BR"),
   );
@@ -354,7 +343,6 @@ function initializeBoard() {
     answersGrid.appendChild(card);
   });
 
-  // Oculta a área de digitação inicialmente, mas exibe todo o layout e botões
   playArea.style.display = "block";
   startBtn.style.display = "block";
   giveUpBtn.style.display = "none";
@@ -366,7 +354,6 @@ function initializeBoard() {
   updateTimer();
 }
 
-// Quando o usuário clicar em começar, ele APENAS troca os botões e libera a escrita
 startBtn.addEventListener("click", () => {
   startBtn.style.display = "none";
   giveUpBtn.style.display = "block";
@@ -382,26 +369,22 @@ startBtn.addEventListener("click", () => {
   }, 1000);
 });
 
-// Listener para o input principal único
 mainInput.addEventListener("keyup", (e) => {
   const typedVal = normalizeText(e.target.value);
 
-  // Procura se o que foi digitado corresponde a alguma capital não respondida
   currentRegionList.forEach((item, index) => {
     const displaySpan = document.getElementById(`display-${index}`);
 
-    // Pula se já foi respondido
     if (displaySpan.classList.contains("correct-input")) return;
 
     const validAnswers = item.capitals.map((c) => normalizeText(c));
 
     if (validAnswers.includes(typedVal)) {
-      // Acertou!
       displaySpan.innerText = item.capitals[0].toUpperCase();
       displaySpan.classList.add("correct-input");
       displaySpan.parentElement.classList.add("correct");
 
-      e.target.value = ""; // Limpa a caixa de texto
+      e.target.value = "";
       score++;
       scoreDisplay.innerText = score;
 
@@ -412,5 +395,4 @@ mainInput.addEventListener("keyup", (e) => {
   });
 });
 
-// Chama a função para desenhar a página logo no início
 window.onload = initializeBoard;

@@ -1,4 +1,3 @@
-// --- CONFIGURAÇÕES DO CICLO DIÁRIO ---
 const DATA_LANCAMENTO = new Date("2026-04-30T00:00:00-03:00");
 
 let dbPaises = [];
@@ -8,15 +7,10 @@ let tentativas = 0;
 const maxTentativas = 5;
 let isGameOver = false;
 
-// Níveis de desfoque (blur) em pixels de acordo com o número de erros
-// Índice 0 = 0 erros (MUITO borrado), Índice 4 = 4 erros (quase nítido)
 const niveisBlur = [30, 22, 15, 8, 3, 0];
-
-// Variáveis para a nova mecânica de revelação em grid
 let imgOriginal = new Image();
 let gridIndices = [];
 
-// --- SISTEMA DE ANTI-BURLA (FINGERPRINTING) ---
 function generateFingerprint() {
   const canvasAuth = document.createElement("canvas");
   const gl = canvasAuth.getContext("webgl");
@@ -43,6 +37,7 @@ function checkDailyLock() {
       maxTentativas - tentativas,
     );
     const endGameMsg = document.getElementById("endGameMsg");
+
     if (result === "WIN") {
       endGameMsg.innerHTML = `<span style="color:#008000;">VOCÊ JÁ VENCEU HOJE!</span><br>Volte amanhã para um novo desafio.`;
     } else {
@@ -63,7 +58,6 @@ function lockDailyGame(venceu) {
   localStorage.setItem(`${lockKey}_tries`, tentativas);
 }
 
-// --- ALGORITMO DE ROTATIVIDADE E CICLOS INFINITOS ---
 function mulberry32(a) {
   return function () {
     var t = (a += 0x6d2b79f5);
@@ -91,16 +85,16 @@ function getDailyCountry() {
   const diaDoCiclo = Math.max(0, diasPassados) % totalPaises;
 
   let indices = Array.from({ length: totalPaises }, (_, i) => i);
-
   const rng = mulberry32(2026 + cicloAtual);
+
   for (let i = indices.length - 1; i > 0; i--) {
     const j = Math.floor(rng() * (i + 1));
     [indices[i], indices[j]] = [indices[j], indices[i]];
   }
 
-  // Prepara o grid diário (Garante que todo jogador revele os mesmos pedaços no mesmo dia)
   let rngGrid = mulberry32(1000 + diasPassados);
-  gridIndices = [0, 1, 2, 3, 4, 5]; // 6 pedaços (3 colunas x 2 linhas)
+  gridIndices = [0, 1, 2, 3, 4, 5];
+
   for (let i = gridIndices.length - 1; i > 0; i--) {
     const j = Math.floor(rngGrid() * (i + 1));
     [gridIndices[i], gridIndices[j]] = [gridIndices[j], gridIndices[i]];
@@ -109,7 +103,6 @@ function getDailyCountry() {
   return dbPaises[indices[diaDoCiclo]];
 }
 
-// --- CONTROLE VISUAL (BLUR E MÁSCARA CINZA) ---
 function aplicarBlur() {
   const canvas = document.getElementById("flagCanvas");
   if (!canvas) return;
@@ -134,16 +127,12 @@ function desenharMascara() {
   const blockH = canvas.height / linhas;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // Desenha a bandeira inteira por baixo
   ctx.drawImage(imgOriginal, 0, 0, canvas.width, canvas.height);
 
   if (isGameOver) return;
 
-  // Desenha quadrados cinzas nas partes que ainda não foram reveladas
-  ctx.fillStyle = "#a0a0a0"; // Cor cinza
+  ctx.fillStyle = "#a0a0a0";
   for (let i = 0; i < 6; i++) {
-    // Só desenha o bloco cinza se o índice dele for maior ou igual ao número de tentativas
     if (i >= tentativas) {
       const blockIndex = gridIndices[i];
       const col = blockIndex % colunas;
@@ -161,16 +150,40 @@ function normalize(str) {
     .trim();
 }
 
-// --- INICIALIZAÇÃO DO JOGO ---
+function carregarBandeira() {
+  const canvas = document.getElementById("flagCanvas");
+  const inputElement = document.getElementById("countryInput");
+
+  imgOriginal.crossOrigin = "Anonymous";
+  imgOriginal.src = `https://flagcdn.com/w640/${paisDoDia.code}.png`;
+
+  imgOriginal.onload = () => {
+    canvas.width = imgOriginal.width;
+    canvas.height = imgOriginal.height;
+    desenharMascara();
+    aplicarBlur();
+
+    if (!isGameOver) {
+      inputElement.disabled = false;
+      inputElement.placeholder = "DIGITE O PAÍS E APERTE ENTER...";
+      inputElement.focus();
+    }
+  };
+}
+
 window.onload = async function () {
+  const inputElement = document.getElementById("countryInput");
+
   try {
     const response = await fetch("js/paises.json");
+    if (!response.ok) throw new Error("Falha na rede");
     dbPaises = await response.json();
   } catch (error) {
     showAlert(
-      "⚠️ Erro ao carregar o banco de dados. Verifique o arquivo paises.json.",
+      "Erro ao carregar o banco de dados. Atualize a página e tente novamente.",
       "alert-error",
     );
+    inputElement.placeholder = "ERRO DE CONEXÃO";
     return;
   }
 
@@ -183,27 +196,11 @@ window.onload = async function () {
 
   carregarBandeira();
 
-  const inputElement = document.getElementById("countryInput");
   inputElement.addEventListener("keypress", function (e) {
     if (e.key === "Enter") window.makeGuess();
   });
 };
 
-function carregarBandeira() {
-  const canvas = document.getElementById("flagCanvas");
-  imgOriginal.crossOrigin = "Anonymous";
-  imgOriginal.src = `https://flagcdn.com/w640/${paisDoDia.code}.png`;
-
-  imgOriginal.onload = () => {
-    canvas.width = imgOriginal.width;
-    canvas.height = imgOriginal.height;
-
-    desenharMascara();
-    aplicarBlur();
-  };
-}
-
-// --- LÓGICA DO PALPITE ---
 window.makeGuess = function () {
   if (isGameOver) return;
 
@@ -218,7 +215,7 @@ window.makeGuess = function () {
   const palpiteObj = dbPaises.find((p) => normalize(p.nome) === palpiteNome);
 
   if (!palpiteObj) {
-    showAlert("❌ País não encontrado no banco de dados!", "alert-error");
+    showAlert("País não encontrado no banco de dados!", "alert-error");
     return;
   }
 
@@ -236,8 +233,6 @@ window.makeGuess = function () {
     finalizarJogo(true);
   } else {
     adicionarNaLista(palpiteObj, false);
-
-    // Atualiza a arte visual após o erro
     desenharMascara();
     aplicarBlur();
 
@@ -310,7 +305,7 @@ window.shareResult = function () {
     .then(() => {
       showAlert("Copiado! Compartilhe seu resultado!", "alert-success");
     })
-    .catch((err) => {
-      showAlert("Erro ao copiar.", "alert-error");
+    .catch(() => {
+      showAlert("Erro ao copiar o resultado.", "alert-error");
     });
 };

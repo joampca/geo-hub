@@ -264,9 +264,7 @@ giveUpBtn.addEventListener("click", () => {
   endGame(false);
 });
 
-// Inicialização "Anti-Robô" e ajuste perfeito de botões
 function initializeBoard() {
-  // Ajuste do container para manter botões alinhados
   if (!document.getElementById("actionContainer")) {
     const container = document.createElement("div");
     container.id = "actionContainer";
@@ -282,15 +280,15 @@ function initializeBoard() {
     container.appendChild(giveUpBtn);
 
     userInput.style.margin = "0";
-    userInput.style.flex = "6";
+    userInput.style.flex = "1";
 
     startBtn.style.margin = "0";
-    startBtn.style.flex = "4";
-    startBtn.style.width = "100%";
+    startBtn.style.width = "auto";
+    startBtn.style.padding = "15px 30px";
 
     giveUpBtn.style.margin = "0";
-    giveUpBtn.style.flex = "4";
-    giveUpBtn.style.width = "100%";
+    giveUpBtn.style.width = "auto";
+    giveUpBtn.style.padding = "15px 30px";
   }
 
   const continentList = Object.keys(database);
@@ -298,7 +296,6 @@ function initializeBoard() {
   currentContinent =
     continentList[Math.floor(Math.random() * continentList.length)];
 
-  // Ordena com suporte ao idioma português
   currentCountries = database[currentContinent].sort((a, b) =>
     a.localeCompare(b, "pt-BR"),
   );
@@ -329,7 +326,6 @@ function initializeBoard() {
   updateTimer();
 }
 
-// Botão de Start
 startBtn.addEventListener("click", () => {
   startBtn.style.display = "none";
   giveUpBtn.style.display = "block";
@@ -375,5 +371,4 @@ userInput.addEventListener("keyup", (e) => {
   }
 });
 
-// Aciona na inicialização
 window.onload = initializeBoard;

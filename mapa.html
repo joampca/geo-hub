@@ -110,8 +110,8 @@
             </button>
           </div>
 
-          <div id="playArea" style="display: none">
-            <div class="stats-panel">
+          <div id="playArea" style="display: block">
+            <div class="stats-panel" id="statsPanel" style="display: none">
               <div class="status-bar score-box">
                 Pontos: <span id="scoreDisplay">0</span> | Pulos:
                 <span id="skipDisplay">0</span>
@@ -119,7 +119,7 @@
               <div class="timer-box">⏱️ <span id="timer">02:00</span></div>
             </div>
 
-            <div class="roulette-box">
+            <div class="roulette-box" id="rouletteBox" style="display: none">
               <div class="roulette-title">ALVO NO RADAR:</div>
               <div class="roulette-text" id="targetDisplay">
                 [ AGUARDANDO COMANDO ]
@@ -127,9 +127,10 @@
             </div>
 
             <div
+              id="gameControls"
               style="
                 margin-bottom: 20px;
-                display: flex;
+                display: none;
                 gap: 10px;
                 justify-content: center;
                 flex-wrap: wrap;
@@ -163,7 +164,11 @@
               🏳️ DESISTIR (Encerrar e Mostrar Faltantes)
             </button>
 
-            <div class="map-wrapper" id="mapContainer"></div>
+            <div
+              class="map-wrapper"
+              id="mapContainer"
+              style="display: none"
+            ></div>
 
             <div id="customAlert" class="custom-alert"></div>
           </div>

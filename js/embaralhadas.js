@@ -1,4 +1,3 @@
-// BANCO DE DADOS GIGANTE - 100 Palavras
 const database = [
   { w: "AMAPA", h: "Estado brasileiro cortado pela Linha do Equador" },
   {
@@ -70,7 +69,7 @@ const database = [
     w: "QUENIA",
     h: "País africano mundialmente famoso pelos safáris de savana",
   },
-  { w: "SOMALIA", h: "País localizado no 'Chifre da África'" },
+  { w: "SOMALIA", h: "País localizado no Chifre da África" },
   { w: "INDIA", h: "Segundo país mais populoso do mundo, berço do Hinduísmo" },
   { w: "PAQUISTAO", h: "Vizinho e rival histórico da Índia" },
   {
@@ -86,7 +85,7 @@ const database = [
   { w: "INDONESIA", h: "Maior país arquipélago do mundo" },
   {
     w: "AUSTRALIA",
-    h: "País-continente famoso pelos cangurus e pela Ópera de Sydney",
+    h: "País continente famoso pelos cangurus e pela Ópera de Sydney",
   },
   { w: "FRANCA", h: "País europeu que abriga a Torre Eiffel" },
   {
@@ -121,13 +120,13 @@ const database = [
   { w: "BOGOTA", h: "A capital da Colômbia" },
   { w: "BERLIM", h: "A capital da Alemanha, outrora dividida por um muro" },
   { w: "LONDRES", h: "Capital cortada pelo Rio Tâmisa" },
-  { w: "PARIS", h: "Conhecida mundialmente como a 'Cidade Luz'" },
+  { w: "PARIS", h: "Conhecida mundialmente como a Cidade Luz" },
   { w: "MADRI", h: "A capital e maior cidade da Espanha" },
   { w: "LISBOA", h: "A capital de Portugal" },
-  { w: "ROMA", h: "A 'Cidade Eterna', capital da Itália" },
+  { w: "ROMA", h: "A Cidade Eterna, capital da Itália" },
   { w: "ATENAS", h: "Capital dominada pela antiga Acrópole" },
   { w: "MOSCOU", h: "Capital onde fica a famosa Praça Vermelha" },
-  { w: "PEQUIM", h: "Capital da China (também conhecida como Beijing)" },
+  { w: "PEQUIM", h: "Capital da China, também conhecida como Beijing" },
   { w: "TOQUIO", h: "A maior e mais populosa região metropolitana do mundo" },
   { w: "SEUL", h: "A tecnológica capital da Coreia do Sul" },
   { w: "CABUL", h: "A capital do Afeganistão" },
@@ -136,13 +135,13 @@ const database = [
   { w: "LUANDA", h: "A capital de Angola" },
   {
     w: "PRETORIA",
-    h: "Uma das três capitais da África do Sul (A administrativa)",
+    h: "Uma das três capitais da África do Sul, a administrativa",
   },
   { w: "LIMA", h: "A capital e principal centro gastronômico do Peru" },
   { w: "CARACAS", h: "A capital da Venezuela" },
   { w: "QUITO", h: "A alta capital do Equador" },
   { w: "OTTAWA", h: "A capital do Canadá" },
-  { w: "WASHINGTON", h: "A capital dos Estados Unidos (D.C.)" },
+  { w: "WASHINGTON", h: "A capital dos Estados Unidos" },
   { w: "HAVANA", h: "A vibrante e histórica capital de Cuba" },
   {
     w: "PANTANAL",
@@ -154,10 +153,7 @@ const database = [
   },
   { w: "SAARA", h: "O maior deserto quente do mundo, no norte da África" },
   { w: "ANTARTIDA", h: "Continente congelado no extremo sul" },
-  {
-    w: "TIBETE",
-    h: "Região asiática autônoma conhecida como o 'Teto do Mundo'",
-  },
+  { w: "TIBETE", h: "Região asiática autônoma conhecida como o Teto do Mundo" },
   { w: "HIMALAIA", h: "A cordilheira mais alta do mundo" },
   { w: "ANDES", h: "A maior cordilheira de montanhas da América do Sul" },
   {
@@ -193,7 +189,6 @@ const database = [
   { w: "EVEREST", h: "O pico mais alto da Terra" },
 ];
 
-// Variáveis de Controle
 let availableWords = [];
 let originalWord = "";
 let scrambledWord = "";
@@ -202,9 +197,9 @@ const maxRounds = 10;
 let totalScore = 0;
 let currentRoundPoints = 100;
 
-let globalTime = 180; // 3 minutos
+let globalTime = 180;
 let globalTimerInterval;
-let wordTime = 40; // 40 seg por palavra
+let wordTime = 40;
 let wordTimerInterval;
 
 const levelDisplay = document.getElementById("level");
@@ -218,6 +213,7 @@ const inputArea = document.getElementById("inputArea");
 const userInput = document.getElementById("userInput");
 const customAlert = document.getElementById("customAlert");
 const shuffleBtn = document.getElementById("shuffleBtn");
+const startBtn = document.getElementById("startBtn");
 
 function normalizeString(str) {
   return str
@@ -252,7 +248,6 @@ function renderBlocks(wordStr, animate = false) {
     block.className = "letter-block";
     block.innerText = char;
 
-    // Aplica estilo em linha para garantir que fiquem grandes e visíveis
     block.style.display = "inline-flex";
     block.style.alignItems = "center";
     block.style.justifyContent = "center";
@@ -269,13 +264,38 @@ function renderBlocks(wordStr, animate = false) {
   }
 }
 
-function initGame() {
-  // Aleatoriedade garantida!
+function initializeBoard() {
   availableWords = [...database].sort(() => Math.random() - 0.5);
-
   totalScore = 0;
   currentIndex = 1;
   scoreDisplay.innerText = totalScore;
+
+  const currentItem = availableWords.shift();
+  originalWord = currentItem.w;
+  scrambledWord = scramble(originalWord);
+
+  levelDisplay.innerText = currentIndex;
+  hintText.innerText = "Dica: " + currentItem.h;
+  renderBlocks(scrambledWord);
+
+  document.getElementById("playArea").style.display = "block";
+  document.getElementById("startBtn").style.display = "block";
+  inputArea.style.display = "none";
+  customAlert.style.display = "none";
+}
+
+startBtn.addEventListener("click", function () {
+  this.style.display = "none";
+  inputArea.style.display = "block";
+
+  currentRoundPoints = 100;
+  prizeDisplay.innerText = currentRoundPoints;
+  shuffleBtn.disabled = false;
+  shuffleBtn.innerText = "🌪️ TORNADO (-20 pts)";
+
+  userInput.value = "";
+  userInput.disabled = false;
+  setTimeout(() => userInput.focus(), 100);
 
   globalTime = 180;
   globalTimerDisplay.innerText = formatTime(globalTime);
@@ -286,8 +306,15 @@ function initGame() {
     if (globalTime <= 0) endGame("⏰ O TEMPO TOTAL ACABOU!");
   }, 1000);
 
-  loadNext();
-}
+  wordTime = 40;
+  wordTimerDisplay.innerText = wordTime;
+  clearInterval(wordTimerInterval);
+  wordTimerInterval = setInterval(() => {
+    wordTime--;
+    wordTimerDisplay.innerText = wordTime;
+    if (wordTime <= 0) timeUpForWord();
+  }, 1000);
+});
 
 function loadNext() {
   if (currentIndex > maxRounds || availableWords.length === 0) {
@@ -316,7 +343,6 @@ function loadNext() {
     if (wordTime <= 0) timeUpForWord();
   }, 1000);
 
-  // Como já foi embaralhado no initGame, pegamos o primeiro (shift)
   const currentItem = availableWords.shift();
   originalWord = currentItem.w;
   scrambledWord = scramble(originalWord);
@@ -349,7 +375,6 @@ function timeUpForWord() {
   showResultRevealing(`⏰ <strong>TEMPO ESGOTADO!</strong>`, "alert-error");
 }
 
-// NOVA FUNÇÃO: Desistir do jogo (Revela a palavra atual e encerra os timers)
 window.giveUpGame = function () {
   clearInterval(globalTimerInterval);
   clearInterval(wordTimerInterval);
@@ -383,7 +408,6 @@ function checkAnswer() {
     scoreDisplay.innerText = totalScore;
     renderBlocks(originalWord);
 
-    // Animação de acerto
     scrambleBoard.querySelectorAll(".letter-block").forEach((b) => {
       b.style.backgroundColor = "#008000";
       b.style.color = "#FFF";
@@ -419,4 +443,5 @@ function endGame(titleMsg) {
 userInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") checkAnswer();
 });
-// Removido window.onload para disparar pelo botão START
+
+window.onload = initializeBoard;

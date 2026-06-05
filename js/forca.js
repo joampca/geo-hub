@@ -1,6 +1,4 @@
-// BANCO DE DADOS DA FORCA - Palavras Únicas (Sem espaços/hifens e sem acentos)
 const database = [
-  // --- BRASIL E AMÉRICAS ---
   { w: "AMAPA", h: "Estado brasileiro cortado pela Linha do Equador" },
   { w: "MACAPA", h: "Capital brasileira banhada pelo Rio Amazonas" },
   { w: "PANTANAL", h: "Maior planície alagada do mundo, localizada no Brasil" },
@@ -21,7 +19,6 @@ const database = [
   { w: "YUCATAN", h: "Península no México famosa pelas ruínas maias" },
   { w: "JAMAICA", h: "Ilha caribenha famosa pelo reggae e por Bob Marley" },
 
-  // --- EUROPA E RÚSSIA ---
   { w: "RUSSIA", h: "Maior país do mundo em extensão territorial" },
   { w: "MOSCOU", h: "Capital mundialmente famosa pela Praça Vermelha" },
   { w: "SIBERIA", h: "Vasta e gelada região asiática do território russo" },
@@ -44,7 +41,6 @@ const database = [
     h: "Vales rochosos invadidos pelo mar, muito comuns na Escandinávia",
   },
 
-  // --- ÁSIA E OCEANIA ---
   { w: "CANBERRA", h: "A verdadeira capital da Austrália" },
   { w: "TIBETE", h: "Região autônoma conhecida como 'O Teto do Mundo'" },
   { w: "HIMALAIA", h: "Cordilheira colossal que abriga o Monte Everest" },
@@ -65,7 +61,6 @@ const database = [
     h: "Um dos rios mais longos e importantes do Sudeste Asiático",
   },
 
-  // --- ÁFRICA E ORIENTE MÉDIO ---
   {
     w: "MADAGASCAR",
     h: "Grande ilha biodiversa localizada na costa leste da África",
@@ -82,7 +77,6 @@ const database = [
   { w: "ZAMBEZE", h: "Rio africano onde ficam as Cataratas de Vitória" },
   { w: "PETRA", h: "Antiga cidade esculpida em rocha rosa, na Jordânia" },
 
-  // --- FENÔMENOS, BIOMAS E EXTREMOS ---
   {
     w: "TSUNAMI",
     h: "Onda gigante geralmente causada por um terremoto submarino",
@@ -115,7 +109,6 @@ const database = [
   },
 ];
 
-// Os 7 estágios do desenho ASCII (0 erros até 6 erros)
 const asciiStages = [
   `  +---+
   |   |
@@ -174,6 +167,7 @@ let mistakes = 0;
 const maxMistakes = 6;
 let score = 0;
 let gameOver = false;
+let isGameStarted = false;
 
 const startBtn = document.getElementById("startBtn");
 const playArea = document.getElementById("playArea");
@@ -184,9 +178,8 @@ const scoreDisplay = document.getElementById("score");
 const keyboardArea = document.getElementById("keyboardArea");
 const customAlert = document.getElementById("customAlert");
 const hintDisplay = document.getElementById("hintDisplay");
-const giveUpBtn = document.getElementById("giveUpBtn"); // Referência do botão desistir
+const giveUpBtn = document.getElementById("giveUpBtn");
 
-// Cria o teclado virtual (A a Z)
 function generateKeyboard() {
   keyboardArea.innerHTML = "";
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -200,7 +193,6 @@ function generateKeyboard() {
   }
 }
 
-// Remove acentos para facilitar a validação
 function normalizeString(str) {
   return str
     .normalize("NFD")
@@ -208,8 +200,7 @@ function normalizeString(str) {
     .toUpperCase();
 }
 
-function initGame() {
-  // Sorteia uma palavra
+function initializeBoard() {
   const randomObj = database[Math.floor(Math.random() * database.length)];
   chosenWord = normalizeString(randomObj.w);
   hintDisplay.innerText = "DICA: " + randomObj.h;
@@ -217,13 +208,16 @@ function initGame() {
   guessedLetters = [];
   mistakes = 0;
   gameOver = false;
+  isGameStarted = false;
 
   mistakesDisplay.innerText = mistakes;
   asciiArt.innerText = asciiStages[0];
   customAlert.style.display = "none";
-  keyboardArea.style.display = "flex";
 
-  if (giveUpBtn) giveUpBtn.style.display = "block";
+  playArea.style.display = "block";
+  startBtn.style.display = "block";
+  keyboardArea.style.display = "none";
+  if (giveUpBtn) giveUpBtn.style.display = "none";
 
   generateKeyboard();
   updateWordDisplay();
@@ -247,7 +241,7 @@ function updateWordDisplay() {
 
   wordDisplay.innerText = displayStr.trim();
 
-  if (won && !gameOver) {
+  if (won && !gameOver && isGameStarted) {
     gameOver = true;
     score += 100;
     scoreDisplay.innerText = score;
@@ -256,18 +250,16 @@ function updateWordDisplay() {
 }
 
 function handleGuess(letter) {
-  if (gameOver) return;
+  if (gameOver || !isGameStarted) return;
   if (guessedLetters.includes(letter)) return;
 
   guessedLetters.push(letter);
   let btn = document.getElementById("key-" + letter);
 
   if (chosenWord.includes(letter)) {
-    // Acertou a letra
     btn.classList.add("correct");
     updateWordDisplay();
   } else {
-    // Errou a letra
     btn.classList.add("wrong");
     mistakes++;
     mistakesDisplay.innerText = mistakes;
@@ -275,50 +267,50 @@ function handleGuess(letter) {
 
     if (mistakes >= maxMistakes) {
       gameOver = true;
-      // Mostra a palavra inteira ao perder
       wordDisplay.innerText = chosenWord.split("").join(" ");
-      wordDisplay.style.color = "#CC0000"; // Fica vermelho pra destacar o erro
+      wordDisplay.style.color = "#CC0000";
       showResult(`💀 ENFORCADO! A palavra era: ${chosenWord}`, false);
     }
   }
 }
 
-// NOVA FUNÇÃO: Desistir do jogo
 window.giveUpGame = function () {
-  if (gameOver) return;
+  if (gameOver || !isGameStarted) return;
 
   gameOver = true;
-  mistakes = maxMistakes; // Força os erros pro máximo
+  mistakes = maxMistakes;
   mistakesDisplay.innerText = mistakes;
-  asciiArt.innerText = asciiStages[maxMistakes]; // Desenha a forca completa
+  asciiArt.innerText = asciiStages[maxMistakes];
 
   wordDisplay.innerText = chosenWord.split("").join(" ");
-  wordDisplay.style.color = "#CC0000"; // Destaca a palavra em vermelho
+  wordDisplay.style.color = "#CC0000";
 
   showResult(`🏳️ VOCÊ DESISTIU! A palavra era: ${chosenWord}`, false);
 };
 
 function showResult(msg, isWin) {
-  keyboardArea.style.display = "none"; // Esconde o teclado para forçar o clique no botão de continuar
-  if (giveUpBtn) giveUpBtn.style.display = "none"; // Esconde botão de desistir
+  keyboardArea.style.display = "none";
+  if (giveUpBtn) giveUpBtn.style.display = "none";
 
   customAlert.innerHTML = msg;
   customAlert.className =
     "custom-alert " + (isWin ? "alert-success" : "alert-error");
   customAlert.style.display = "block";
 
-  // Botão de jogar novamente
   customAlert.innerHTML += `<br><button onclick="initGameWrapper()" class="btn-action" style="margin-top:20px; font-size: 18px; padding: 10px 20px;">JOGAR PRÓXIMA ▶</button>`;
 }
 
 window.initGameWrapper = function () {
-  wordDisplay.style.color = "#000"; // Reseta a cor caso tenha perdido a anterior
-  initGame();
+  wordDisplay.style.color = "#000";
+  initializeBoard();
+  startBtn.style.display = "none";
+  keyboardArea.style.display = "flex";
+  if (giveUpBtn) giveUpBtn.style.display = "block";
+  isGameStarted = true;
 };
 
-// Permite digitar pelo teclado físico do PC
 document.addEventListener("keydown", (e) => {
-  if (gameOver || playArea.style.display === "none") return;
+  if (gameOver || !isGameStarted || playArea.style.display === "none") return;
   let key = e.key.toUpperCase();
   if (/^[A-Z]$/.test(key)) {
     handleGuess(key);
@@ -327,6 +319,9 @@ document.addEventListener("keydown", (e) => {
 
 startBtn.onclick = () => {
   startBtn.style.display = "none";
-  playArea.style.display = "block";
-  initGame();
+  keyboardArea.style.display = "flex";
+  if (giveUpBtn) giveUpBtn.style.display = "block";
+  isGameStarted = true;
 };
+
+window.onload = initializeBoard;

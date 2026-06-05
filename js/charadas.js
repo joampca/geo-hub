@@ -1,4 +1,3 @@
-// BANCO DE DADOS ÉPICO - 85 Charadas (Geografia, Geopolítica, História e Natureza)
 const database = [
   {
     q: "Tenho cidades, mas não tenho casas. Tenho montanhas, mas não tenho árvores. Tenho água, mas não tenho peixes. O que eu sou?",
@@ -456,7 +455,6 @@ const database = [
   },
 ];
 
-// LÓGICA DO JOGO
 let score = 0;
 let level = 1;
 const maxLevel = 10;
@@ -475,6 +473,7 @@ const levelDisplay = document.getElementById("level");
 const prizeDisplay = document.getElementById("prizePoints");
 const customAlert = document.getElementById("customAlert");
 const inputArea = document.getElementById("inputArea");
+const startBtn = document.getElementById("startBtn");
 
 function normalize(str) {
   return str
@@ -484,16 +483,35 @@ function normalize(str) {
     .trim();
 }
 
-function initGame() {
+function initializeBoard() {
+  document.getElementById("playArea").style.display = "block";
+  document.getElementById("startBtn").style.display = "block";
+  document.getElementById("inputArea").style.display = "none";
+  document.getElementById("customAlert").style.display = "none";
+
   score = 0;
   level = 1;
   scoreDisplay.innerText = score;
 
-  // ALTA PRIORIDADE: Valida a aleatoriedade embaralhando a lista no início do jogo
   availableRiddles = [...database].sort(() => Math.random() - 0.5);
 
-  loadNext();
+  currentRiddle = availableRiddles.shift();
+  riddleText.innerText = currentRiddle.q;
+  levelDisplay.innerText = level;
 }
+
+startBtn.addEventListener("click", function () {
+  this.style.display = "none";
+  document.getElementById("inputArea").style.display = "block";
+
+  hintsUsed = 0;
+  currentRoundPoints = 100;
+  if (prizeDisplay) prizeDisplay.innerText = currentRoundPoints;
+
+  userInput.value = "";
+  userInput.disabled = false;
+  setTimeout(() => userInput.focus(), 100);
+});
 
 function loadNext() {
   if (level > maxLevel || availableRiddles.length === 0) {
@@ -529,9 +547,7 @@ function loadNext() {
     }
   }
 
-  // Coleta a primeira charada do array já embaralhado
   currentRiddle = availableRiddles.shift();
-
   riddleText.innerText = currentRiddle.q;
   levelDisplay.innerText = level;
 }
@@ -566,7 +582,7 @@ window.checkAnswer = function () {
     scoreDisplay.innerText = score;
     showFeedback(
       `🎉 CORRETO! VOCÊ GANHOU +${currentRoundPoints} PONTOS!`,
-      true
+      true,
     );
   } else {
     showFeedback("❌ RESPOSTA ERRADA! TENTE NOVAMENTE.", false);
@@ -587,11 +603,9 @@ window.skipRiddle = function () {
   customAlert.innerHTML += `<br><button onclick="loadNextWrapper()" class="btn-action" style="margin-top:20px;">PRÓXIMA CHARADA ▶</button>`;
 };
 
-// NOVA FUNÇÃO: Desistir do Jogo (Mantém a charada visível e exibe a resposta)
 window.giveUpGame = function () {
   const correctAnswer = currentRiddle.a[0];
 
-  // Oculta os inputs para travar o jogo, deixando apenas a charada visível
   inputArea.style.display = "none";
 
   customAlert.innerHTML = `🏳️ <strong>VOCÊ DESISTIU!</strong><br><br>A resposta da charada atual era:<br><span class="answer-highlight" style="color: #0047AB; font-size: 1.5rem;"><strong>${correctAnswer}</strong></span><br><br>Sua Pontuação Final: <strong>${score}</strong> pts!<br><br><button onclick="window.location.reload()" class="btn-action" style="margin-top:15px;">TENTAR NOVAMENTE 🔄</button>`;
@@ -641,3 +655,5 @@ userInput.addEventListener("keypress", function (event) {
     checkAnswer();
   }
 });
+
+window.onload = initializeBoard;

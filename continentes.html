@@ -16,7 +16,6 @@
         dataLayer.push(arguments);
       }
       gtag("js", new Date());
-
       gtag("config", "G-N2ZZJ1F6T1");
     </script>
 
@@ -122,14 +121,14 @@
             <button
               id="giveUpBtn"
               class="btn-action btn-skip"
-              style="margin-bottom: 20px; display: none"
+              style="margin-bottom: 20px; display: none; width: 100%"
             >
               🏳️ DESISTIR (Mostrar Respostas)
             </button>
 
             <div id="answersGrid" class="answers-grid"></div>
 
-            <div id="victoryMsg" class="victory-msg">
+            <div id="victoryMsg" class="victory-msg" style="display: none">
               🎉 VOCÊ ACERTOU TODOS! PARABÉNS! 🎉<br />
               <button
                 onclick="location.reload()"
@@ -140,7 +139,7 @@
               </button>
             </div>
 
-            <div id="gameOverMsg" class="game-over-msg">
+            <div id="gameOverMsg" class="game-over-msg" style="display: none">
               ⏰ FIM DE JOGO! ⏰<br />
               As respostas que faltaram apareceram em vermelho.<br />
               <button

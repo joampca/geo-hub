@@ -94,17 +94,23 @@
         <main class="game-main-area">
           <div class="daily-wrapper">
             <div class="daily-header">
-              📅 DESAFIO #<span id="desafioNum">001</span> -
+              📅 DESAFIO #<span id="desafioNum">001</span>
               <span id="triesLeft">5</span> TENTATIVAS RESTANTES
             </div>
 
             <p style="text-align: center; font-size: 1rem; margin-bottom: 20px">
-              Descubra o país! A cada palpite incorreto, um pedaço da imagem é
+              Descubra o país! A cada palpite incorreto um pedaço da imagem é
               revelado e o desfoque diminui. Você tem 5 chances!!
             </p>
 
             <div class="flag-daily-container">
-              <canvas id="flagCanvas" width="450" height="300"></canvas>
+              <canvas
+                id="flagCanvas"
+                width="450"
+                height="300"
+                role="img"
+                aria-label="Bandeira do desafio diário ocultada parcialmente"
+              ></canvas>
             </div>
 
             <div class="guesses-list" id="guessesList"></div>
@@ -125,9 +131,10 @@
                   type="text"
                   id="countryInput"
                   class="input-box"
-                  placeholder="DIGITE O PAÍS E APERTE ENTER..."
+                  placeholder="CARREGANDO DADOS..."
                   autocomplete="off"
                   spellcheck="false"
+                  disabled
                 />
               </div>
             </div>
@@ -167,7 +174,7 @@
       <marquee behavior="scroll" direction="left" class="marquee-90s">
         VOCÊ SABIA? A COR ROXA É A MAIS RARA EM BANDEIRAS NACIONAIS DEVIDO AO
         ALTO CUSTO DO CORANTE NO PASSADO! HOJE ELA ESTÁ PRESENTE APENAS NAS
-        BANDEIRAS DA NICARÁGUA E DA DOMINICA! 🎨 --- VOLTE AMANHÃ PARA UM NOVO
+        BANDEIRAS DA NICARÁGUA E DA DOMINICA! 🎨 VOLTE AMANHÃ PARA UM NOVO
         DESAFIO DIÁRIO!
       </marquee>
     </footer>

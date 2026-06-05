@@ -1,4 +1,3 @@
-// DICIONÁRIO DE TRADUÇÃO: Filtra estritamente os 50 maiores países do GeoJSON para serem jogáveis.
 const top50Countries = {
   Russia: "RÚSSIA",
   Canada: "CANADÁ",
@@ -54,26 +53,25 @@ const top50Countries = {
 
 let score = 0;
 let skipCount = 0;
-let timeLeft = 120; // 2 minutos para achar no mapa
+let timeLeft = 120;
 let timerInterval;
 let isWaitingForClick = false;
 let isSpinning = false;
+let gameStarted = false;
 
 let availableTargets = [];
 let currentTargetEnglish = null;
 
-// Variáveis do DOM
 const targetDisplay = document.getElementById("targetDisplay");
 const spinBtn = document.getElementById("spinBtn");
 const skipBtn = document.getElementById("skipBtn");
-const giveUpBtn = document.getElementById("giveUpBtn"); // Novo botão padronizado
+const giveUpBtn = document.getElementById("giveUpBtn");
 const scoreDisplay = document.getElementById("scoreDisplay");
 const skipDisplay = document.getElementById("skipDisplay");
-const timerDisplay = document.getElementById("timer"); // Atualizado para ID do novo painel
+const timerDisplay = document.getElementById("timer");
 const customAlert = document.getElementById("customAlert");
 const svgContainer = d3.select("#mapContainer");
 
-// Configuração do Mapa D3
 const width = 800;
 const height = 450;
 const svg = svgContainer
@@ -87,10 +85,10 @@ const projection = d3
   .translate([width / 2, height / 1.5]);
 const pathGenerator = d3.geoPath().projection(projection);
 
-// 1. CARREGAR OS DADOS GEOGRÁFICOS DO SATÉLITE
 d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
   .then(function (world) {
     document.getElementById("loadingText").style.display = "none";
+    document.getElementById("mapContainer").style.display = "block";
     document.getElementById("controlsArea").style.display = "block";
 
     const countries = topojson.feature(world, world.objects.countries).features;
@@ -116,18 +114,19 @@ d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
       "ERRO AO CONECTAR COM O SATÉLITE. VERIFIQUE SUA INTERNET.";
   });
 
-// 2. LÓGICA DO JOGO
 window.startGame = function () {
   document.getElementById("controlsArea").style.display = "none";
-  document.getElementById("playArea").style.display = "block";
+  document.getElementById("statsPanel").style.display = "flex";
+  document.getElementById("rouletteBox").style.display = "block";
+  document.getElementById("gameControls").style.display = "flex";
   giveUpBtn.style.display = "inline-block";
 
+  gameStarted = true;
   score = 0;
   skipCount = 0;
   scoreDisplay.innerText = score;
   if (skipDisplay) skipDisplay.innerText = skipCount;
 
-  // Popula e garante a aleatoriedade (embora a roleta já seja aleatória)
   availableTargets = Object.keys(top50Countries);
 
   startTimer();
@@ -159,13 +158,13 @@ function startTimer() {
 function handleTimeOut(userGaveUp = false) {
   clearInterval(timerInterval);
   isWaitingForClick = false;
+  gameStarted = false;
   spinBtn.disabled = true;
   skipBtn.disabled = true;
   giveUpBtn.style.display = "none";
 
-  // Se o usuário desistiu ou o tempo acabou, pinta o alvo atual e todos os restantes de vermelho
   if (currentTargetEnglish) {
-    availableTargets.push(currentTargetEnglish); // Devolve o atual pra lista pra ser pintado
+    availableTargets.push(currentTargetEnglish);
   }
 
   availableTargets.forEach((countryKey) => {
@@ -178,11 +177,10 @@ function handleTimeOut(userGaveUp = false) {
   showResult(
     `${reason}<br>O radar finalizou a varredura.<br><strong>Pontuação: ${score} | Pulos: ${skipCount}</strong><br>Os países que faltaram estão em vermelho no mapa.`,
     false,
-    true
+    true,
   );
 }
 
-// Botão de Desistir
 giveUpBtn.addEventListener("click", () => {
   handleTimeOut(true);
 });
@@ -195,7 +193,7 @@ function resetMapColors() {
 }
 
 function spinTarget() {
-  if (isSpinning || availableTargets.length === 0) return;
+  if (isSpinning || availableTargets.length === 0 || !gameStarted) return;
 
   isSpinning = true;
   spinBtn.disabled = true;
@@ -230,7 +228,7 @@ function spinTarget() {
 spinBtn.onclick = spinTarget;
 
 skipBtn.onclick = () => {
-  if (isSpinning || !isWaitingForClick) return;
+  if (isSpinning || !isWaitingForClick || !gameStarted) return;
 
   const skippedId = "#country-" + currentTargetEnglish.replace(/\s+/g, "");
 
@@ -245,9 +243,9 @@ skipBtn.onclick = () => {
   spinTarget();
 };
 
-// 3. O CLIQUE NO MAPA VETORIAL
 function handleMapClick(event, d) {
-  if (!isWaitingForClick || !top50Countries[d.properties.name]) return;
+  if (!isWaitingForClick || !top50Countries[d.properties.name] || !gameStarted)
+    return;
 
   isWaitingForClick = false;
   skipBtn.disabled = true;
@@ -277,20 +275,20 @@ function handleMapClick(event, d) {
 
     showResult(
       `❌ RADAR FALHOU! Você clicou em <strong>${top50Countries[clickedEnglishName]}</strong>.<br>O alvo correto está piscando no mapa.`,
-      false
+      false,
     );
   }
 
-  // Checa Vitória Máxima
   if (availableTargets.length === 0) {
     clearInterval(timerInterval);
+    gameStarted = false;
     spinBtn.disabled = true;
     giveUpBtn.style.display = "none";
     setTimeout(() => {
       showResult(
         `🏆 VARREDURA COMPLETA!<br>Pontuação Final: ${score} | Pulos: ${skipCount}`,
         true,
-        true
+        true,
       );
     }, 2000);
   }

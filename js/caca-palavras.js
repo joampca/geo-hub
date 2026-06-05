@@ -32,7 +32,6 @@ const geoWords = [
   "JAMAICA",
   "BAHAMAS",
   "HAITI",
-
   // América do Norte
   "CANADA",
   "MEXICO",
@@ -50,7 +49,6 @@ const geoWords = [
   "QUEBEC",
   "COLORADO",
   "NEVADA",
-
   // Europa Ocidental e Nórdica
   "EUROPA",
   "ALPES",
@@ -82,7 +80,6 @@ const geoWords = [
   "MUNIQUE",
   "NAPOLES",
   "VENEZA",
-
   // Europa Oriental e Balcãs
   "RUSSIA",
   "VOLGA",
@@ -100,7 +97,6 @@ const geoWords = [
   "ATENAS",
   "PRAGA",
   "VARSOVIA",
-
   // Ásia e Oriente Médio
   "ASIA",
   "JAPAO",
@@ -131,7 +127,6 @@ const geoWords = [
   "LIBANO",
   "IEMEN",
   "SIRIA",
-
   // África
   "AFRICA",
   "EGITO",
@@ -165,7 +160,6 @@ const geoWords = [
   "NAMIBIA",
   "BOTSUANA",
   "LESOTO",
-
   // Oceania e Extremos
   "OCEANIA",
   "AUSTRALIA",
@@ -179,7 +173,6 @@ const geoWords = [
   "GROENLANDIA",
   "ICEBERG",
   "TUNDRA",
-
   // Corpos d'água (Oceanos, Mares e Golfos)
   "ATLANTICO",
   "PACIFICO",
@@ -198,11 +191,11 @@ let gridData = [];
 let wordsToFind = [];
 let wordsFound = 0;
 let firstClickCell = null;
-let wordPlacements = {}; // NOVO: Armazena as posições reais de cada palavra na grade
+let wordPlacements = {};
 
-let timeElapsed = 0; // Cronômetro progressivo
+let timeElapsed = 0;
 let timerInterval;
-let gameActive = false; // Controle para travar a grade após fim de jogo
+let gameActive = false;
 
 const startBtn = document.getElementById("startBtn");
 const giveUpBtn = document.getElementById("giveUpBtn");
@@ -233,22 +226,19 @@ function endGame(won) {
     finalTimeDisplay.innerText = timerDisplay.innerText;
     victoryMsg.style.display = "block";
   } else {
-    // Revela as palavras que faltaram na lista e na grade
     wordsToFind.forEach((word) => {
       let wordElement = document.getElementById("word-" + word);
       if (!wordElement.classList.contains("found-word")) {
-        // Marca na lista lateral
         wordElement.style.color = "#ff0000";
         wordElement.style.textDecoration = "line-through";
 
-        // Pinta na grade
         if (wordPlacements[word]) {
           wordPlacements[word].forEach((pos) => {
             let cell = document.querySelector(
-              `.grid-cell[data-r='${pos.r}'][data-c='${pos.c}']`
+              `.grid-cell[data-r='${pos.r}'][data-c='${pos.c}']`,
             );
             if (cell) {
-              cell.style.backgroundColor = "#ff4d4d"; // Vermelho claro
+              cell.style.backgroundColor = "#ff4d4d";
               cell.style.color = "#ffffff";
               cell.style.fontWeight = "bold";
             }
@@ -260,32 +250,15 @@ function endGame(won) {
   }
 }
 
-// Evento de desistir
 giveUpBtn.addEventListener("click", () => {
   endGame(false);
 });
 
-// FUNÇÃO PRINCIPAL: Gera a grade randomicamente
-function generateGame() {
-  gameActive = true;
-  startBtn.style.display = "none";
-  playArea.style.display = "block";
-  giveUpBtn.style.display = "inline-block";
-  victoryMsg.style.display = "none";
-  wordPlacements = {}; // Zera o mapa de posições
+// Separamos a lógica de construir a grade para rodar antes do jogo iniciar
+function renderBoardLogic() {
+  wordPlacements = {};
+  firstClickCell = null;
 
-  if (gameOverMsg) gameOverMsg.style.display = "none";
-
-  // Zera o Relógio Progressivo
-  clearInterval(timerInterval);
-  timeElapsed = 0;
-  updateTimer();
-  timerInterval = setInterval(() => {
-    timeElapsed++;
-    updateTimer();
-  }, 1000);
-
-  // Sorteia 6 palavras aleatórias
   let shuffledWords = [...geoWords].sort(() => Math.random() - 0.5);
   wordsToFind = shuffledWords.slice(0, 6);
   wordsFound = 0;
@@ -293,19 +266,14 @@ function generateGame() {
 
   if (totalWordsDisplay) totalWordsDisplay.innerText = wordsToFind.length;
 
-  firstClickCell = null;
-
-  // Cria a grade vazia
   gridData = Array(gridSize)
     .fill(null)
     .map(() => Array(gridSize).fill(""));
 
-  // Tenta colocar cada palavra na grade
   wordsToFind.forEach((word) => {
     let placed = false;
     let attempts = 0;
     while (!placed && attempts < 200) {
-      // Direções: 0=Horizontal(Dir), 1=Horizontal(Esq), 2=Vertical(Baixo), 3=Vertical(Cima), 4=Diagonal(Baixo-Dir), 5=Diagonal(Cima-Esq)
       const dir = Math.floor(Math.random() * 6);
       let row = Math.floor(Math.random() * gridSize);
       let col = Math.floor(Math.random() * gridSize);
@@ -324,7 +292,6 @@ function generateGame() {
         cStep = -1;
       }
 
-      // Checa se cabe na grade
       let canPlace = true;
       if (
         row + rStep * word.length < -1 ||
@@ -337,7 +304,6 @@ function generateGame() {
       )
         canPlace = false;
 
-      // Checa se as letras conflitam com palavras já colocadas
       if (canPlace) {
         for (let i = 0; i < word.length; i++) {
           let currR = row + i * rStep;
@@ -356,7 +322,6 @@ function generateGame() {
         }
       }
 
-      // Coloca a palavra e salva as posições
       if (canPlace) {
         wordPlacements[word] = [];
         for (let i = 0; i < word.length; i++) {
@@ -369,7 +334,6 @@ function generateGame() {
     }
   });
 
-  // Preenche os espaços vazios com letras aleatórias
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   for (let r = 0; r < gridSize; r++) {
     for (let c = 0; c < gridSize; c++) {
@@ -379,7 +343,6 @@ function generateGame() {
     }
   }
 
-  // Renderiza a grade no HTML
   gridContainer.innerHTML = "";
   for (let r = 0; r < gridSize; r++) {
     let rowDiv = document.createElement("div");
@@ -397,7 +360,6 @@ function generateGame() {
     gridContainer.appendChild(rowDiv);
   }
 
-  // Renderiza a lista de palavras
   wordListDiv.innerHTML = "";
   wordsToFind.forEach((word) => {
     let div = document.createElement("div");
@@ -408,16 +370,78 @@ function generateGame() {
   });
 }
 
-// LÓGICA DE INTERAÇÃO
+// Inicialização imediata "Anti-Bot"
+function initializeBoard() {
+  if (!document.getElementById("actionContainer")) {
+    const container = document.createElement("div");
+    container.id = "actionContainer";
+    container.style.display = "flex";
+    container.style.gap = "10px";
+    container.style.marginBottom = "20px";
+    container.style.alignItems = "stretch";
+
+    startBtn.parentNode.insertBefore(container, startBtn);
+    container.appendChild(startBtn);
+    container.appendChild(giveUpBtn);
+
+    startBtn.style.margin = "0";
+    startBtn.style.flex = "1";
+    startBtn.style.width = "100%";
+    startBtn.innerText = "▶ COMEÇAR JOGO";
+
+    giveUpBtn.style.margin = "0";
+    giveUpBtn.style.flex = "1";
+    giveUpBtn.style.width = "100%";
+  }
+
+  renderBoardLogic();
+
+  playArea.style.display = "block";
+  startBtn.style.display = "block";
+  giveUpBtn.style.display = "none";
+  victoryMsg.style.display = "none";
+  if (gameOverMsg) gameOverMsg.style.display = "none";
+
+  gameActive = false; // Bloqueia cliques até o botão "Começar Jogo" ser pressionado
+  clearInterval(timerInterval);
+  timeElapsed = 0;
+  updateTimer();
+}
+
+// Dispara o timer e libera interação
+window.startGameplay = function () {
+  gameActive = true;
+  startBtn.style.display = "none";
+  giveUpBtn.style.display = "block";
+  victoryMsg.style.display = "none";
+  if (gameOverMsg) gameOverMsg.style.display = "none";
+
+  clearInterval(timerInterval);
+  timeElapsed = 0;
+  updateTimer();
+  timerInterval = setInterval(() => {
+    timeElapsed++;
+    updateTimer();
+  }, 1000);
+};
+
+// Usado para o botão "Jogar Novamente"
+window.generateGame = function () {
+  renderBoardLogic();
+  window.startGameplay();
+};
+
+// O botão inicial apenas libera o jogo já desenhado
+startBtn.addEventListener("click", window.startGameplay);
+
+// Lógica de seleção das letras
 function handleCellClick(cell) {
   if (!gameActive || cell.classList.contains("found")) return;
 
   if (!firstClickCell) {
-    // Primeiro clique
     firstClickCell = cell;
     cell.classList.add("selected");
   } else {
-    // Segundo clique
     let r1 = parseInt(firstClickCell.dataset.r);
     let c1 = parseInt(firstClickCell.dataset.c);
     let r2 = parseInt(cell.dataset.r);
@@ -438,7 +462,7 @@ function handleCellClick(cell) {
         let currentR = r1 + i * rStep;
         let currentC = c1 + i * cStep;
         let currentCell = document.querySelector(
-          `.grid-cell[data-r='${currentR}'][data-c='${currentC}']`
+          `.grid-cell[data-r='${currentR}'][data-c='${currentC}']`,
         );
         wordFormed += currentCell.innerText;
         cellsInLine.push(currentCell);
@@ -467,7 +491,7 @@ function handleCellClick(cell) {
         wordsCountDisplay.innerText = wordsFound;
 
         if (wordsFound === wordsToFind.length) {
-          endGame(true); // Venceu o jogo!
+          endGame(true);
         }
       } else {
         firstClickCell.classList.remove("selected");
@@ -480,5 +504,5 @@ function handleCellClick(cell) {
   }
 }
 
-// Inicia o jogo ao clicar no botão inicial
-startBtn.addEventListener("click", generateGame);
+// Carrega o tabuleiro na inicialização da página
+window.onload = initializeBoard;
